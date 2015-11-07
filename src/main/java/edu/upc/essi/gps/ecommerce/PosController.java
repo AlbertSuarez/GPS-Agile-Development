@@ -59,6 +59,10 @@ public class PosController {
     }
 
     public int cashPayment(int delivered) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        if(currentSale==null)
+            throw new IllegalStateException("No es pot cobrar una venta si no està iniciada");
+        if(currentSale.isEmpty())
+            throw new IllegalStateException("No es pot cobrar una venta sense cap producte");
+        return delivered-currentSale.getTotal();
     }
 }
