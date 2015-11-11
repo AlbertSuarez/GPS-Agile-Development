@@ -8,6 +8,8 @@ Projecte de partida per al laboratori de GPS de la FIB, curs de primavera de 201
 - Víctor Pérez Martos (46255203H) - victor.perez.martos@est.fib.upc.edu
 - Joaquim Motger de la Encarnación (48176082Y) - joaquim.motger@est.fib.upc.edu
 - Albert Suárez Molgó (47978681Z) - albert.suarez.molgo@est.fib.upc.edu
+- Arnau Miralles Hernández (47971780J) - arnau.miralles@est.fib.upc.edu
+- Pere Bergé Sànchez (47900832C) - pere.berge@est.fib.upc.edu
 
 ## Enllaços
 
