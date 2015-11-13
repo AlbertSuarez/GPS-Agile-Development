@@ -10,6 +10,7 @@ Projecte de partida per al laboratori de GPS de la FIB, curs de primavera de 201
 - Albert Suárez Molgó (47978681Z) - albert.suarez.molgo@est.fib.upc.edu
 - Arnau Miralles Hernández (47971780J) - arnau.miralles@est.fib.upc.edu
 - Pere Bergé Sànchez (47900832C) - pere.berge@est.fib.upc.edu
+- David Morán Pomés (77123886X) - david.moran@est.fib.upc.edu
 
 ## Enllaços
 
