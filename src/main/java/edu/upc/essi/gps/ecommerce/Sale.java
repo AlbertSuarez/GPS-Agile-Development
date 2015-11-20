@@ -9,11 +9,13 @@ class SaleLine{
     private String productName;
     private int unitPrice;
     private int amount;
+    private int barCode;
 
     public SaleLine(Product product, int amount) {
         this.productId = product.getId();
         this.productName = product.getName();
         this.unitPrice = product.getPrice();
+        this.barCode = product.getBarCode();
         this.amount = amount;
     }
 
@@ -36,6 +38,10 @@ class SaleLine{
     public int getTotalPrice() {
         return unitPrice * amount;
     }
+
+    public int getBarCode() {
+        return barCode;
+    }
 }
 
 public class Sale {
@@ -44,14 +50,14 @@ public class Sale {
     private final String saleAssistantName;
     private final List<SaleLine> lines = new LinkedList<>();
 
-    public void addProduct(Product p) {
-        lines.add(new SaleLine(p,1));
-    }
-
     public Sale(String shop, int posNumber, String saleAssistantName) {
         this.shop = shop;
         this.posNumber = posNumber;
         this.saleAssistantName = saleAssistantName;
+    }
+
+    public void addProduct(Product p) {
+        lines.add(new SaleLine(p,1));
     }
 
     public String getShop() {
@@ -80,5 +86,14 @@ public class Sale {
 
     public boolean isEmpty() {
         return lines.isEmpty();
+    }
+
+    public boolean hasProductByBarCode(int barCode) {
+        for (SaleLine line : lines) {
+            if (line.getBarCode() == barCode) {
+                return true;
+            }
+        }
+        return false;
     }
 }

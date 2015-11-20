@@ -1,6 +1,6 @@
 package edu.upc.essi.gps.ecommerce;
 
-import static edu.upc.essi.gps.utils.Validations.*;
+import static edu.upc.essi.gps.utils.Validations.checkNotNull;
 
 public class PosController {
 
@@ -42,7 +42,9 @@ public class PosController {
     }
 
     public void addProductByBarCode(int barCode) {
-        if (currentSale == null) throw new IllegalStateException("No hi ha cap venta iniciada");
+        if (currentSale == null) {
+            currentSale = new Sale(shop, posNumber, currentSaleAssistantName);
+        }
         Product p = productsService.findByBarCode(barCode);
         currentSale.addProduct(p);
     }
@@ -75,6 +77,10 @@ public class PosController {
         if(currentSale.getTotal() > delivered)
             throw new IllegalStateException("No es pot cobrar una venta amb un import inferior al total de la venta");
         return delivered-currentSale.getTotal();
+    }
+
+    public boolean isSaleStarted() {
+        return currentSale != null;
     }
 
     public int tarjetPayment(int delivered) {

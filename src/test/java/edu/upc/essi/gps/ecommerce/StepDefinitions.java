@@ -1,13 +1,11 @@
 package edu.upc.essi.gps.ecommerce;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
 import cucumber.api.java.ca.I;
 import cucumber.api.java.ca.Quan;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class StepDefinitions {
 
@@ -101,7 +99,7 @@ public class StepDefinitions {
 
     @Aleshores("^el total de la venta actual és de (\\d+)€$")
     public void el_total_de_la_venta_actual_és_de_€(int saleTotal) throws Throwable {
-        assertEquals(saleTotal,this.posController.getCurrentSale().getTotal());
+        assertEquals(saleTotal, this.posController.getCurrentSale().getTotal());
     }
 
     @Aleshores("^la pantalla del client del tpv mostra$")
@@ -132,5 +130,15 @@ public class StepDefinitions {
     @I("^el tpv tanca la venda actual$")
     public void el_tpv_tanca_la_venda_actual() throws Throwable {
         tryCatch(() -> this.posController.endSale());
+    }
+
+    @Aleshores("^la venta esta iniciada$")
+    public void la_venta_esta_iniciada() throws Throwable {
+        assertTrue(posController.isSaleStarted());
+    }
+
+    @I("^la venda conté el producte amb codi de barres (\\d+)$")
+    public void la_venda_conté_el_producte_amb_codi_de_barres(int barCode) {
+        assertTrue(posController.getCurrentSale().hasProductByBarCode(barCode));
     }
 }
