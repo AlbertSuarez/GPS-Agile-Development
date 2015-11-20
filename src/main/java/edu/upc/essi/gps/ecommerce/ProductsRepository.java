@@ -8,12 +8,7 @@ import java.util.Comparator;
 
 public class ProductsRepository extends Repository<Product> {
 
-    public static Comparator<Product> byPopularity = new Comparator<Product>() {
-        @Override
-        public int compare(Product o1, Product o2) {
-            return new Float(o1.getPopularity()).compareTo(o2.getPopularity());
-        }
-    };
+    public static Comparator<Product> byPopularity = (o1, o2) -> new Float(o1.getPopularity()).compareTo(o2.getPopularity());
 
     public Product findByName(final String name) {
         return find(Matchers.nameMatcher(name));
