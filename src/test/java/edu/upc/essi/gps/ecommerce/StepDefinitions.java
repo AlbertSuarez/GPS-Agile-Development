@@ -112,7 +112,7 @@ public class StepDefinitions {
         tryCatch(() -> this.change = this.posController.cashPayment(delivered));
     }
 
-    @Quan("^indico que el client ha entregat (\\d+)€ per a pagar amb targeta$")
+    @Quan("^indico que el client paga amb targeta$")
     public void tarjetPayment(int delivered) throws Throwable {
         tryCatch(() -> this.change = this.posController.tarjetPayment(delivered));
     }
@@ -122,7 +122,7 @@ public class StepDefinitions {
         assertEquals(expectedChange, change);
     }
 
-    @Aleshores("^el tpv enregistra que s'ha pagat l'import amb targeta$")
+    @Aleshores("^el tpv indica que s'ha pagat amb targeta$")
     public void setTarget() throws Throwable {
 
     }
