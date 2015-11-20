@@ -113,8 +113,8 @@ public class StepDefinitions {
     }
 
     @Quan("^indico que el client paga amb targeta$")
-    public void tarjetPayment(int delivered) throws Throwable {
-        tryCatch(() -> this.change = this.posController.tarjetPayment(delivered));
+    public void tarjetPayment() throws Throwable {
+        tryCatch(() -> this.change = this.posController.tarjetPayment());
     }
 
     @Aleshores("^el tpv m'indica que el canvi a retornar és de (\\d+)€$")
