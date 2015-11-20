@@ -1,48 +1,8 @@
-package edu.upc.essi.gps.ecommerce;
+package edu.upc.essi.gps.domain;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-class SaleLine{
-    private long productId;
-    private String productName;
-    private int unitPrice;
-    private int amount;
-    private int barCode;
-
-    public SaleLine(Product product, int amount) {
-        this.productId = product.getId();
-        this.productName = product.getName();
-        this.unitPrice = product.getPrice();
-        this.barCode = product.getBarCode();
-        this.amount = amount;
-    }
-
-    public long getProductId() {
-        return productId;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public int getUnitPrice() {
-        return unitPrice;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public int getTotalPrice() {
-        return unitPrice * amount;
-    }
-
-    public int getBarCode() {
-        return barCode;
-    }
-}
 
 public class Sale {
     private final String shop;
@@ -96,4 +56,46 @@ public class Sale {
         }
         return false;
     }
+
+    public class SaleLine{
+        private long productId;
+        private String productName;
+        private int unitPrice;
+        private int amount;
+        private int barCode;
+
+        public SaleLine(Product product, int amount) {
+            this.productId = product.getId();
+            this.productName = product.getName();
+            this.unitPrice = product.getPrice();
+            this.barCode = product.getBarCode();
+            this.amount = amount;
+        }
+
+        public long getProductId() {
+            return productId;
+        }
+
+        public String getProductName() {
+            return productName;
+        }
+
+        public int getUnitPrice() {
+            return unitPrice;
+        }
+
+        public int getAmount() {
+            return amount;
+        }
+
+        public int getTotalPrice() {
+            return unitPrice * amount;
+        }
+
+        public int getBarCode() {
+            return barCode;
+        }
+    }
+
 }
+

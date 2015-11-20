@@ -1,5 +1,6 @@
 package edu.upc.essi.gps.ecommerce;
 
+import edu.upc.essi.gps.domain.SaleAssistant;
 import edu.upc.essi.gps.utils.Comparators;
 import edu.upc.essi.gps.utils.Matchers;
 import edu.upc.essi.gps.utils.Validations;

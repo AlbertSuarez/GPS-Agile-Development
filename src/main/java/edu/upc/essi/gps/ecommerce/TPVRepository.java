@@ -1,5 +1,6 @@
 package edu.upc.essi.gps.ecommerce;
 
+import edu.upc.essi.gps.domain.TPV;
 import edu.upc.essi.gps.utils.Repository;
 
 public class TPVRepository extends Repository<TPV> {

@@ -1,4 +1,4 @@
-package edu.upc.essi.gps.ecommerce;
+package edu.upc.essi.gps.domain;
 
 import edu.upc.essi.gps.domain.Entity;
 import edu.upc.essi.gps.domain.HasName;

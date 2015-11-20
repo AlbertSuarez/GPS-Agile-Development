@@ -1,5 +1,6 @@
 package edu.upc.essi.gps.ecommerce;
 
+import edu.upc.essi.gps.domain.Product;
 import edu.upc.essi.gps.utils.Comparators;
 
 import java.util.List;

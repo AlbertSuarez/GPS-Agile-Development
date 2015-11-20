@@ -1,5 +1,6 @@
 package edu.upc.essi.gps.ecommerce;
 
+import edu.upc.essi.gps.domain.SaleAssistant;
 import edu.upc.essi.gps.utils.Repository;
 
 public class SaleAssistantRepository extends Repository<SaleAssistant> {

@@ -1,8 +1,10 @@
 package edu.upc.essi.gps.ecommerce;
 
+import edu.upc.essi.gps.domain.*;
+
 import static edu.upc.essi.gps.utils.Validations.*;
 
-public class PosController {
+public class TPVController {
 
     private final ProductsService productsService;
     private final SaleAssistantService saleAssistantService;
@@ -11,7 +13,7 @@ public class PosController {
     private SaleAssistant currentSaleAssistant;
     private Sale currentSale;
 
-    public PosController(ProductsService productsService, SaleAssistantService saleAssistantService, TPVService tpvService, String shop, int pos) {
+    public TPVController(ProductsService productsService, SaleAssistantService saleAssistantService, TPVService tpvService, String shop, int pos) {
         this.tpvService = tpvService;
         this.productsService = productsService;
         this.saleAssistantService = saleAssistantService;
@@ -49,10 +51,6 @@ public class PosController {
         this.currentSale = new Sale(tpv.getShop(), tpv.getPos(), currentSaleAssistant.getName());
     }
 
-    public SaleAssistant getCurrentSaleAssistant() {
-        return currentSaleAssistant;
-    }
-
     public Sale getCurrentSale() {
         return currentSale;
     }
@@ -70,7 +68,7 @@ public class PosController {
             return welcomeMessage + "\nL'atén " + currentSale.getSaleAssistantName();
         }
         StringBuilder sb = new StringBuilder();
-        for (SaleLine sl : currentSale.getLines()) {
+        for (Sale.SaleLine sl : currentSale.getLines()) {
             sb.append(sl.getProductName()).append(" - ")
                     .append(sl.getUnitPrice()).append("€/u x ").append(sl.getAmount()).append("u = ")
                     .append(sl.getTotalPrice()).append("€\n");
@@ -101,4 +99,7 @@ public class PosController {
         return delivered-currentSale.getTotal();
     }
 
+    public String getCurrentSaleAssistantName() {
+        return currentSaleAssistant.getName();
+    }
 }
