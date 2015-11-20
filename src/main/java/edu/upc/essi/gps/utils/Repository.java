@@ -6,10 +6,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class Repository<T extends Entity> {
 
-    private List<T> entities = new LinkedList<T>();
+    private List<T> entities = new LinkedList<>();
     private long nextId = 1l;
 
     public long newId() {
@@ -36,10 +37,7 @@ public abstract class Repository<T extends Entity> {
     }
 
     public List<T> list(Matcher<? super T> matcher, Comparator<? super T> sortedBy) {
-        List<T> result = new LinkedList<T>();
-        for (T entity : entities) {
-            if (matcher.matches(entity)) result.add(entity);
-        }
+        List<T> result = entities.stream().filter(matcher::matches).collect(Collectors.toCollection(LinkedList::new));
         result.sort(sortedBy);
         return Collections.unmodifiableList(result);
     }

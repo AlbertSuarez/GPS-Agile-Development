@@ -10,20 +10,8 @@ public final class Comparators {
     private Comparators() {
     }
 
-    public static Comparator<HasName> byName = new Comparator<HasName>() {
-
-        @Override
-        public int compare(HasName o1, HasName o2) {
-            return o1.getName().compareTo(o2.getName());
-        }
-
-    };
+    public static Comparator<HasName> byName = (o1, o2) -> o1.getName().compareTo(o2.getName());
 
 
-    public static Comparator<Entity> byId = new Comparator<Entity>() {
-        @Override
-        public int compare(Entity o1, Entity o2) {
-            return new Long(o1.getId()).compareTo(o2.getId());
-        }
-    };
+    public static Comparator<Entity> byId = (o1, o2) -> new Long(o1.getId()).compareTo(o2.getId());
 }
