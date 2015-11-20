@@ -60,7 +60,7 @@ public class StepDefinitions {
 
     @Quan("^inicio una nova venta$")
     public void tryStartSale() throws Throwable {
-        tryCatch(() -> this.posController.startSale());
+        tryCatch(this.posController::startSale);
     }
 
     @Donat("^que hi ha una venta iniciada$")
