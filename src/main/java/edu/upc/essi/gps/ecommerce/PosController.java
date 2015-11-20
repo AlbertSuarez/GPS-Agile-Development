@@ -63,6 +63,12 @@ public class PosController {
             throw new IllegalStateException("No es pot cobrar una venta si no està iniciada");
         if(currentSale.isEmpty())
             throw new IllegalStateException("No es pot cobrar una venta sense cap producte");
+        return getCanvi(delivered);
+    }
+
+    private int getCanvi(int delivered) {
+        if(currentSale.getTotal() > delivered)
+            throw new IllegalStateException("No es pot cobrar una venta amb un import inferior al total de la venta");
         return delivered-currentSale.getTotal();
     }
 }
