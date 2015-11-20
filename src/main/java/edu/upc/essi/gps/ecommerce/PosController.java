@@ -77,12 +77,17 @@ public class PosController {
         return delivered-currentSale.getTotal();
     }
 
-    public int tarjetPayment(int delivered) {
+    public int tarjetPayment() {
         if(currentSale==null)
             throw new IllegalStateException("No es pot cobrar una venta si no està iniciada");
         if(currentSale.isEmpty())
             throw new IllegalStateException("No es pot cobrar una venta sense cap producte");
-        return delivered-currentSale.getTotal();
+        return currentSale.getTotal();
+    }
+
+    boolean isSaleStarted(){
+        if(currentSale==null) return false;
+        else return true;
     }
 
 }
