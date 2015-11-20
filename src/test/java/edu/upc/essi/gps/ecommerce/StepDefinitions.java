@@ -85,7 +85,7 @@ public class StepDefinitions {
 
     @Aleshores("^la venta té (\\d+) (?:línia|línies)$")
     public void la_venta_té_n_linies(int expectedNumberOfLines) throws Throwable {
-        assertEquals(expectedNumberOfLines,this.posController.getCurrentSale().getLines().size());
+        assertEquals(expectedNumberOfLines, this.posController.getCurrentSale().getLines().size());
     }
 
     @Aleshores("^línia de venta (\\d+) és de (\\d+) unitats de \"([^\"]*)\" a (\\d+)€ cada una per un total de (\\d+)€$")
@@ -112,8 +112,18 @@ public class StepDefinitions {
         tryCatch(() -> this.change = this.posController.cashPayment(delivered));
     }
 
+    @Quan("^indico que el client ha entregat (\\d+)€ per a pagar amb targeta$")
+    public void tarjetPayment(int delivered) throws Throwable {
+        tryCatch(() -> this.change = this.posController.tarjetPayment(delivered));
+    }
+
     @Aleshores("^el tpv m'indica que el canvi a retornar és de (\\d+)€$")
     public void checkChange(int expectedChange) throws Throwable {
-        assertEquals(expectedChange,change);
+        assertEquals(expectedChange, change);
+    }
+
+    @Aleshores("^el tpv enregistra que s'ha pagat l'import amb targeta$")
+    public void setTarget() throws Throwable {
+
     }
 }
