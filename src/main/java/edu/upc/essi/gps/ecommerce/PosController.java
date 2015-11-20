@@ -1,40 +1,56 @@
 package edu.upc.essi.gps.ecommerce;
 
-import static edu.upc.essi.gps.utils.Validations.checkNotNull;
+import static edu.upc.essi.gps.utils.Validations.*;
 
 public class PosController {
 
     private final ProductsService productsService;
-    private final String shop;
-    private final int posNumber;
-    private String currentSaleAssistantName;
+    private final SaleAssistantService saleAssistantService;
+    private final TPVService tpvService;
+    private final TPV tpv;
+    private SaleAssistant currentSaleAssistant;
     private Sale currentSale;
 
-    public PosController(String shop, int posNumber, ProductsService productsService) {
-        this.shop = shop;
-        this.posNumber = posNumber;
+    public PosController(ProductsService productsService, SaleAssistantService saleAssistantService, TPVService tpvService, String shop, int pos) {
+        this.tpvService = tpvService;
         this.productsService = productsService;
+        this.saleAssistantService = saleAssistantService;
+        tpv = tpvService.findByShopPos(shop, pos);
+        currentSaleAssistant = null;
     }
 
-    public void login(String saleAssistantName) {
-        checkNotNull(saleAssistantName, "saleAssistantName");
-        if (this.currentSaleAssistantName != null)
-            throw new IllegalStateException("Aquest tpv està en ús per " + this.currentSaleAssistantName);
-        this.currentSaleAssistantName = saleAssistantName;
+    public boolean login(long saleAssistantId, String password) {
+        if (tpv.getState().equals(TPVState.IDLE))
+            throw new IllegalStateException("Aquest tpv està en ús per " + this.currentSaleAssistant.getName());
+        if (tpv.getState().equals(TPVState.BLOCKED)) throw new IllegalStateException("Aquest tpv està bloquejat");
+
+        checkNotNull(saleAssistantId, "saleAssistantId");
+        checkNotNull(password, "password");
+
+        boolean validation = saleAssistantService.validate(saleAssistantId, password);
+        tpvService.validation(tpv.getId(), validation);
+        return validation;
+    }
+
+    public boolean unblock(String password) {
+        if (!tpv.getState().equals(TPVState.BLOCKED)) throw new IllegalStateException("Aquest tpv no està bloquejat");
+
+        checkNotNull(password, "password");
+
+        return tpvService.validate(tpv.getId(), password);
+    }
+
+    public void setInitialCash(double cash) {
+        tpv.setCash(cash);
     }
 
     public void startSale() {
         if (this.currentSale != null) throw new IllegalStateException("Aquest tpv ja té una venta iniciada");
-        this.currentSale = new Sale(shop, posNumber, currentSaleAssistantName);
+        this.currentSale = new Sale(tpv.getShop(), tpv.getPos(), currentSaleAssistant.getName());
     }
 
-    public void endSale() {
-        if (this.currentSale == null) throw new IllegalStateException("Aquest tpv no té una venta iniciada");
-        currentSale = null;
-    }
-
-    public String getCurrentSaleAssistantName() {
-        return currentSaleAssistantName;
+    public SaleAssistant getCurrentSaleAssistant() {
+        return currentSaleAssistant;
     }
 
     public Sale getCurrentSale() {
@@ -42,7 +58,7 @@ public class PosController {
     }
 
     public void addProductByBarCode(int barCode) {
-        if (currentSale == null) currentSale = new Sale(shop, posNumber, currentSaleAssistantName);
+        if (currentSale == null) throw new IllegalStateException("No hi ha cap venta iniciada");
         Product p = productsService.findByBarCode(barCode);
         currentSale.addProduct(p);
     }
@@ -77,17 +93,12 @@ public class PosController {
         return delivered-currentSale.getTotal();
     }
 
-    public int tarjetPayment() {
+    public int tarjetPayment(int delivered) {
         if(currentSale==null)
             throw new IllegalStateException("No es pot cobrar una venta si no està iniciada");
         if(currentSale.isEmpty())
             throw new IllegalStateException("No es pot cobrar una venta sense cap producte");
-        return currentSale.getTotal();
-    }
-
-    boolean isSaleStarted(){
-        if(currentSale==null) return false;
-        else return true;
+        return delivered-currentSale.getTotal();
     }
 
 }

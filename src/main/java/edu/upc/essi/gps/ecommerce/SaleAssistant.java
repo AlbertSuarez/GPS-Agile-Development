@@ -7,12 +7,12 @@ import edu.upc.essi.gps.domain.HasName;
  * Classe que representa un caixer del sistema, identificat per <code>id</code> i amb un nom propi.
  * A més, cada caixer té un password amb el qual s'identifica al nostre sistema.
  * */
-public class Caixer implements Entity, HasName {
+public class SaleAssistant implements Entity, HasName {
 
     /**
      * <code>long</code> que identifica únicament el caixer al sistema.
      * */
-    private long id;
+    private final long id;
 
     /**
      * <code>String</code> associat al nom i cognoms del caixer.
@@ -25,17 +25,16 @@ public class Caixer implements Entity, HasName {
     private String encryptedPass;
 
     /**
-     * Crea una nova instància d'un <code>Caixer</code> amb el nom d'usuari indicat i el password a emmagatzemar.<br>
+     * Crea una nova instància d'un <code>SaleAssistant</code> amb el nom d'usuari indicat i el password a emmagatzemar.<br>
      * L'identificador intern de l'usuari l'assigna el sistema automàticament.
      * @param name Nom i cognoms del caixer que es vol donar d'alta.
      * @param encryptedPass Password prèviament encriptat que s'ha d'emmagatzemar al sistema.
      * */
-    public Caixer(String name, String encryptedPass) {
+    public SaleAssistant(String name, String encryptedPass, long id) {
         this.name = name;
-        id = CaixerRepository.getNewId();
+        this.id = id;
         this.encryptedPass = encryptedPass;
     }
-
 
     @Override
     public long getId() {
@@ -50,4 +49,13 @@ public class Caixer implements Entity, HasName {
     public String getEncryptedPass() {
         return encryptedPass;
     }
+
+    public void setName(String newName) {
+        name = newName;
+    }
+
+    public void setEncryptedPass(String newPass) {
+        encryptedPass = newPass;
+    }
+
 }
