@@ -28,6 +28,11 @@ public class PosController {
         this.currentSale = new Sale(shop, posNumber, currentSaleAssistantName);
     }
 
+    public void endSale() {
+        if (this.currentSale == null) throw new IllegalStateException("Aquest tpv no té una venta iniciada");
+        currentSale = null;
+    }
+
     public String getCurrentSaleAssistantName() {
         return currentSaleAssistantName;
     }

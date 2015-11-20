@@ -1,7 +1,9 @@
 package edu.upc.essi.gps.ecommerce;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
+import cucumber.api.java.ca.I;
 import cucumber.api.java.ca.Quan;
 
 import static org.junit.Assert.assertEquals;
@@ -125,5 +127,10 @@ public class StepDefinitions {
     @Aleshores("^el tpv indica que s'ha pagat amb targeta$")
     public void setTarget() throws Throwable {
 
+    }
+
+    @I("^el tpv tanca la venda actual$")
+    public void el_tpv_tanca_la_venda_actual() throws Throwable {
+        tryCatch(() -> this.posController.endSale());
     }
 }
