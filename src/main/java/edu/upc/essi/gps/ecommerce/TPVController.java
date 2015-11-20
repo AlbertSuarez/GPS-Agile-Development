@@ -21,7 +21,7 @@ public class TPVController {
         currentSaleAssistant = null;
     }
 
-    public boolean login(long saleAssistantId, String password) {
+    public void login(long saleAssistantId, String password) {
         if (tpv.getState().equals(TPVState.IDLE))
             throw new IllegalStateException("Aquest tpv està en ús per " + this.currentSaleAssistant.getName());
         if (tpv.getState().equals(TPVState.BLOCKED)) throw new IllegalStateException("Aquest tpv està bloquejat");
@@ -29,17 +29,19 @@ public class TPVController {
         checkNotNull(saleAssistantId, "saleAssistantId");
         checkNotNull(password, "password");
 
-        boolean validation = saleAssistantService.validate(saleAssistantId, password);
-        tpvService.validation(tpv.getId(), validation);
-        return validation;
+        if (saleAssistantService.validate(saleAssistantId, password)) {
+            tpvService.validation(tpv.getId(), true);
+        }
+        else throw new IllegalStateException("Nom d'usuari o password incorrecte");
     }
 
-    public boolean unblock(String password) {
+    public void unblock(String password) {
         if (!tpv.getState().equals(TPVState.BLOCKED)) throw new IllegalStateException("Aquest tpv no està bloquejat");
 
         checkNotNull(password, "password");
 
-        return tpvService.validate(tpv.getId(), password);
+        if (!tpvService.validate(tpv.getId(), password))
+            throw new IllegalStateException("Password d'administrador incorrecte");
     }
 
     public void setInitialCash(double cash) {

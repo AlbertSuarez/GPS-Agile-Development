@@ -5,7 +5,7 @@ import cucumber.api.java.ca.Donat;
 import cucumber.api.java.ca.I;
 import cucumber.api.java.ca.Quan;
 import edu.upc.essi.gps.domain.Sale;
-import edu.upc.essi.gps.domain.SaleLine;
+import edu.upc.essi.gps.domain.Sale.SaleLine;
 
 import static org.junit.Assert.*;
 
@@ -52,14 +52,14 @@ public class StepDefinitions {
         assertEquals(saleAssistant, s.getSaleAssistantName());
     }
 
-    @Quan("^inicio el torn al tpv com a \"([^\"]*)\"$")
-    public void login(String saleAssistantName) throws Throwable {
-        tryCatch(() -> this.TPVController.login(saleAssistantName));
+    @Quan("^inicio el torn al tpv com a (\\d+) amb password \"([^\"]*)\"$")
+    public void login(long saleAssistantID, String password) throws Throwable {
+        tryCatch(() -> this.TPVController.login(saleAssistantID, password));
     }
 
-    @Donat("^que en \"([^\"]*)\" ha iniciat el torn al tpv$")
-    public void hasLoggedIn(String saleAssistantName) throws Throwable {
-        this.TPVController.login(saleAssistantName);
+    @Donat("^que (\\d+) ha iniciat el torn al tpv amb password \"([^\"]*)\"$")
+    public void hasLoggedIn(long saleAssistantID, String password) throws Throwable {
+        this.TPVController.login(saleAssistantID, password);
     }
 
     @Quan("^inicio una nova venta$")
@@ -94,7 +94,7 @@ public class StepDefinitions {
 
     @Aleshores("^línia de venta (\\d+) és de (\\d+) unitats de \"([^\"]*)\" a (\\d+)€ cada una per un total de (\\d+)€$")
     public void línia_de_venta_és_de_unitats_de_a_€_cada_una_per_un_total_de_€(int lineNumber, int units, String productName, int unitPrice, int totalPrice) throws Throwable {
-        Sale.SaleLine sl = this.TPVController.getCurrentSale().getLines().get(lineNumber - 1);
+        SaleLine sl = this.TPVController.getCurrentSale().getLines().get(lineNumber - 1);
         assertEquals(units,sl.getAmount());
         assertEquals(unitPrice,sl.getUnitPrice());
         assertEquals(totalPrice,sl.getTotalPrice());
