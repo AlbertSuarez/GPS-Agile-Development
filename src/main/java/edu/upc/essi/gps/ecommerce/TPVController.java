@@ -9,6 +9,7 @@ public class TPVController {
     private final ProductsService productsService;
     private final SaleAssistantService saleAssistantService;
     private final TPVService tpvService;
+
     private final TPV tpv;
     private SaleAssistant currentSaleAssistant;
     private Sale currentSale;
@@ -21,7 +22,7 @@ public class TPVController {
         currentSaleAssistant = null;
     }
 
-    public void login(long saleAssistantId, String password) {
+    public boolean login(long saleAssistantId, String password, double cash) {
         if (tpv.getState().equals(TPVState.IDLE))
             throw new IllegalStateException("Aquest tpv està en ús per " + this.currentSaleAssistant.getName());
         if (tpv.getState().equals(TPVState.BLOCKED)) throw new IllegalStateException("Aquest tpv està bloquejat");
@@ -29,10 +30,13 @@ public class TPVController {
         checkNotNull(saleAssistantId, "saleAssistantId");
         checkNotNull(password, "password");
 
-        if (saleAssistantService.validate(saleAssistantId, password)) {
-            tpvService.validation(tpv.getId(), true);
+        boolean loggedIn = saleAssistantService.validate(saleAssistantId, password);
+        tpvService.validation(tpv.getId(), loggedIn);
+        if (loggedIn) {
+            tpv.setInitialCash(cash);
+            tpv.setCash(cash);
         }
-        else throw new IllegalStateException("Nom d'usuari o password incorrecte");
+        return loggedIn;
     }
 
     public void unblock(String password) {
@@ -40,12 +44,16 @@ public class TPVController {
 
         checkNotNull(password, "password");
 
-        if (!tpvService.validate(tpv.getId(), password))
+        if (!tpvService.validateAdmin(tpv.getId(), password))
             throw new IllegalStateException("Password d'administrador incorrecte");
     }
 
-    public void setInitialCash(double cash) {
-        tpv.setCash(cash);
+    public TPVState getTpvState() {
+        return tpv.getState();
+    }
+
+    public double getInitialCash() {
+        return tpv.getInitialCash();
     }
 
     public void startSale() {

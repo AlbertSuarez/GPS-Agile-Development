@@ -7,12 +7,22 @@ import edu.upc.essi.gps.utils.Validations;
 
 import java.util.List;
 
+import static edu.upc.essi.gps.utils.Validations.checkNotNull;
+
 public class SaleAssistantService {
 
     private SaleAssistantRepository saleAssistantRepository;
 
     public SaleAssistantService(SaleAssistantRepository saleAssistantRepository) {
         this.saleAssistantRepository = saleAssistantRepository;
+    }
+
+    public void insert(String name, String password, long id){
+        checkNotNull(name, "name");
+        checkNotNull(password, "password");
+
+        SaleAssistant c = new SaleAssistant(name, Validations.crypt(password), id);
+        saleAssistantRepository.insert(c);
     }
 
     public long newCaixer(String name, String password){

@@ -2,7 +2,6 @@ package edu.upc.essi.gps.ecommerce;
 
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
-import cucumber.api.java.ca.I;
 import cucumber.api.java.ca.Quan;
 import edu.upc.essi.gps.domain.Sale;
 import edu.upc.essi.gps.domain.Sale.SaleLine;
@@ -43,6 +42,11 @@ public class StepDefinitions {
         assertEquals(saleAssistantName, this.TPVController.getCurrentSaleAssistantName());
     }
 
+    @Aleshores("^el tpv té un efectiu inicial de ([0-9]*\\.?[0-9]{2})€$")
+    public void checkInitialCash(double cash) throws Throwable {
+        assertEquals(cash, this.TPVController.getInitialCash(), 0.005);
+    }
+
     @Aleshores("^la venta actual és de'n \"([^\"]*)\" al tpv (\\d+) de la botiga \"([^\"]*)\"$")
     public void checkCurrentSaleData(String saleAssistant, int posNumber, String shop) throws Throwable {
         Sale s = this.TPVController.getCurrentSale();
@@ -52,14 +56,32 @@ public class StepDefinitions {
         assertEquals(saleAssistant, s.getSaleAssistantName());
     }
 
-    @Quan("^inicio el torn al tpv amb identificador (\\d+) i password \"([^\"]*)\"$")
-    public void login(long saleAssistantID, String password) throws Throwable {
-        tryCatch(() -> this.TPVController.login(saleAssistantID, password));
+    //STUB - NO ÉS FUNCIONALITAT FINAL
+    @Donat("^que el \"([^\"]*)\" s'ha registrat al sistema amb password \"([^\"]*)\" i reb l'identificador (\\d+)$")
+    public void register(String name, String password, long saleAssistantID) throws Throwable {
+        tryCatch(() -> this.saleAssistantService.insert(name, password, saleAssistantID));
     }
 
-    @Donat("^que (\\d+) ha iniciat el torn al tpv amb password \"([^\"]*)\"$")
-    public void hasLoggedIn(long saleAssistantID, String password) throws Throwable {
-        this.TPVController.login(saleAssistantID, password);
+    @Quan("^inicio el torn al tpv amb identificador (\\d+) i password \"([^\"]*)\", amb un efectiu inicial de ([0-9]*\\.?[0-9]{2})€$")
+    public void login(long saleAssistantID, String password, double cash) throws Throwable {
+        tryCatch(() -> this.TPVController.login(saleAssistantID, password, cash));
+    }
+
+    @Quan("^desbloquejo el tpv amb el password \"([^\"]*)\"$")
+    public void unblock(String password) throws Throwable {
+        tryCatch(() -> this.TPVController.unblock(password));
+    }
+
+    //STUB - NO ÉS FUNCIONALITAT FINAL TODO
+    @Quan("^inicio el torn al tpv amb identificador (\\d+) i password \"([^\"]*)\", amb un efectiu inicial de ([0-9]*\\.?[0-9]{2})€ (\\d+) cops$")
+    public void login(long saleAssistantID, String password, double cash, int n) throws Throwable {
+        for (int i = 0; i < n; ++i)
+            tryCatch(() -> this.TPVController.login(saleAssistantID, password, cash));
+    }
+
+    @Aleshores("^el tpv es troba en estat \"([^\"]*)\"$")
+    public void tpvState(String state) throws Throwable {
+        assertEquals(state, this.TPVController.getTpvState().toString());
     }
 
     @Quan("^inicio una nova venta$")
@@ -131,19 +153,10 @@ public class StepDefinitions {
 
     }
 
-    @I("^el tpv tanca la venda actual$")
-    public void el_tpv_tanca_la_venda_actual() throws Throwable {
-        //tryCatch(() -> this.TPVController.endSale());
-    }
-
     @Aleshores("^la venta esta iniciada$")
     public void la_venta_esta_iniciada() throws Throwable {
         //assertTrue(TPVController.isSaleStarted());
     }
 
-    @I("^la venda conté el producte amb codi de barres (\\d+)$")
-    public void la_venda_conté_el_producte_amb_codi_de_barres(int barCode) {
-        assertTrue(TPVController.getCurrentSale().hasProductByBarCode(barCode));
-    }
 
 }

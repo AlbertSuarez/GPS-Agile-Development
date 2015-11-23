@@ -1,6 +1,7 @@
 package edu.upc.essi.gps.ecommerce;
 
 import edu.upc.essi.gps.domain.TPV;
+import edu.upc.essi.gps.domain.TPVState;
 import edu.upc.essi.gps.utils.Comparators;
 import edu.upc.essi.gps.utils.Validations;
 
@@ -37,8 +38,8 @@ public class TPVService {
         return tpvRepository.findByShopPos(shop, pos);
     }
 
-    public void validation(long id, boolean validated) {
-        TPV tpv = findById(id);
+    public void validation(long TVPid, boolean validated) {
+        TPV tpv = findById(TVPid);
         if (validated) {
             tpv.setnIntents(0);
             tpv.setState(TPVState.IDLE);
@@ -52,8 +53,8 @@ public class TPVService {
         }
     }
 
-    public boolean validate(long id, String password) {
-        TPV tpv = findById(id);
+    public boolean validateAdmin(long TVPid, String password) {
+        TPV tpv = findById(TVPid);
         if (Validations.validPassword(password, MASTER_PASS)) {
             tpv.setState(TPVState.AVAILABLE);
             return true;

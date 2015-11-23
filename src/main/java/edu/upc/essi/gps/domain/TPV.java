@@ -1,8 +1,5 @@
 package edu.upc.essi.gps.domain;
 
-import edu.upc.essi.gps.domain.Entity;
-import edu.upc.essi.gps.ecommerce.TPVState;
-
 public class TPV implements Entity {
 
     private final long id;
@@ -11,6 +8,7 @@ public class TPV implements Entity {
     private int nIntents;
     private TPVState state;
     private double cash;
+    private double initialCash;
 
     public TPV(String shop, int pos, long id) {
         this.shop = shop;
@@ -58,4 +56,11 @@ public class TPV implements Entity {
         this.cash = cash;
     }
 
+    public double getInitialCash() {
+        return initialCash;
+    }
+
+    public void setInitialCash(double initialCash) {
+        this.initialCash = initialCash;
+    }
 }

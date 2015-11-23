@@ -6,7 +6,8 @@ Característica: Obtenir el canvi d'una venta
   Rerefons:
     Donat un producte amb nom "Optimus Prime", preu 23€, iva 21% i codi de barres 1234567
     I que estem al tpv número 1 de la botiga "Girona 1"
-    Donat que 123 ha iniciat el torn al tpv amb password "asdf"
+    I que el "Joan" s'ha registrat al sistema amb password "asdf" i reb l'identificador 123
+    I que 123 ha iniciat el torn al tpv amb password "asdf"
 
   Escenari: Cobrar una venta en metàlic
     Donat que hi ha una venta iniciada
