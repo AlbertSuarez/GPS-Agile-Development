@@ -62,6 +62,12 @@ public class StepDefinitions {
         tryCatch(() -> this.saleAssistantService.insert(name, password, saleAssistantID));
     }
 
+    @Donat("^que s'inica el torn al tpv amb identificador (\\d+) i password \"([^\"]*)\", amb un efectiu inicial de ([0-9]*\\.?[0-9]{2})€$")
+    public void loginDonat(long saleAssistantID, String password, double cash) throws Throwable {
+        this.TPVController.login(saleAssistantID, password, cash);
+    }
+
+
     @Quan("^inicio el torn al tpv amb identificador (\\d+) i password \"([^\"]*)\", amb un efectiu inicial de ([0-9]*\\.?[0-9]{2})€$")
     public void login(long saleAssistantID, String password, double cash) throws Throwable {
         tryCatch(() -> this.TPVController.login(saleAssistantID, password, cash));
