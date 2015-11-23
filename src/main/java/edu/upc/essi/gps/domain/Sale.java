@@ -7,13 +7,11 @@ import java.util.List;
 public class Sale {
     private final String shop;
     private final int posNumber;
-    private final String saleAssistantName;
     private final List<SaleLine> lines = new LinkedList<>();
 
-    public Sale(String shop, int posNumber, String saleAssistantName) {
+    public Sale(String shop, int posNumber) {
         this.shop = shop;
         this.posNumber = posNumber;
-        this.saleAssistantName = saleAssistantName;
     }
 
     public void addProduct(Product p) {
@@ -26,10 +24,6 @@ public class Sale {
 
     public int getPosNumber() {
         return posNumber;
-    }
-
-    public String getSaleAssistantName() {
-        return saleAssistantName;
     }
 
     public List<SaleLine> getLines() {
