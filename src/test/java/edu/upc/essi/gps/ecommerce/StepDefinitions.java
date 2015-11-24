@@ -35,6 +35,7 @@ public class StepDefinitions {
 
     @Donat("^que estem al tpv número (\\d+) de la botiga \"([^\"]*)\"$")
     public void setupPos(int posNumber, String shop) throws Throwable {
+        tpvService.newTPV(shop, posNumber);
         TPVController = new TPVController(productsService, saleAssistantService, discountService, tpvService, shop, posNumber);
     }
 
