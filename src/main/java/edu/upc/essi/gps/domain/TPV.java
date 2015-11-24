@@ -43,7 +43,7 @@ public class TPV implements Entity {
     }
 
     public void addNIntents(int n) {
-        this.nIntents += nIntents;
+        this.nIntents += n;
     }
 
     public int getPos() {
@@ -103,7 +103,7 @@ public class TPV implements Entity {
         currentSale = new Sale();
     }
 
-    public void finishSale() {
+    public void endSale() {
         currentSale = null;
     }
 

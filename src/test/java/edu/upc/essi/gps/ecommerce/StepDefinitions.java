@@ -54,11 +54,11 @@ public class StepDefinitions {
         Sale s = TPVController.getCurrentSale();
         assertNotNull(s);
         assertEquals(shop, TPVController.getTpv().getShop());
-        assertEquals(posNumber, TPVController.getTpv().getShop());
+        assertEquals(posNumber, TPVController.getTpv().getPos());
         assertEquals(saleAssistant, TPVController.getCurrentSaleAssistant().getName());
     }
 
-    //STUB - NO ÉS FUNCIONALITAT FINAL
+    //TODO: STUB - NO ÉS FUNCIONALITAT FINAL
     @Donat("^que el \"([^\"]*)\" s'ha registrat al sistema amb password \"([^\"]*)\" i reb l'identificador (\\d+)$")
     public void register(String name, String password, long saleAssistantID) throws Throwable {
         tryCatch(() -> saleAssistantService.insert(name, password, saleAssistantID));
@@ -68,7 +68,6 @@ public class StepDefinitions {
     public void loginDonat(long saleAssistantID, String password, double cash) throws Throwable {
         TPVController.login(saleAssistantID, password, cash);
     }
-
 
     @Quan("^inicio el torn al tpv amb identificador (\\d+) i password \"([^\"]*)\", amb un efectiu inicial de ([0-9]*\\.?[0-9]{2})€$")
     public void login(long saleAssistantID, String password, double cash) throws Throwable {
@@ -103,7 +102,7 @@ public class StepDefinitions {
         tryCatch(() -> TPVController.logout(cash));
     }
 
-    //STUB - NO ÉS FUNCIONALITAT FINAL TODO
+    //TODO: STUB - NO ÉS FUNCIONALITAT FINAL
     @Quan("^inicio el torn al tpv amb identificador (\\d+) i password \"([^\"]*)\", amb un efectiu inicial de ([0-9]*\\.?[0-9]{2})€ (\\d+) cops$")
     public void login(long saleAssistantID, String password, double cash, int n) throws Throwable {
         for (int i = 0; i < n; ++i)
@@ -169,9 +168,9 @@ public class StepDefinitions {
         tryCatch(() -> change = TPVController.cashPayment(delivered));
     }
 
-    @Quan("^indico que el client paga amb targeta$")
-    public void tarjetPayment() throws Throwable {
-        //tryCatch(() -> change = TPVController.tarjetPayment());
+    @Quan("^indico que el client paga (\\d+)€ amb targeta$")
+    public void tarjetPayment(int delivered) throws Throwable {
+        tryCatch(() -> change = TPVController.tarjetPayment(delivered));
     }
 
     @Aleshores("^el tpv m'indica que el canvi a retornar és de (\\d+)€$")
@@ -184,10 +183,19 @@ public class StepDefinitions {
 
     }
 
-    @Aleshores("^la venta esta iniciada$")
-    public void la_venta_esta_iniciada() throws Throwable {
-        //assertTrue(TPVController.isSaleStarted());
+    @Aleshores("^el tpv tanca la venda actual$")
+    public void el_tpv_tanca_la_venda_actual() throws Throwable {
+        tryCatch(TPVController::endSale);
     }
 
+    @Aleshores("^la venta esta iniciada$")
+    public void la_venta_esta_iniciada() throws Throwable {
+        assertTrue(TPVController.isSaleStarted());
+    }
+
+    @Aleshores("^la venda conté el producte amb codi de barres (\\d+)$")
+    public void la_venda_conté_el_producte_amb_codi_de_barres(int barCode) {
+        assertTrue(TPVController.getCurrentSale().hasProductByBarCode(barCode));
+    }
 
 }
