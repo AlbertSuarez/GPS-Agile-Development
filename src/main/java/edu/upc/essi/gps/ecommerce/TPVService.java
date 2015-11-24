@@ -17,16 +17,18 @@ public class TPVService {
         this.tpvRepository = tpvRepository;
     }
 
-    public void newTPV(String shop, int pos){
-        TPV tpv = new TPV(shop, pos, tpvRepository.newId());
+    public long newTPV(String shop, int pos){
+        long id = tpvRepository.newId();
+        TPV tpv = new TPV(shop, pos, id);
         tpvRepository.insert(tpv);
+        return id;
     }
 
-    public List<TPV> listTPV(){
+    public List<TPV> list(){
         return tpvRepository.list();
     }
 
-    public List<TPV> listTPVById(){
+    public List<TPV> listById(){
         return tpvRepository.list(Comparators.byId);
     }
 

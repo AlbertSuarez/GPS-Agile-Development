@@ -3,27 +3,39 @@ package edu.upc.essi.gps.domain;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Sale {
-    private final String shop;
-    private final int posNumber;
-    private final List<SaleLine> lines = new LinkedList<>();
 
-    public Sale(String shop, int posNumber) {
-        this.shop = shop;
-        this.posNumber = posNumber;
-    }
+    private final List<SaleLine> lines = new LinkedList<>();
 
     public void addProduct(Product p) {
         lines.add(new SaleLine(p,1));
     }
 
-    public String getShop() {
-        return shop;
+    public void addDiscount(Discount d, int... posicions) {
+        for (int pos : posicions) {
+            if (pos >= lines.size())
+                throw new IllegalArgumentException("No es pot accedir a la línia " + pos +
+                        " de la venta, aquesta només té " + lines.size() + " línies");
+            SaleLine saleLine = lines.get(posicions[pos]);
+            if (saleLine.getProductId() != d.getTrigger().getId())
+                throw new IllegalArgumentException("Els productes del descompte i de la línia no coincideixen");
+            lines.add(pos, new SaleLine(d));
+        }
     }
 
-    public int getPosNumber() {
-        return posNumber;
+    public void addDiscount(Discount d) {
+        lines.addAll(
+                lines.stream()
+                        .filter(saleLine -> saleLine.getProductId() == d.getTrigger().getId())
+                        .map(saleLine -> new SaleLine(d))
+                        .collect(Collectors.toList())
+        );
+    }
+
+    public long getProductId(int prodLine) {
+        return getLines().get(prodLine).getProductId();
     }
 
     public List<SaleLine> getLines() {
@@ -51,7 +63,8 @@ public class Sale {
         return false;
     }
 
-    public class SaleLine{
+    public class SaleLine {
+
         private long productId;
         private String productName;
         private int unitPrice;
@@ -64,6 +77,14 @@ public class Sale {
             this.unitPrice = product.getPrice();
             this.barCode = product.getBarCode();
             this.amount = amount;
+        }
+
+        public SaleLine(Discount discount) {
+            productId = discount.getId();
+            productName = discount.getName();
+            unitPrice = (int) discount.getDiscount(); //TODO: passem tots els preus a double plz ^^'
+            amount = 1;
+            barCode = discount.getBarCode();
         }
 
         public long getProductId() {
@@ -89,7 +110,7 @@ public class Sale {
         public int getBarCode() {
             return barCode;
         }
+
     }
 
 }
-

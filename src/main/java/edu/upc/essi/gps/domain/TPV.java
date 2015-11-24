@@ -19,15 +19,15 @@ public class TPV implements Entity {
         this.shop = shop;
         this.pos = pos;
         this.id = id;
-        this.nIntents = 0;
-        this.state = TPVState.AVAILABLE;
-        this.cash = 0;
+        reset();
     }
 
     public void reset() {
         this.nIntents = 0;
         this.state = TPVState.AVAILABLE;
         this.cash = 0;
+        currentSaleAssistant = null;
+        currentSale = null;
     }
 
     public int getnIntents() {
@@ -91,11 +91,24 @@ public class TPV implements Entity {
         currentSaleAssistant = saleAssistant;
     }
 
+    public boolean hasSaleAssistant() {
+        return currentSaleAssistant != null;
+    }
+
     public Sale getCurrentSale() {
         return currentSale;
     }
 
-    public void setCurrentSale(Sale currentSale) {
-        this.currentSale = currentSale;
+    public void newSale() {
+        currentSale = new Sale();
     }
+
+    public void finishSale() {
+        currentSale = null;
+    }
+
+    public boolean hasSale() {
+        return currentSale != null;
+    }
+
 }

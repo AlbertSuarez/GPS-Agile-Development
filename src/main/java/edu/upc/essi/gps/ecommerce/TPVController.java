@@ -10,15 +10,17 @@ public class TPVController {
 
     private final ProductsService productsService;
     private final SaleAssistantService saleAssistantService;
+    private final DiscountService discountService;
     private final TPVService tpvService;
     private final TPV tpv;
 
-    public TPVController(ProductsService productsService, SaleAssistantService saleAssistantService, TPVService tpvService, String shop, int pos) {
-        this.tpvService = tpvService;
+    public TPVController(ProductsService productsService, SaleAssistantService saleAssistantService, DiscountService discountService, TPVService tpvService, String shop, int pos) {
         this.productsService = productsService;
         this.saleAssistantService = saleAssistantService;
+        this.discountService = discountService;
+        this.tpvService = tpvService;
         tpv = tpvService.findByShopPos(shop, pos);
-        tpv.setCurrentSaleAssistant(null);
+        tpv.reset();
     }
 
     public TPV getTpv() {
@@ -74,19 +76,38 @@ public class TPVController {
     }
 
     public void startSale() {
-        if (tpv.getCurrentSale() != null) throw new IllegalStateException("Aquest tpv ja té una venta iniciada");
-        tpv.setCurrentSale(new Sale(tpv.getShop(), tpv.getPos()));
+        if (tpv.hasSale()) throw new IllegalStateException("Aquest tpv ja té una venta iniciada");
+        tpv.newSale();
     }
 
     public void addProductByBarCode(int barCode) {
-        if (tpv.getCurrentSale() == null) throw new IllegalStateException("No hi ha cap venta iniciada");
+        if (!tpv.hasSale()) throw new IllegalStateException("No hi ha cap venta iniciada");
         Product p = productsService.findByBarCode(barCode);
         tpv.getCurrentSale().addProduct(p);
     }
 
+    public void addDiscountByBarCode(int barCode) {
+        if (!tpv.hasSale()) throw new IllegalStateException("No hi ha cap venta iniciada");
+        Discount d = discountService.findByBarCode(barCode);
+        tpv.getCurrentSale().addDiscount(d);
+    }
+
+    public void addDiscountByBarCode(int barCode, int... prodLines) {
+        if (!tpv.hasSale()) throw new IllegalStateException("No hi ha cap venta iniciada");
+        Discount d = discountService.findByBarCode(barCode);
+        tpv.getCurrentSale().addDiscount(d, prodLines);
+    }
+
+    public void addNewDiscountToCurrentSale(String discountType, int prodLine, String name, Object... params) {
+        Product p = productsService.findById(tpv.getCurrentSale().getProductId(prodLine));
+        long discId = discountService.newDiscount(discountType, p, name, -1, params);
+        Discount discount = discountService.findById(discId);
+        getCurrentSale().addDiscount(discount, prodLine);
+    }
+
     public String getCustomerScreenMessage() {
         String welcomeMessage = "Li donem la benvinguda a Joguets i Joguines!";
-        if (tpv.getCurrentSale() == null) return welcomeMessage;
+        if (!tpv.hasSale()) return welcomeMessage;
         if (tpv.getCurrentSale().isEmpty()) {
             return welcomeMessage + "\nL'atén " + tpv.getCurrentSaleAssistant().getName();
         }
@@ -101,7 +122,7 @@ public class TPVController {
     }
 
     public int cashPayment(int delivered) {
-        if(tpv.getCurrentSale()==null)
+        if(!tpv.hasSale())
             throw new IllegalStateException("No es pot cobrar una venta si no està iniciada");
         if(tpv.getCurrentSale().isEmpty())
             throw new IllegalStateException("No es pot cobrar una venta sense cap producte");
@@ -116,7 +137,7 @@ public class TPVController {
     }
 
     public int tarjetPayment(int delivered) {
-        if(tpv.getCurrentSale()==null)
+        if(!tpv.hasSale())
             throw new IllegalStateException("No es pot cobrar una venta si no està iniciada");
         if(tpv.getCurrentSale().isEmpty())
             throw new IllegalStateException("No es pot cobrar una venta sense cap producte");

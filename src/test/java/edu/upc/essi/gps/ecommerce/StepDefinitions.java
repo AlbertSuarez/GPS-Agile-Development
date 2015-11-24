@@ -13,6 +13,7 @@ public class StepDefinitions {
     private ProductsService productsService = new ProductsService(new ProductsRepository());
     private TPVService tpvService = new TPVService(new TPVRepository());
     private SaleAssistantService saleAssistantService = new SaleAssistantService(new SaleAssistantRepository());
+    private DiscountService discountService = new DiscountService(new DiscountRepository());
     private Exception exception;
     private TPVController TPVController;
     private int change;
@@ -34,7 +35,7 @@ public class StepDefinitions {
 
     @Donat("^que estem al tpv número (\\d+) de la botiga \"([^\"]*)\"$")
     public void setupPos(int posNumber, String shop) throws Throwable {
-        TPVController = new TPVController(productsService, saleAssistantService, tpvService, shop, posNumber);
+        TPVController = new TPVController(productsService, saleAssistantService, discountService, tpvService, shop, posNumber);
     }
 
     @Aleshores("^el tpv està en ús per en \"([^\"]*)\"$")
@@ -51,8 +52,8 @@ public class StepDefinitions {
     public void checkCurrentSaleData(String saleAssistant, int posNumber, String shop) throws Throwable {
         Sale s = TPVController.getCurrentSale();
         assertNotNull(s);
-        assertEquals(shop, s.getShop());
-        assertEquals(posNumber, s.getPosNumber());
+        assertEquals(shop, TPVController.getTpv().getShop());
+        assertEquals(posNumber, TPVController.getTpv().getShop());
         assertEquals(saleAssistant, TPVController.getCurrentSaleAssistant().getName());
     }
 

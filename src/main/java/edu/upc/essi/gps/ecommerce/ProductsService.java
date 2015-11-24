@@ -13,17 +13,18 @@ public class ProductsService {
         this.productsRepository = productsRepository;
     }
 
-    public void newProduct(String name, int price, int vatPct, int barCode){
+    public long newProduct(String name, int price, int vatPct, int barCode){
         long id = productsRepository.newId();
         Product result = new Product(id,name, price, vatPct, barCode);
         productsRepository.insert(result);
+        return id;
     }
 
-    public List<Product> listProducts(){
+    public List<Product> list(){
         return productsRepository.list();
     }
 
-    public List<Product> listProductsByName(){
+    public List<Product> listByName(){
         return productsRepository.list(Comparators.byName);
     }
 
@@ -34,4 +35,9 @@ public class ProductsService {
     public Product findByBarCode(int barCode) {
         return productsRepository.findByBarCode(barCode);
     }
+
+    public Product findById(long prodId) {
+        return productsRepository.findById(prodId);
+    }
+
 }

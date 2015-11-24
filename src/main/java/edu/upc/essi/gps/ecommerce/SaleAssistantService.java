@@ -17,6 +17,7 @@ public class SaleAssistantService {
         this.saleAssistantRepository = saleAssistantRepository;
     }
 
+    //TODO: this is a stub, not a functionality
     public void insert(String name, String password, long id){
         checkNotNull(name, "name");
         checkNotNull(password, "password");
@@ -25,31 +26,23 @@ public class SaleAssistantService {
         saleAssistantRepository.insert(c);
     }
 
-    public long newCaixer(String name, String password){
+    public long newAssistant(String name, String password) {
         long id = saleAssistantRepository.newId();
         SaleAssistant c = new SaleAssistant(name, Validations.crypt(password), id);
         saleAssistantRepository.insert(c);
         return id;
     }
 
-    public List<SaleAssistant> listAssistants(){
+    public List<SaleAssistant> list(){
         return saleAssistantRepository.list();
     }
 
-    public List<SaleAssistant> listAssistantsByName(){
+    public List<SaleAssistant> listByName(){
         return saleAssistantRepository.list(Comparators.byName);
-    }
-
-    public List<SaleAssistant> listAssistantsById(){
-        return saleAssistantRepository.list(Comparators.byId);
     }
 
     public SaleAssistant findById(long caixerId) {
         return saleAssistantRepository.findById(caixerId);
-    }
-
-    public List<SaleAssistant> findByName(String caixerName) {
-        return saleAssistantRepository.list(Matchers.nameMatcher(caixerName));
     }
 
     public boolean validate(long id, String password) {

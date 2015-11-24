@@ -19,6 +19,10 @@ public class ProductsRepository extends Repository<Product> {
         return find((p) -> p.getBarCode() == barCode);
     }
 
+    public Product findById(final long prodId){
+        return find((p) -> p.getId() == prodId);
+    }
+
     @Override
     protected void checkInsert(final Product entity) throws RuntimeException {
         if(findByName(entity.getName())!=null)
