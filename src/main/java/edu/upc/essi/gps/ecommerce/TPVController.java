@@ -3,22 +3,18 @@ package edu.upc.essi.gps.ecommerce;
 import com.sun.istack.internal.NotNull;
 import edu.upc.essi.gps.domain.*;
 
-import java.util.Date;
-
 import static edu.upc.essi.gps.utils.Validations.*;
 
 public class TPVController {
 
     private final ProductsService productsService;
     private final SaleAssistantService saleAssistantService;
-    private final DiscountService discountService;
     private final TPVService tpvService;
     private final TPV tpv;
 
-    public TPVController(ProductsService productsService, SaleAssistantService saleAssistantService, DiscountService discountService, TPVService tpvService, String shop, int pos) {
+    public TPVController(ProductsService productsService, SaleAssistantService saleAssistantService, TPVService tpvService, String shop, int pos) {
         this.productsService = productsService;
         this.saleAssistantService = saleAssistantService;
-        this.discountService = discountService;
         this.tpvService = tpvService;
         tpv = tpvService.findByShopPos(shop, pos);
         tpv.endTurn();
@@ -61,17 +57,21 @@ public class TPVController {
     }
 
     public void logout(double cash){
+
         double tpvCash = tpv.getCash();
         if (tpvCash != cash) {
-            //TODO: desquadrament
-            //Recullo alguna informació aquí, utilitzar la que faci falta i esborrar la que no
+            /*
+            TODO: desquadrament
+            Recullo alguna informació aquí, utilitzar la que faci falta i esborrar la que no
             Date today = new Date();
             double initialCash = tpv.getInitialCash();
             SaleAssistant sa = tpv.getCurrentSaleAssistant();
             String assistantName = sa.getName();
             long assistantId = sa.getId();
             double variation = cash - tpvCash;
+            */
         }
+
         tpv.endTurn();
     }
 
@@ -97,10 +97,13 @@ public class TPVController {
         tpv.getCurrentSale().addProduct(p);
     }
 
-    public void addNewDiscountToCurrentSale(String discountType, int prodLine, String name, Object... params) {
-        Product p = productsService.findById(tpv.getCurrentSale().getId(prodLine));
-        long discId = discountService.newDiscount(discountType, p, name, -1, params);
-        Discount discount = discountService.findById(discId);
+    public void addNewDiscountToCurrentSale(int prodLine, String name, double percent) {
+        int max = getCurrentSale().getLines().size();
+        if (prodLine-1 < 0 || prodLine-1 >= max)
+            throw new IndexOutOfBoundsException("No es pot accedir a la línia " + prodLine +
+                    " de la venta, aquesta només té " + max + " línies");
+        Product product = productsService.findById(tpv.getCurrentSale().getId(prodLine-1));
+        Discount discount = new Percent(product, name, -1, -1, percent);
         getCurrentSale().addDiscount(discount, prodLine);
     }
 

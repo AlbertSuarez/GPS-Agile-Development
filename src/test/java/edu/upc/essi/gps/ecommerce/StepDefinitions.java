@@ -1,6 +1,5 @@
 package edu.upc.essi.gps.ecommerce;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
 import cucumber.api.java.ca.Quan;
@@ -15,7 +14,6 @@ public class StepDefinitions {
     private ProductsService productsService = new ProductsService(new ProductsRepository());
     private TPVService tpvService = new TPVService(new TPVRepository());
     private SaleAssistantService saleAssistantService = new SaleAssistantService(new SaleAssistantRepository());
-    private DiscountService discountService = new DiscountService(new DiscountRepository());
     private Exception exception;
     private TPVController TPVController;
     private int change;
@@ -39,7 +37,7 @@ public class StepDefinitions {
     @Donat("^que estem al tpv número (\\d+) de la botiga \"([^\"]*)\"$")
     public void setupPos(int posNumber, String shop) throws Throwable {
         tpvService.newTPV(shop, posNumber);
-        TPVController = new TPVController(productsService, saleAssistantService, discountService, tpvService, shop, posNumber);
+        TPVController = new TPVController(productsService, saleAssistantService, tpvService, shop, posNumber);
     }
 
     @Aleshores("^el tpv està en ús per en \"([^\"]*)\"$")
@@ -215,4 +213,10 @@ public class StepDefinitions {
     public void que_no_hi_ha_cap_venda_a_la_linia_de_venda() throws Throwable {
         assertTrue(TPVController.getCurrentSale().isEmpty());
     }
+
+    @Quan("^Aplico un descompte manual que anomeno \"([^\"]*)\" al producte (\\d+) de la línia de venda amb valor (\\d+)%$")
+    public void Aplico_un_descompte_de_tipus_que_anomeno_al_producte_amb_valor_(String name, int prodLine, int percent) throws Throwable {
+        tryCatch(() -> TPVController.addNewDiscountToCurrentSale(prodLine, name, (double) percent));
+    }
+
 }

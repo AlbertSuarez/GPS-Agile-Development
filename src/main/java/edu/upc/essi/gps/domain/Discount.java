@@ -17,6 +17,7 @@ public abstract class Discount implements Entity, HasName {
 
     /**
      * Identificador del descompte.
+     * En cas que es tracti d'un descompte manual, aquest camp té valor <code>-1</code>.
      * */
     private final long id;
 

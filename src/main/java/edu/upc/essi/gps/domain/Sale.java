@@ -3,7 +3,6 @@ package edu.upc.essi.gps.domain;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Classe que representa una venta mitjançant un conjunt de línies de venta.
@@ -24,33 +23,20 @@ public class Sale {
     }
 
     /**
-     * Afegeix un nou descompte a la venta.<br>
-     * Aquest descompte s'aplica a tots els productes que el puguin disparar.
-     * @param d descompte a afegir a la venta.
-     * */
-    public void addDiscount(Discount d) {
-        lines.addAll(
-                lines.stream()
-                        .filter(saleLine -> saleLine.getId() == d.getTrigger().getId())
-                        .map(saleLine -> new SaleLine(d))
-                        .collect(Collectors.toList())
-        );
-    }
-
-    /**
      * Afegeix un nou descompte a la venta.
      * @param d producte a afegir a la venta.
      * @param posicions índex dels articles als que es vol aplicar el descompte.
      * */
     public void addDiscount(Discount d, int... posicions) {
         for (int pos : posicions) {
-            if (pos >= lines.size())
-                throw new IllegalArgumentException("No es pot accedir a la línia " + pos +
+            if (pos > lines.size())
+                throw new IndexOutOfBoundsException("No es pot accedir a la línia " + pos +
                         " de la venta, aquesta només té " + lines.size() + " línies");
-            SaleLine saleLine = lines.get(posicions[pos]);
+            SaleLine saleLine = lines.get(pos-1);
             if (saleLine.getId() != d.getTrigger().getId())
                 throw new IllegalArgumentException("Els productes del descompte i de la línia no coincideixen");
-            lines.add(pos, new SaleLine(d));
+            SaleLine newLine = new SaleLine(d, saleLine.getAmount());
+            lines.add(pos, newLine);
         }
     }
 
@@ -151,12 +137,13 @@ public class Sale {
         /**
          * Crea una nova instància de <code>SaleLine</code> a partir de les dades d'un descompte.
          * @param discount descompte a partir del qual es crea la línia de venta.
+         * @param amount quantitat d'aquest descompte.
          */
-        public SaleLine(Discount discount) {
+        public SaleLine(Discount discount, int amount) {
             id = discount.getTrigger().getId();
             name = discount.getName();
             unitPrice = (int) discount.getDiscount(); //TODO: passem tots els preus a double plz ^^'
-            amount = 1;
+            this.amount = amount;
             barCode = discount.getBarCode();
         }
 
