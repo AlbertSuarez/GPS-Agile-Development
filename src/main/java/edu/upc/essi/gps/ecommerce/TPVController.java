@@ -98,6 +98,7 @@ public class TPVController {
     }
 
     public void addNewDiscountToCurrentSale(int prodLine, String name, double percent) {
+        if (!isSaleStarted()) throw new IllegalStateException("No hi ha cap venda iniciada");
         int max = getCurrentSale().getLines().size();
         if (prodLine-1 < 0 || prodLine-1 >= max)
             throw new IndexOutOfBoundsException("No es pot accedir a la línia " + prodLine +

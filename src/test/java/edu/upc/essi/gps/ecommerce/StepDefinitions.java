@@ -214,7 +214,7 @@ public class StepDefinitions {
         assertTrue(TPVController.getCurrentSale().isEmpty());
     }
 
-    @Quan("^Aplico un descompte manual que anomeno \"([^\"]*)\" al producte (\\d+) de la línia de venda amb valor (\\d+)%$")
+    @Quan("^Aplico un descompte manual que anomeno \"([^\"]*)\" al producte (\\d+) de la venda amb valor (\\d+)%$")
     public void Aplico_un_descompte_de_tipus_que_anomeno_al_producte_amb_valor_(String name, int prodLine, int percent) throws Throwable {
         tryCatch(() -> TPVController.addNewDiscountToCurrentSale(prodLine, name, (double) percent));
     }

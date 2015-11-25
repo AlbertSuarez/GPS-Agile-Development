@@ -206,4 +206,5 @@ public class TPV implements Entity {
         return currentSale != null;
     }
 
+
 }
