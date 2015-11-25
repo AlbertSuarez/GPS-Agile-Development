@@ -3,7 +3,7 @@ package edu.upc.essi.gps.ecommerce;
 import com.sun.istack.internal.NotNull;
 import edu.upc.essi.gps.domain.*;
 
-import static edu.upc.essi.gps.utils.Validations.*;
+import static edu.upc.essi.gps.utils.Validations.checkNotNull;
 
 public class TPVController {
 
@@ -92,9 +92,7 @@ public class TPVController {
     }
 
     public void addProductByBarCode(int barCode) {
-        if (!tpv.hasSale()) tpv.newSale();
-        Product p = productsService.findByBarCode(barCode);
-        tpv.getCurrentSale().addProduct(p);
+        addProductByBarCode(barCode, 1);
     }
 
     public void addNewDiscountToCurrentSale(int prodLine, String name, double percent) {
@@ -147,4 +145,9 @@ public class TPVController {
         return delivered-tpv.getCurrentSale().getTotal();
     }
 
+    public void addProductByBarCode(int barCode, int unitats) {
+        if (!tpv.hasSale()) tpv.newSale();
+        Product p = productsService.findByBarCode(barCode);
+        tpv.getCurrentSale().addProduct(p, unitats);
+    }
 }

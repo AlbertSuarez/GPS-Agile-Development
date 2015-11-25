@@ -19,7 +19,7 @@ public class Sale {
      * @param p producte a afegir a la venta.
      * */
     public void addProduct(Product p) {
-        lines.add(new SaleLine(p,1));
+        addProduct(p, 1);
     }
 
     /**
@@ -89,6 +89,10 @@ public class Sale {
             }
         }
         return false;
+    }
+
+    public void addProduct(Product product, int unitats) {
+        lines.add(new SaleLine(product, unitats));
     }
 
     /**

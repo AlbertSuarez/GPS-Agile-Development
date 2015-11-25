@@ -5,6 +5,7 @@ import cucumber.api.java.ca.Donat;
 import cucumber.api.java.ca.Quan;
 import edu.upc.essi.gps.domain.Sale;
 import edu.upc.essi.gps.domain.Sale.SaleLine;
+
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -219,4 +220,8 @@ public class StepDefinitions {
         tryCatch(() -> TPVController.addNewDiscountToCurrentSale(prodLine, name, (double) percent));
     }
 
+    @Quan("^afegeixo (\\d+) unitats del producte amb codi de barres (\\d+) a la venta$")
+    public void addProducteCodiBarresUnitats(int unitats, int codiBarra) throws Throwable {
+        TPVController.addProductByBarCode(codiBarra, unitats);
+    }
 }

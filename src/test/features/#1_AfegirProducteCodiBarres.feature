@@ -25,5 +25,26 @@ Característica: Afegir producte per codi de barres
     Total: 23€
     """
 
+  Escenari: Afegim producte amb 2 unitats
+    Quan afegeixo 2 unitats del producte amb codi de barres 1234567 a la venta
+    Aleshores la venta esta iniciada
+    I el total de la venta actual és de 46€
+    I la venda conté el producte amb codi de barres 1234567
+    I la venta té 1 línia
+
+  Escenari: Afegim producte amb 2 unitats amb la venda iniciada
+    Quan inicio una nova venta
+    I afegeixo 2 unitats del producte amb codi de barres 1234567 a la venta
+    Aleshores el total de la venta actual és de 46€
+    I la venda conté el producte amb codi de barres 1234567
+    I la venta té 1 línia
+
+  Escenari: Afegim producte amb la venda iniciada
+    Quan inicio una nova venta
+    I afegeixo el producte de codi de barres 1234567 a la venta
+    Aleshores el total de la venta actual és de 23€
+    I la venda conté el producte amb codi de barres 1234567
+    I la venta té 1 línia
+
 
 
