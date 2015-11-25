@@ -1,7 +1,7 @@
 # language: ca
 
   #noinspection SpellCheckingInspection
-Característica: Quadrar la caixa en finalitzar torn
+Característica: Veure les linies de venda
 
   Rerefons:
     Donat que estem al tpv número 1 de la botiga "Girona 1"
@@ -10,5 +10,12 @@ Característica: Quadrar la caixa en finalitzar torn
     I un producte amb nom "Optimus Prime", preu 23€, iva 21% i codi de barres 1234567
 
   Escenari: Consulta de linies de venda
-    Donat un producte venut amb codi de barres 1234567
+    Donat que hi ha una venta iniciada
+    I que he afegit el producte de codi de barres 1234567 a la venta
     Aleshores es consulta les linies de venda
+
+  Escenari: Error si no hi ha cap venda i consultem les linies de venda
+    Donat que hi ha una venta iniciada
+    I que no hi ha cap venda a la linia de venda
+    Quan indico que vull consulta la linia de venda
+    Aleshores obtinc un error que diu: "No hi ha cap venda"

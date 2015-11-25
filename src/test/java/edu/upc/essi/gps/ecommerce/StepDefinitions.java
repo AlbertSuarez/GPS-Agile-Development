@@ -201,13 +201,18 @@ public class StepDefinitions {
         assertTrue(TPVController.getCurrentSale().hasProductByBarCode(barCode));
     }
 
-    @Donat("^un producte venut amb codi de barres (\\d+)$")
-    public void un_producte_venut_amb_codi_de_barres(int barCode) throws Throwable {
-        tryCatch(() -> TPVController.addProductByBarCode(barCode));
-    }
-
     @Aleshores("^es consulta les linies de venda$")
     public void es_consulta_les_linies_de_venda() throws Throwable {
         tryCatch(() -> lines = TPVController.getCurrentSale().getLines());
+    }
+
+    @Quan("^indico que vull consulta la linia de venda$")
+    public void indico_que_vull_consulta_la_linia_de_venda() throws Throwable {
+        tryCatch(() -> lines = TPVController.getCurrentSale().getLines());
+    }
+
+    @Donat("^que no hi ha cap venda a la linia de venda$")
+    public void que_no_hi_ha_cap_venda_a_la_linia_de_venda() throws Throwable {
+        assertTrue(TPVController.getCurrentSale().isEmpty());
     }
 }

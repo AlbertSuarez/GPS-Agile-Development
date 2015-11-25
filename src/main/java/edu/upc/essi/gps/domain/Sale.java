@@ -39,6 +39,7 @@ public class Sale {
     }
 
     public List<SaleLine> getLines() {
+        if (lines.isEmpty()) throw new IllegalStateException("No hi ha cap venda");
         return Collections.unmodifiableList(lines);
     }
 
