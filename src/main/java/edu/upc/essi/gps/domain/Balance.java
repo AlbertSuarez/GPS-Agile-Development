@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created by jmotger on 25/11/15.
  */
-public class Imbalance implements Entity{
+public class Balance implements Entity{
 
     /**
      * Identificador únic d'aquest producte al sistema.
@@ -20,7 +20,7 @@ public class Imbalance implements Entity{
      */
     private int qtt;
 
-    public Imbalance(long id, Date date, int qtt) {
+    public Balance(long id, Date date, int qtt) {
         this.id = id;
         this.date = date;
         this.qtt = qtt;

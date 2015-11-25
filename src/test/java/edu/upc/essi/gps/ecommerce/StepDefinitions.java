@@ -15,7 +15,7 @@ public class StepDefinitions {
     private ProductsService productsService = new ProductsService(new ProductsRepository());
     private TPVService tpvService = new TPVService(new TPVRepository());
     private SaleAssistantService saleAssistantService = new SaleAssistantService(new SaleAssistantRepository());
-    private ImbalanceService imbalanceService = new ImbalanceService(new ImbalanceRepository());
+    private BalanceService imbalanceService = new BalanceService(new BalancesRepository());
     private Exception exception;
     private TPVController TPVController;
     private int change;
