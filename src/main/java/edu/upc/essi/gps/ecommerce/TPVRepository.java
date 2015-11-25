@@ -17,7 +17,7 @@ public class TPVRepository extends Repository<TPV> {
     protected void checkInsert(final TPV entity) throws RuntimeException {
         TPV tpv = findById(entity.getId());
         if(tpv != null && tpv.getPos() == entity.getPos() && tpv.getShop().equals(entity.getShop()))
-            throw new IllegalArgumentException("Ja existeix un tpv amb aquesta posició en aquesta botiga");
+            throw new IllegalArgumentException("Ja existeix un tpv amb aquesta posiciÃ³ en aquesta botiga");
     }
 
 }

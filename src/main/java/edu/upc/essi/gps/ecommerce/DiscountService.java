@@ -27,7 +27,7 @@ public class DiscountService {
                     A = (int) params[0];
                     B = (int) params[1];
                 } catch (ClassCastException e) {
-                    throw new IllegalArgumentException("Par‡metres incorrectes: S'espera "
+                    throw new IllegalArgumentException("Par√†metres incorrectes: S'espera "
                             + Integer.class.getSimpleName() + ", "
                             + Integer.class.getSimpleName()
                     );
@@ -40,7 +40,7 @@ public class DiscountService {
                 try {
                     percent = (double) params[0];
                 } catch (ClassCastException e) {
-                    throw new IllegalArgumentException("Par‡metres incorrectes: S'espera "
+                    throw new IllegalArgumentException("Par√†metres incorrectes: S'espera "
                             + Double.class.getSimpleName()
                     );
                 }

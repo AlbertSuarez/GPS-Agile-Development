@@ -62,7 +62,7 @@ public class StepDefinitions {
     }
 
     //TODO: STUB - NO ÉS FUNCIONALITAT FINAL
-    @Donat("^que el \"([^\"]*)\" s'ha registrat al sistema amb password \"([^\"]*)\" i reb l'identificador (\\d+)$")
+    @Donat("^que el \"([^\"]*)\" s'ha registrat al sistema amb password \"([^\"]*)\" i rep l'identificador (\\d+)$")
     public void register(String name, String password, long saleAssistantID) throws Throwable {
         tryCatch(() -> saleAssistantService.insert(name, password, saleAssistantID));
     }
@@ -153,7 +153,7 @@ public class StepDefinitions {
         assertEquals(units,sl.getAmount());
         assertEquals(unitPrice,sl.getUnitPrice());
         assertEquals(totalPrice,sl.getTotalPrice());
-        assertEquals(productName, sl.getProductName());
+        assertEquals(productName, sl.getName());
     }
 
     @Aleshores("^el total de la venta actual és de (\\d+)€$")

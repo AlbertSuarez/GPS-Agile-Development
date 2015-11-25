@@ -42,15 +42,9 @@ public class TPVService {
 
     public void validation(long TVPid, boolean validated) {
         TPV tpv = findById(TVPid);
-        if (validated) {
-            tpv.setNIntents(0);
-            tpv.setState(TPVState.IDLE);
-        }
+        if (validated) tpv.setState(TPVState.IDLE);
         else {
-            if (tpv.getnIntents() == 4) {
-                tpv.setNIntents(0);
-                tpv.setState(TPVState.BLOCKED);
-            }
+            if (tpv.getnIntents() == 4) tpv.setState(TPVState.BLOCKED);
             else tpv.addNIntents(1);
         }
     }

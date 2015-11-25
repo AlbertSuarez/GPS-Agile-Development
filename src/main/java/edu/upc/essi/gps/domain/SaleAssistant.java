@@ -1,16 +1,13 @@
 package edu.upc.essi.gps.domain;
 
-import edu.upc.essi.gps.domain.Entity;
-import edu.upc.essi.gps.domain.HasName;
-
 /**
- * Classe que representa un caixer del sistema, identificat per <code>id</code> i amb un nom propi.
- * A mÈs, cada caixer tÈ un password amb el qual s'identifica al nostre sistema.
+ * Classe que representa un caixer del sistema, identificat per <code>id</code> i amb un nom propi.<br>
+ * A m√©s, cada caixer t√© un password amb el qual s'identifica al nostre sistema.
  * */
 public class SaleAssistant implements Entity, HasName {
 
     /**
-     * <code>long</code> que identifica ˙nicament el caixer al sistema.
+     * <code>long</code> que identifica √∫nicament el caixer al sistema.
      * */
     private final long id;
 
@@ -25,10 +22,11 @@ public class SaleAssistant implements Entity, HasName {
     private String encryptedPass;
 
     /**
-     * Crea una nova inst‡ncia d'un <code>SaleAssistant</code> amb el nom d'usuari indicat i el password a emmagatzemar.<br>
-     * L'identificador intern de l'usuari l'assigna el sistema autom‡ticament.
+     * Crea una nova inst√†ncia d'un <code>SaleAssistant</code> amb el nom d'usuari indicat i el password a emmagatzemar.<br>
+     * L'identificador intern de l'usuari l'assigna el sistema autom√†ticament.
      * @param name Nom i cognoms del caixer que es vol donar d'alta.
-     * @param encryptedPass Password prËviament encriptat que s'ha d'emmagatzemar al sistema.
+     * @param encryptedPass Password pr√®viament encriptat que s'ha d'emmagatzemar al sistema.
+     * @param id Identificador intern del caixer.
      * */
     public SaleAssistant(String name, String encryptedPass, long id) {
         this.name = name;
@@ -46,16 +44,12 @@ public class SaleAssistant implements Entity, HasName {
         return name;
     }
 
+    /**
+     * Consulta el password de l'usuari despr√©s de ser encriptat
+     * @return El password encriptat.
+     * */
     public String getEncryptedPass() {
         return encryptedPass;
-    }
-
-    public void setName(String newName) {
-        name = newName;
-    }
-
-    public void setEncryptedPass(String newPass) {
-        encryptedPass = newPass;
     }
 
 }

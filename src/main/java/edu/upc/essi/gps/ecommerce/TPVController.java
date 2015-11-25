@@ -21,7 +21,7 @@ public class TPVController {
         this.discountService = discountService;
         this.tpvService = tpvService;
         tpv = tpvService.findByShopPos(shop, pos);
-        tpv.reset();
+        tpv.endTurn();
     }
 
     public TPV getTpv() {
@@ -46,9 +46,7 @@ public class TPVController {
         boolean loggedIn = saleAssistantService.validate(saleAssistantId, password);
         tpvService.validation(tpv.getId(), loggedIn);
         if (loggedIn) {
-            tpv.setInitialCash(cash);
-            tpv.setCash(cash);
-            tpv.setCurrentSaleAssistant(saleAssistantService.findById(saleAssistantId));
+            tpv.newTurn(saleAssistantService.findById(saleAssistantId), cash);
         }
         return loggedIn;
     }
@@ -74,7 +72,7 @@ public class TPVController {
             long assistantId = sa.getId();
             double variation = cash - tpvCash;
         }
-        tpv.reset();
+        tpv.endTurn();
     }
 
     public void startSale() {
@@ -100,7 +98,7 @@ public class TPVController {
     }
 
     public void addNewDiscountToCurrentSale(String discountType, int prodLine, String name, Object... params) {
-        Product p = productsService.findById(tpv.getCurrentSale().getProductId(prodLine));
+        Product p = productsService.findById(tpv.getCurrentSale().getId(prodLine));
         long discId = discountService.newDiscount(discountType, p, name, -1, params);
         Discount discount = discountService.findById(discId);
         getCurrentSale().addDiscount(discount, prodLine);
@@ -114,7 +112,7 @@ public class TPVController {
         }
         StringBuilder sb = new StringBuilder();
         for (Sale.SaleLine sl : tpv.getCurrentSale().getLines()) {
-            sb.append(sl.getProductName()).append(" - ")
+            sb.append(sl.getName()).append(" - ")
                     .append(sl.getUnitPrice()).append("€/u x ").append(sl.getAmount()).append("u = ")
                     .append(sl.getTotalPrice()).append("€\n");
         }

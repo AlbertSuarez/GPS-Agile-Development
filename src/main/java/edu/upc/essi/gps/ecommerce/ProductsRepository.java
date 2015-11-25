@@ -25,7 +25,9 @@ public class ProductsRepository extends Repository<Product> {
 
     @Override
     protected void checkInsert(final Product entity) throws RuntimeException {
-        if(findByName(entity.getName())!=null)
+        if(findByName(entity.getName()) != null)
             throw new IllegalArgumentException("Ja existeix un producte amb aquest nom");
+        if(findByBarCode(entity.getBarCode()) != null)
+            throw new IllegalArgumentException("Ja existeix un producte amb aquest codi de barres");
     }
 }
