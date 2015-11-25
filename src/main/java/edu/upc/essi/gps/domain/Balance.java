@@ -12,17 +12,12 @@ public class Balance implements Entity{
      * */
     private long id;
     /**
-     * Data del torn del desquadrament
-     */
-    private Date date;
-    /**
      * Quantitat desquadrada
      */
-    private int qtt;
+    private double qtt;
 
-    public Balance(long id, Date date, int qtt) {
+    public Balance(long id, double qtt) {
         this.id = id;
-        this.date = date;
         this.qtt = qtt;
     }
 
@@ -31,8 +26,6 @@ public class Balance implements Entity{
         return id;
     }
 
-    public Date getDate() { return date;}
-
-    public int getQtt() { return qtt;}
+    public double getQtt() { return qtt;}
 
 }

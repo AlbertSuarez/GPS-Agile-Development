@@ -12,6 +12,7 @@ public final class Matchers {
     }
 
     public static Matcher<Object> all = entity -> true;
+
 }
 
 

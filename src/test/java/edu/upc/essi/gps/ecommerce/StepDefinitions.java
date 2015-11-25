@@ -15,7 +15,7 @@ public class StepDefinitions {
     private ProductsService productsService = new ProductsService(new ProductsRepository());
     private TPVService tpvService = new TPVService(new TPVRepository());
     private SaleAssistantService saleAssistantService = new SaleAssistantService(new SaleAssistantRepository());
-    private BalanceService imbalanceService = new BalanceService(new BalancesRepository());
+    private BalancesService balancesService = new BalancesService(new BalancesRepository());
     private Exception exception;
     private TPVController TPVController;
     private int change;
@@ -92,12 +92,14 @@ public class StepDefinitions {
         tryCatch(() -> TPVController.getTpv().addCash(-cash));
     }
 
-    @Aleshores("^s'emmagatzema el quadrament de caixa$") //TODO: Falta validar tota la info que es vulgui emmagatzemar
-    public void checkQuadrament() throws Throwable {
+    @Aleshores("^s'emmagatzema el quadrament de caixa amb un quadrament positiu de ([0-9]*\\.?[0-9]{2})€$")
+    public void checkQuadrament(double imbalance) throws Throwable {
+        tryCatch(() -> balancesService.newBalance(imbalance));
     }
 
-    @Aleshores("^s'emmagatzema el desquadrament de caixa$") //TODO: Ídem, si cal es poden ajuntar tots dos en un sol cas.
-    public void checkDesquadrament() throws Throwable {
+    @Aleshores("^s'emmagatzema el desquadrament de caixa amb un desquadrament de ([0-9]*\\.?[0-9]{2})€$")
+    public void checkDesquadrament(double imbalance) throws Throwable {
+        tryCatch(() -> balancesService.newBalance(-imbalance));
     }
 
     @Quan("^finalitzo el meu torn, amb un efectiu final de ([0-9]*\\.?[0-9]{2})€$")
@@ -189,6 +191,11 @@ public class StepDefinitions {
     @Aleshores("^el tpv tanca la venda actual$")
     public void el_tpv_tanca_la_venda_actual() throws Throwable {
         tryCatch(TPVController::endSale);
+    }
+
+    @Aleshores("^el tpv tanca el torn actual$")
+    public void el_tpv_tanca_el_torn_actual() throws Throwable {
+        tryCatch(TPVController::endTurn);
     }
 
     @Aleshores("^la venta esta iniciada$")

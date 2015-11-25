@@ -75,6 +75,10 @@ public class TPVController {
         tpv.endTurn();
     }
 
+    public void endTurn() {
+        tpv.endTurn();
+    }
+
     public void startSale() {
         if (tpv.hasSale())
             throw new IllegalStateException("Aquest tpv ja té una venta iniciada");
