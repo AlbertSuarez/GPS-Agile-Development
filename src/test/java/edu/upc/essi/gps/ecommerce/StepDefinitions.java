@@ -1,10 +1,12 @@
 package edu.upc.essi.gps.ecommerce;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
 import cucumber.api.java.ca.Quan;
 import edu.upc.essi.gps.domain.Sale;
 import edu.upc.essi.gps.domain.Sale.SaleLine;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -17,6 +19,7 @@ public class StepDefinitions {
     private Exception exception;
     private TPVController TPVController;
     private int change;
+    private List<SaleLine> lines;
 
     public void tryCatch(Runnable r){
         try {
@@ -198,4 +201,13 @@ public class StepDefinitions {
         assertTrue(TPVController.getCurrentSale().hasProductByBarCode(barCode));
     }
 
+    @Donat("^un producte venut amb codi de barres (\\d+)$")
+    public void un_producte_venut_amb_codi_de_barres(int barCode) throws Throwable {
+        tryCatch(() -> TPVController.addProductByBarCode(barCode));
+    }
+
+    @Aleshores("^es consulta les linies de venda$")
+    public void es_consulta_les_linies_de_venda() throws Throwable {
+        tryCatch(() -> lines = TPVController.getCurrentSale().getLines());
+    }
 }
