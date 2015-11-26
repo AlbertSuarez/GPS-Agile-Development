@@ -298,4 +298,13 @@ public class StepDefinitions {
     public void obtinc_una_linia_de_venda_amb_venda(int n) throws Throwable {
         assertEquals(n, lines.size());
     }
+
+
+    @I("^obtinc una linia de venda amb el (\\d+)er producte amb nom \"([^\"]*)\", preu (\\d+)€ i codi de barres (\\d+)$")
+    public void obtinc_una_linia_de_venda_amb_x_producte(int ind, String productName, int price, int barCode) throws Throwable {
+        assertTrue(TPVController.getCurrentSale().hasProductByBarCode(barCode));
+        SaleLine line = TPVController.getCurrentSale().getLines().get(ind-1);
+        assertEquals(line.getName(),productName);
+        assertEquals(line.getUnitPrice(), price);
+    }
 }

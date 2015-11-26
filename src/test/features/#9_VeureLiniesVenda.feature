@@ -14,6 +14,7 @@ Característica: Veure les linies de venda
     I que he afegit el producte de codi de barres 1234567 a la venta
     Quan indico que vull consultar la linia de venda
     Aleshores obtinc una linia de venda amb 1 venda
+    I obtinc una linia de venda amb el 1er producte amb nom "Optimus Prime", preu 23€ i codi de barres 1234567
 
   Escenari: Error si no hi ha cap venda i consultem les linies de venda
     Donat que hi ha una venta iniciada
