@@ -10,15 +10,6 @@ import java.util.List;
  */
 public class BalancesRepository extends Repository<Balance> {
 
-
-    public List<Balance> listBalanced() {
-        return list((b) -> b.getQtt() >= 0);
-    }
-
-    public List<Balance> listImbalanced() {
-        return list((b) -> b.getQtt() < 0);
-    }
-
     @Override
     protected void checkInsert(final Balance entity) throws RuntimeException {
 

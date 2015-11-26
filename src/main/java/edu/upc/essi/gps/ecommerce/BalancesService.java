@@ -14,15 +14,15 @@ public class BalancesService {
 
     public BalancesService(BalancesRepository imbalanceRepository) {this.balanceRepository = imbalanceRepository;}
 
-    public List<Balance> list() { return balanceRepository.list();}
+    public List<Balance> list() {
+        if (balanceRepository.list().size() == 0)
+            throw new IllegalStateException("No hi ha cap desquadrament enregistrat al sistema");
+        return balanceRepository.list();
+    }
 
-    public List<Balance> listBalanced() { return balanceRepository.listBalanced();}
-
-    public List<Balance> listImbalanced() {return balanceRepository.listImbalanced();}
-
-    public long newBalance(double qtt ){
+    public long newBalance(double qtt, String saleAssistantName, String nomBotiga ){
         long id = balanceRepository.newId();
-        Balance imbalance = new Balance(id, qtt);
+        Balance imbalance = new Balance(id, qtt, saleAssistantName, nomBotiga);
         balanceRepository.insert(imbalance);
         return id;
     }

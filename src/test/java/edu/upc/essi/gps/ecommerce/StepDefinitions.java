@@ -3,8 +3,10 @@ package edu.upc.essi.gps.ecommerce;
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
 import cucumber.api.java.ca.Quan;
+import edu.upc.essi.gps.domain.Balance;
 import edu.upc.essi.gps.domain.Sale;
 import edu.upc.essi.gps.domain.Sale.SaleLine;
+import edu.upc.essi.gps.domain.TPV;
 
 import java.util.List;
 
@@ -20,6 +22,9 @@ public class StepDefinitions {
     private TPVController TPVController;
     private int change;
     private List<SaleLine> lines;
+    private List<Balance> balances;
+
+    private static final double DELTA = 1e-15;
 
     public void tryCatch(Runnable r){
         try {
@@ -94,17 +99,29 @@ public class StepDefinitions {
 
     @Aleshores("^s'emmagatzema el quadrament de caixa amb un quadrament positiu de ([0-9]*\\.?[0-9]{2})€$")
     public void checkQuadrament(double imbalance) throws Throwable {
-        tryCatch(() -> balancesService.newBalance(imbalance));
+        tryCatch(() -> balancesService.newBalance(imbalance, TPVController.getCurrentSaleAssistant().getName(), TPVController.getTpv().getShop()));
     }
 
     @Aleshores("^s'emmagatzema el desquadrament de caixa amb un desquadrament de ([0-9]*\\.?[0-9]{2})€$")
     public void checkDesquadrament(double imbalance) throws Throwable {
-        tryCatch(() -> balancesService.newBalance(-imbalance));
+        tryCatch(() -> balancesService.newBalance(-imbalance, TPVController.getCurrentSaleAssistant().getName(), TPVController.getTpv().getShop()));
     }
 
     @Quan("^finalitzo el meu torn, amb un efectiu final de ([0-9]*\\.?[0-9]{2})€$")
     public void logout(double cash) throws Throwable {
         tryCatch(() -> TPVController.logout(cash));
+    }
+
+    @Quan("^consulto els desquadraments$")
+    public void consultaDesquadraments() {
+        tryCatch(() -> balances = balancesService.list());
+    }
+
+    @Aleshores("^obtinc un desquadrament número (\\d+) del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de ([0-9]*\\.?[0-9]{2})€$")
+    public void checkDesquadraments(int pos, String nomCaixer, String nomBotiga, double imbalance) {
+        assertEquals(nomCaixer, balances.get(pos).getSaleAssistantName());
+        assertEquals(nomBotiga, balances.get(pos).getNomBotiga());
+        assertEquals(-imbalance, balances.get(pos).getQtt(), DELTA);
     }
 
     //TODO: STUB - NO ÉS FUNCIONALITAT FINAL

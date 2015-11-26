@@ -11,8 +11,7 @@ Característica: Quadrar la caixa en finalitzar torn
   Escenari: La caixa quadra o el quadrament és positiu
     Quan incremento l'efectiu de la caixa en 11€
     I finalitzo el meu torn, amb un efectiu final de 48€
-    Aleshores s'emmagatzema el quadrament de caixa amb un quadrament positiu de 00€
-    I el tpv tanca el torn actual
+    Aleshores el tpv tanca el torn actual
 
   Escenari: La caixa no quadra
     Quan incremento l'efectiu de la caixa en 11€
