@@ -46,5 +46,8 @@ Característica: Afegir producte per codi de barres
     I la venda conté el producte amb codi de barres 1234567
     I la venta té 1 línia
 
+  Escenari: Intentem afegir producte que no existeix
+    Quan afegeixo el producte de codi de barres 42 a la venta
+    Aleshores obtinc un error que diu: "No es pot afegir un producte inexistent"
 
 

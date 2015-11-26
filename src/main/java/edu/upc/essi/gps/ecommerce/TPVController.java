@@ -9,6 +9,8 @@ import static edu.upc.essi.gps.utils.Validations.checkNotNull;
 
 public class TPVController {
 
+    public static final String ADD_NON_EXISTING_PRODUCT_ERROR = "No es pot afegir un producte inexistent";
+
     private final ProductsService productsService;
     private final SaleAssistantService saleAssistantService;
     private final TPVService tpvService;
@@ -153,6 +155,9 @@ public class TPVController {
 
     public void addProductByBarCode(int barCode, int unitats) {
         Product p = productsService.findByBarCode(barCode);
+        if (p == null) {
+            throw new IllegalStateException(ADD_NON_EXISTING_PRODUCT_ERROR);
+        }
         tpv.addProduct(p, unitats);
     }
 
@@ -170,7 +175,7 @@ public class TPVController {
     public List<Product> addProductByName(String nomProducte, int unitatsProducte) {
         List<Product> products = productsService.findByName(nomProducte);
         if (products.isEmpty()) {
-            throw new IllegalStateException("No es pot afegir un producte inexistent");
+            throw new IllegalStateException(ADD_NON_EXISTING_PRODUCT_ERROR);
         }
         if (products.size() == 1) {
             tpv.addProduct(products.get(0), unitatsProducte);
