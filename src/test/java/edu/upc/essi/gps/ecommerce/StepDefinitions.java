@@ -1,6 +1,5 @@
 package edu.upc.essi.gps.ecommerce;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
 import cucumber.api.java.ca.I;
@@ -306,5 +305,10 @@ public class StepDefinitions {
         SaleLine line = TPVController.getCurrentSale().getLines().get(ind-1);
         assertEquals(line.getName(),productName);
         assertEquals(line.getUnitPrice(), price);
+    }
+
+    @Quan("^afegeixo (\\d+) unitats del producte per nom \"([^\"]*)\" a la venta$")
+    public void afegeixo_unitats_del_producte_per_nom_a_la_venta(int unitatsProducte, String nomProducte) throws Throwable {
+        TPVController.addProductByName(nomProducte, unitatsProducte);
     }
 }

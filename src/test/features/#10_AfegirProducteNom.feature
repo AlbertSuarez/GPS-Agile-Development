@@ -18,6 +18,23 @@ Característica: Afegir producte per nom
     I la venda conté el producte amb nom "Hipopotamo traga-bolas"
     I la venta té 1 línia
 
+
+  Escenari: Afegim producte amb venda iniciada
+    Quan inicio una nova venta
+    I afegeixo el producte per nom "Hipopotamo traga-bolas" a la venta
+    Aleshores el total de la venta actual és de 23€
+    I la venda conté el producte amb codi de barres 1234567
+    I la venda conté el producte amb nom "Hipopotamo traga-bolas"
+    I la venta té 1 línia
+
+
+  Escenari: Afegim producte amb 2 unitats
+    Quan afegeixo 5 unitats del producte per nom "Hipopotamo volador" a la venta
+    Aleshores la venta esta iniciada
+    I el total de la venta actual és de 15€
+    I la venda conté el producte amb nom "Hipopotamo volador"
+    I la venta té 1 línia
+
   Escenari: Intentem afegir producte per una part del nom que no es unica d'un sol producte
     Quan afegeixo el producte per nom "Hipopotamo" a la venta
     Aleshores obtinc 2 noms de productes

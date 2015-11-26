@@ -157,9 +157,21 @@ public class TPVController {
     }
 
     public List<Product> addProductByName(String nom) {
-        List<Product> products = productsService.findByName(nom);
-        if (products.size() == 1)
-            tpv.addProduct(products.get(0), 1);
+        return addProductByName(nom, 1);
+    }
+
+    /**
+     * Add product to
+     *
+     * @param nomProducte
+     * @param unitatsProducte
+     * @return
+     */
+    public List<Product> addProductByName(String nomProducte, int unitatsProducte) {
+        List<Product> products = productsService.findByName(nomProducte);
+        if (products.size() == 1) {
+            tpv.addProduct(products.get(0), unitatsProducte);
+        }
         return products;
     }
 }
