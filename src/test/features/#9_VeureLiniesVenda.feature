@@ -12,10 +12,11 @@ Característica: Veure les linies de venda
   Escenari: Consulta de linies de venda
     Donat que hi ha una venta iniciada
     I que he afegit el producte de codi de barres 1234567 a la venta
-    Aleshores es consulta les linies de venda
+    Quan indico que vull consultar la linia de venda
+    Aleshores obtinc una linia de venda amb 1 venda
 
   Escenari: Error si no hi ha cap venda i consultem les linies de venda
     Donat que hi ha una venta iniciada
     I que no hi ha cap venda a la linia de venda
-    Quan indico que vull consulta la linia de venda
+    Quan indico que vull consultar la linia de venda
     Aleshores obtinc un error que diu: "No hi ha cap venda"

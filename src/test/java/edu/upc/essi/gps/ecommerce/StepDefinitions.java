@@ -1,5 +1,6 @@
 package edu.upc.essi.gps.ecommerce;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
 import cucumber.api.java.ca.I;
@@ -237,12 +238,7 @@ public class StepDefinitions {
         assertTrue(TPVController.getCurrentSale().hasProductByBarCode(barCode));
     }
 
-    @Aleshores("^es consulta les linies de venda$")
-    public void es_consulta_les_linies_de_venda() throws Throwable {
-        tryCatch(() -> lines = TPVController.getCurrentSale().getLines());
-    }
-
-    @Quan("^indico que vull consulta la linia de venda$")
+    @Quan("^indico que vull consultar la linia de venda$")
     public void indico_que_vull_consulta_la_linia_de_venda() throws Throwable {
         tryCatch(() -> lines = TPVController.getCurrentSale().getLines());
     }
@@ -296,5 +292,10 @@ public class StepDefinitions {
     @I("^la venta no esta iniciada$")
     public void la_venta_no_esta_iniciada() throws Throwable {
         assertFalse(TPVController.isSaleStarted());
+    }
+
+    @Aleshores("^obtinc una linia de venda amb (\\d+) venda$")
+    public void obtinc_una_linia_de_venda_amb_venda(int n) throws Throwable {
+        assertEquals(n, lines.size());
     }
 }
