@@ -5,7 +5,10 @@ import edu.upc.essi.gps.domain.Balance;
 import java.util.List;
 
 /**
- * Created by jmotger on 26/11/15.
+ * ${NAME} in ${PACKAGE_NAME}
+ * @author jmotger
+ * @version 1.0
+ * Creation Date: 26/11/15
  */
 public class ProductManagerController {
 

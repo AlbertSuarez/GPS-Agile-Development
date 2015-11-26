@@ -3,6 +3,8 @@ package edu.upc.essi.gps.ecommerce;
 import com.sun.istack.internal.NotNull;
 import edu.upc.essi.gps.domain.*;
 
+import java.util.List;
+
 import static edu.upc.essi.gps.utils.Validations.checkNotNull;
 
 public class TPVController {
@@ -150,8 +152,14 @@ public class TPVController {
     }
 
     public void addProductByBarCode(int barCode, int unitats) {
-        if (!tpv.hasSale()) tpv.newSale();
         Product p = productsService.findByBarCode(barCode);
-        tpv.getCurrentSale().addProduct(p, unitats);
+        tpv.addProduct(p, unitats);
+    }
+
+    public List<Product> addProductByName(String nom) {
+        List<Product> products = productsService.findByName(nom);
+        if (products.size() == 1)
+            tpv.addProduct(products.get(0), 1);
+        return products;
     }
 }

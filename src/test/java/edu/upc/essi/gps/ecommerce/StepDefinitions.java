@@ -2,12 +2,12 @@ package edu.upc.essi.gps.ecommerce;
 
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
+import cucumber.api.java.ca.I;
 import cucumber.api.java.ca.Quan;
 import edu.upc.essi.gps.domain.Balance;
 import edu.upc.essi.gps.domain.Product;
 import edu.upc.essi.gps.domain.Sale;
 import edu.upc.essi.gps.domain.Sale.SaleLine;
-import edu.upc.essi.gps.domain.TPV;
 
 import java.util.List;
 
@@ -15,6 +15,7 @@ import static org.junit.Assert.*;
 
 public class StepDefinitions {
 
+    private static final double DELTA = 1e-15;
     private ProductsService productsService = new ProductsService(new ProductsRepository());
     private TPVService tpvService = new TPVService(new TPVRepository());
     private SaleAssistantService saleAssistantService = new SaleAssistantService(new SaleAssistantRepository());
@@ -24,9 +25,8 @@ public class StepDefinitions {
     private ProductManagerController productManagerController;
     private int change;
     private List<SaleLine> lines;
+    private List<Product> productes;
     private List<Balance> balances;
-
-    private static final double DELTA = 1e-15;
 
     public void tryCatch(Runnable r){
         try {
@@ -272,5 +272,29 @@ public class StepDefinitions {
         balancesService.newBalance(qtt, nomCaixer, shopName);
     }
 
+    @Quan("^afegeixo el producte per nom \"([^\"]*)\" a la venta$")
+    public void afegeixo_el_producte_per_nom_a_la_venta(String nom) throws Throwable {
+        tryCatch(() -> productes = TPVController.addProductByName(nom));
+    }
 
+
+    @I("^la venda conté el producte amb nom \"([^\"]*)\"$")
+    public void la_venda_conté_el_producte_amb_nom(String nomProducte) throws Throwable {
+        assertTrue(TPVController.getCurrentSale().hasProductByName(nomProducte));
+    }
+
+    @Aleshores("^obtinc (\\d+) noms de productes$")
+    public void obtinc_noms_de_productes(int nProductes) throws Throwable {
+        assertEquals(nProductes, productes.size());
+    }
+
+    @I("^el producte numero (\\d+) es \"([^\"]*)\"$")
+    public void el_numero_es(int index, String nomProducte) throws Throwable {
+        assertEquals(nomProducte, productes.get(index - 1).getName());
+    }
+
+    @I("^la venta no esta iniciada$")
+    public void la_venta_no_esta_iniciada() throws Throwable {
+        assertFalse(TPVController.isSaleStarted());
+    }
 }

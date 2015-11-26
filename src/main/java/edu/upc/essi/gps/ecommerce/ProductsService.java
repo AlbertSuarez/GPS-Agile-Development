@@ -28,8 +28,8 @@ public class ProductsService {
         return productsRepository.list(Comparators.byName);
     }
 
-    public Product findByName(String productName) {
-        return productsRepository.findByName(productName);
+    public List<Product> findByName(String productName) {
+        return productsRepository.lookForName(productName);
     }
 
     public Product findByBarCode(int barCode) {

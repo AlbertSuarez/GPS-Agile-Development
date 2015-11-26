@@ -95,6 +95,15 @@ public class Sale {
         lines.add(new SaleLine(product, unitats));
     }
 
+    public boolean hasProductByName(String nom) {
+        for (SaleLine line : lines) {
+            if (line.getName().equals(nom)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Unitat mínima d'una venta, cadascun d'aquests elements s'associa a un producte o descompte
      * */

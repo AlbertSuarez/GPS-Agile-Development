@@ -207,4 +207,8 @@ public class TPV implements Entity {
     }
 
 
+    public void addProduct(Product p, int unitats) {
+        if (!hasSale()) newSale();
+        currentSale.addProduct(p, unitats);
+    }
 }
