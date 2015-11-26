@@ -18,11 +18,13 @@ Característica: Consultar els desquadraments
     Donat un desquadrament del caixer amb nom "Joan" a la botiga "Girona" d'una quantitat de 10€
     I un desquadrament del caixer amb nom "Pere" a la botiga "Barcelona" d'una quantitat de 15€
     Quan consulto els desquadraments
-    Aleshores obtinc un desquadrament número 0 del caixer amb nom "Joan" a la botiga "Girona" d'una quantitat de 10€
-    I obtinc un desquadrament número 1 del caixer amb nom "Pere" a la botiga "Barcelona" d'una quantitat de 15€
+    Aleshores obtinc 2 desquadrament/s
+    I obtinc un desquadrament número 1 del caixer amb nom "Joan" a la botiga "Girona" d'una quantitat de 10€
+    I obtinc un desquadrament número 2 del caixer amb nom "Pere" a la botiga "Barcelona" d'una quantitat de 15€
     
   Escenari: obtenim desquadraments per botiga
     Donat un desquadrament del caixer amb nom "Joan" a la botiga "Girona" d'una quantitat de 10€
     I un desquadrament del caixer amb nom "Pere" a la botiga "Barcelona" d'una quantitat de 15€
     Quan consulto els desquadraments de la botiga "Barcelona"
-    Aleshores obtinc un desquadrament número 0 del caixer amb nom "Pere" a la botiga "Barcelona" d'una quantitat de 15€
+    Aleshores obtinc 1 desquadrament/s
+    I obtinc un desquadrament número 1 del caixer amb nom "Pere" a la botiga "Barcelona" d'una quantitat de 15€

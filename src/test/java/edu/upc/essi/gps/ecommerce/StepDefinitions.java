@@ -124,11 +124,16 @@ public class StepDefinitions {
         tryCatch(() -> balances = productManagerController.listBalancesByShopName(shopName));
     }
 
+    @Aleshores("^obtinc (\\d+) desquadrament/s")
+    public void getNumberOfDesquadraments(int n) {
+        assertEquals(n, balances.size());
+    }
+
     @Aleshores("^obtinc un desquadrament número (\\d+) del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de (\\d+)€$")
     public void checkDesquadraments(int pos, String nomCaixer, String nomBotiga, double imbalance) {
-        assertEquals(nomCaixer, balances.get(pos).getSaleAssistantName());
-        assertEquals(nomBotiga, balances.get(pos).getNomBotiga());
-        assertEquals(imbalance, balances.get(pos).getQtt(), DELTA);
+        assertEquals(nomCaixer, balances.get(pos-1).getSaleAssistantName());
+        assertEquals(nomBotiga, balances.get(pos-1).getNomBotiga());
+        assertEquals(imbalance, balances.get(pos-1).getQtt(), DELTA);
     }
 
     //TODO: STUB - NO ÉS FUNCIONALITAT FINAL
