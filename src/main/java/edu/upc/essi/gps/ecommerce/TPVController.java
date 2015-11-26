@@ -161,14 +161,17 @@ public class TPVController {
     }
 
     /**
-     * Add product to
+     * Add product to sale by name
      *
-     * @param nomProducte
-     * @param unitatsProducte
-     * @return
+     * @param nomProducte product name
+     * @param unitatsProducte units added
+     * @return products that match the name introduced
      */
     public List<Product> addProductByName(String nomProducte, int unitatsProducte) {
         List<Product> products = productsService.findByName(nomProducte);
+        if (products.isEmpty()) {
+            throw new IllegalStateException("No es pot afegir un producte inexistent");
+        }
         if (products.size() == 1) {
             tpv.addProduct(products.get(0), unitatsProducte);
         }

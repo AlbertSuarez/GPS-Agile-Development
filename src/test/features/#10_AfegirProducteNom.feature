@@ -41,3 +41,7 @@ Característica: Afegir producte per nom
     I el producte numero 1 es "Hipopotamo traga-bolas"
     I el producte numero 2 es "Hipopotamo volador"
     I la venta no esta iniciada
+
+  Escenari: Intentem afegir producte que no existeix
+    Quan afegeixo el producte per nom "ESTO NO EXISTE" a la venta
+    Aleshores obtinc un error que diu: "No es pot afegir un producte inexistent"
