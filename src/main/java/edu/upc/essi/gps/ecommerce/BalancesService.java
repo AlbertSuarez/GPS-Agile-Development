@@ -15,9 +15,10 @@ public class BalancesService {
     public BalancesService(BalancesRepository imbalanceRepository) {this.balanceRepository = imbalanceRepository;}
 
     public List<Balance> list() {
-        if (balanceRepository.list().size() == 0)
+        List<Balance> l = balanceRepository.list();
+        if (l.size() == 0)
             throw new IllegalStateException("No hi ha cap desquadrament enregistrat al sistema");
-        return balanceRepository.list();
+        return l;
     }
 
     public long newBalance(double qtt, String saleAssistantName, String nomBotiga ){

@@ -10,6 +10,13 @@ import java.util.List;
  */
 public class BalancesRepository extends Repository<Balance> {
 
+    public List<Balance> listByShopName(String shopName) {
+        List<Balance> l = list((b) -> b.getNomBotiga().equals(shopName));
+        if (l.size() == 0)
+            throw new IllegalStateException("No hi ha cap desquadrament enregistrat al sistema de la botiga " + shopName);
+        return l;
+    }
+
     @Override
     protected void checkInsert(final Balance entity) throws RuntimeException {
 
