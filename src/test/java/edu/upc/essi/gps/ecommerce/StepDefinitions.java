@@ -129,11 +129,11 @@ public class StepDefinitions {
         assertEquals(n, balances.size());
     }
 
-    @Aleshores("^obtinc un desquadrament número (\\d+) del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de (\\d+)€$")
+    @Aleshores("^obtinc un desquadrament número (\\d+) del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de ([0-9]*\\.?[0-9]{2})€$")
     public void checkDesquadraments(int pos, String nomCaixer, String nomBotiga, double imbalance) {
         assertEquals(nomCaixer, balances.get(pos-1).getSaleAssistantName());
         assertEquals(nomBotiga, balances.get(pos-1).getNomBotiga());
-        assertEquals(imbalance, balances.get(pos-1).getQtt(), DELTA);
+        assertEquals(imbalance, balances.get(pos - 1).getQtt(), DELTA);
     }
 
     //TODO: STUB - NO ÉS FUNCIONALITAT FINAL
@@ -267,7 +267,7 @@ public class StepDefinitions {
         productManagerController = new ProductManagerController(balancesService);
     }
 
-    @Donat("^un desquadrament del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de (\\d+)€")
+    @Donat("^un desquadrament del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de ([0-9]*\\.?[0-9]{2})€")
     public void addDesquadrament(String nomCaixer, String shopName, double qtt) throws Throwable {
         balancesService.newBalance(qtt, nomCaixer, shopName);
     }
