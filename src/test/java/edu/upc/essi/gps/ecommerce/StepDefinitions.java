@@ -4,6 +4,7 @@ import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
 import cucumber.api.java.ca.Quan;
 import edu.upc.essi.gps.domain.Balance;
+import edu.upc.essi.gps.domain.Product;
 import edu.upc.essi.gps.domain.Sale;
 import edu.upc.essi.gps.domain.Sale.SaleLine;
 import edu.upc.essi.gps.domain.TPV;
@@ -20,6 +21,7 @@ public class StepDefinitions {
     private BalancesService balancesService = new BalancesService(new BalancesRepository());
     private Exception exception;
     private TPVController TPVController;
+    private ProductManagerController productManagerController;
     private int change;
     private List<SaleLine> lines;
     private List<Balance> balances;
@@ -114,14 +116,19 @@ public class StepDefinitions {
 
     @Quan("^consulto els desquadraments$")
     public void consultaDesquadraments() {
-        tryCatch(() -> balances = balancesService.list());
+        tryCatch(() -> balances = productManagerController.listBalances());
     }
 
-    @Aleshores("^obtinc un desquadrament número (\\d+) del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de ([0-9]*\\.?[0-9]{2})€$")
+    @Quan("^consulto els desquadraments de la botiga \"([^\"]*)\"$")
+    public void consultaDesquadraments(String shopName) {
+        tryCatch(() -> balances = productManagerController.listBalancesByShopName(shopName));
+    }
+
+    @Aleshores("^obtinc un desquadrament número (\\d+) del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de (\\d+)€$")
     public void checkDesquadraments(int pos, String nomCaixer, String nomBotiga, double imbalance) {
         assertEquals(nomCaixer, balances.get(pos).getSaleAssistantName());
         assertEquals(nomBotiga, balances.get(pos).getNomBotiga());
-        assertEquals(-imbalance, balances.get(pos).getQtt(), DELTA);
+        assertEquals(imbalance, balances.get(pos).getQtt(), DELTA);
     }
 
     //TODO: STUB - NO ÉS FUNCIONALITAT FINAL
@@ -248,6 +255,16 @@ public class StepDefinitions {
     @Quan("^afegeixo (\\d+) unitats del producte amb codi de barres (\\d+) a la venta$")
     public void addProducteCodiBarresUnitats(int unitats, int codiBarra) throws Throwable {
         TPVController.addProductByBarCode(codiBarra, unitats);
+    }
+
+    @Donat("^que estem al panell de gestió del product manager$")
+    public void initManagement() throws Throwable {
+        productManagerController = new ProductManagerController(balancesService);
+    }
+
+    @Donat("^un desquadrament del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de (\\d+)€")
+    public void addDesquadrament(String nomCaixer, String shopName, double qtt) throws Throwable {
+        balancesService.newBalance(qtt, nomCaixer, shopName);
     }
 
 
