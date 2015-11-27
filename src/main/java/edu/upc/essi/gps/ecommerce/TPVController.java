@@ -14,12 +14,14 @@ public class TPVController {
     private final ProductsService productsService;
     private final SaleAssistantService saleAssistantService;
     private final TPVService tpvService;
+    private final BalancesService balancesService;
     private final TPV tpv;
 
-    public TPVController(ProductsService productsService, SaleAssistantService saleAssistantService, TPVService tpvService, String shop, int pos) {
+    public TPVController(ProductsService productsService, SaleAssistantService saleAssistantService, TPVService tpvService, BalancesService balancesService, String shop, int pos) {
         this.productsService = productsService;
         this.saleAssistantService = saleAssistantService;
         this.tpvService = tpvService;
+        this.balancesService = balancesService;
         tpv = tpvService.findByShopPos(shop, pos);
         tpv.endTurn();
     }
@@ -62,25 +64,9 @@ public class TPVController {
 
     public void logout(double cash){
 
-        double tpvCash = tpv.getCash();
-        if (tpvCash != cash) {
-            /*
-            TODO: desquadrament
-            Recullo alguna informació aquí, utilitzar la que faci falta i esborrar la que no
-            Date today = new Date();
-            double initialCash = tpv.getInitialCash();
-            SaleAssistant sa = tpv.getCurrentSaleAssistant();
-            String assistantName = sa.getName();
-            long assistantId = sa.getId();
-            double variation = cash - tpvCash;
-            */
-        }
-
+        balancesService.newBalance(cash, tpv.getCurrentSaleAssistant().getName(), tpv.getShop());
         tpv.endTurn();
-    }
 
-    public void endTurn() {
-        tpv.endTurn();
     }
 
     public void startSale() {
@@ -135,6 +121,7 @@ public class TPVController {
             throw new IllegalStateException("No es pot cobrar una venta si no està iniciada");
         if(tpv.getCurrentSale().isEmpty())
             throw new IllegalStateException("No es pot cobrar una venta sense cap producte");
+        tpv.addCash(delivered);
         return getCanvi(delivered);
     }
 

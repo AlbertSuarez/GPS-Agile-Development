@@ -8,6 +8,7 @@ import edu.upc.essi.gps.domain.Balance;
 import edu.upc.essi.gps.domain.Product;
 import edu.upc.essi.gps.domain.Sale;
 import edu.upc.essi.gps.domain.Sale.SaleLine;
+import edu.upc.essi.gps.domain.TPV;
 
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class StepDefinitions {
     @Donat("^que estem al tpv número (\\d+) de la botiga \"([^\"]*)\"$")
     public void setupPos(int posNumber, String shop) throws Throwable {
         tpvService.newTPV(shop, posNumber);
-        TPVController = new TPVController(productsService, saleAssistantService, tpvService, shop, posNumber);
+        TPVController = new TPVController(productsService, saleAssistantService, tpvService, balancesService, shop, posNumber);
     }
 
     @Aleshores("^el tpv està en ús per en \"([^\"]*)\"$")
@@ -99,14 +100,9 @@ public class StepDefinitions {
         tryCatch(() -> TPVController.getTpv().addCash(-cash));
     }
 
-    @Aleshores("^s'emmagatzema el quadrament de caixa amb un quadrament positiu de ([0-9]*\\.?[0-9]{2})€$")
-    public void checkQuadrament(double imbalance) throws Throwable {
-        tryCatch(() -> balancesService.newBalance(imbalance, TPVController.getCurrentSaleAssistant().getName(), TPVController.getTpv().getShop()));
-    }
-
     @Aleshores("^s'emmagatzema el desquadrament de caixa amb un desquadrament de ([0-9]*\\.?[0-9]{2})€$")
     public void checkDesquadrament(double imbalance) throws Throwable {
-        tryCatch(() -> balancesService.newBalance(-imbalance, TPVController.getCurrentSaleAssistant().getName(), TPVController.getTpv().getShop()));
+        tryCatch(() -> TPVController.logout(imbalance));
     }
 
     @Quan("^finalitzo el meu torn, amb un efectiu final de ([0-9]*\\.?[0-9]{2})€$")
@@ -165,7 +161,7 @@ public class StepDefinitions {
 
     @Quan("^afegeixo el producte de codi de barres (\\d+) a la venta$")
     public void addProductByBarCode(int barCode) throws Throwable {
-        tryCatch(()->TPVController.addProductByBarCode(barCode));
+        tryCatch(() -> TPVController.addProductByBarCode(barCode));
     }
 
     @Donat("^que he afegit el producte de codi de barres (\\d+) a la venta$")
@@ -220,11 +216,6 @@ public class StepDefinitions {
     @Aleshores("^el tpv tanca la venda actual$")
     public void el_tpv_tanca_la_venda_actual() throws Throwable {
         tryCatch(TPVController::endSale);
-    }
-
-    @Aleshores("^el tpv tanca el torn actual$")
-    public void el_tpv_tanca_el_torn_actual() throws Throwable {
-        tryCatch(TPVController::endTurn);
     }
 
     @Aleshores("^la venta esta iniciada$")
