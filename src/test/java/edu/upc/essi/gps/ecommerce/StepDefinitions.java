@@ -208,7 +208,7 @@ public class StepDefinitions {
         assertEquals(expectedChange, change, DELTA);
     }
 
-    @Aleshores("^el tpv indica que s'ha pagat amb targeta i tanca la venda$")
+    @Aleshores("^el tpv indica que s'ha pagat amb targeta$")
     public void setTarget() throws Throwable {
 
     }
