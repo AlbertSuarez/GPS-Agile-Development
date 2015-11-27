@@ -13,7 +13,7 @@ Característica: Cobrar una venta en metàlic
     Donat que hi ha una venta iniciada
     I que he afegit el producte de codi de barres 1234567 a la venta
     Quan indico que el client ha entregat 30€ per a pagar en metàlic
-    Aleshores la venta no esta iniciada
+    Aleshores la venta esta tancada
 
   Escenari: Error si intentem cobrar una venta sense productes
     Donat que hi ha una venta iniciada
