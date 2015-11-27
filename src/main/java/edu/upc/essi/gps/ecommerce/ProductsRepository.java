@@ -5,13 +5,10 @@ import edu.upc.essi.gps.utils.Comparators;
 import edu.upc.essi.gps.utils.Matchers;
 import edu.upc.essi.gps.utils.Repository;
 
-import java.util.Comparator;
 import java.util.List;
 
 
 public class ProductsRepository extends Repository<Product> {
-
-    public static Comparator<Product> byPopularity = (o1, o2) -> new Float(o1.getPopularity()).compareTo(o2.getPopularity());
 
     public List<Product> lookForName(final String name) {
         return list(Matchers.containsNameMatcher(name), Comparators.byName);
@@ -21,7 +18,7 @@ public class ProductsRepository extends Repository<Product> {
         return find(Matchers.nameMatcher(name));
     }
 
-    public Product findByBarCode(final int barCode){
+    public Product findByBarCode(final long barCode){
         return find((p) -> p.getBarCode() == barCode);
     }
 
@@ -30,10 +27,10 @@ public class ProductsRepository extends Repository<Product> {
     }
 
     @Override
-    protected void checkInsert(final Product entity) throws RuntimeException {
-        if(findByName(entity.getName()) != null)
+    protected void checkInsert(final Product product) throws RuntimeException {
+        if(findByName(product.getName()) != null)
             throw new IllegalArgumentException("Ja existeix un producte amb aquest nom");
-        if(findByBarCode(entity.getBarCode()) != null)
+        if(findByBarCode(product.getBarCode()) != null)
             throw new IllegalArgumentException("Ja existeix un producte amb aquest codi de barres");
     }
 }

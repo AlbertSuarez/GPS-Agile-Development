@@ -15,29 +15,18 @@ public class Sale {
     private final List<SaleLine> lines = new LinkedList<>();
 
     /**
-     * Afegeix un nou producte a la venta.
-     * @param p producte a afegir a la venta.
-     * */
-    public void addProduct(Product p) {
-        addProduct(p, 1);
-    }
-
-    /**
      * Afegeix un nou descompte a la venta.
      * @param d producte a afegir a la venta.
      * @param posicions índex dels articles als que es vol aplicar el descompte.
      * */
-    public void addDiscount(Discount d, int... posicions) {
-        for (int pos : posicions) {
-            if (pos > lines.size())
-                throw new IndexOutOfBoundsException("No es pot accedir a la línia " + pos +
-                        " de la venta, aquesta només té " + lines.size() + " línies");
-            SaleLine saleLine = lines.get(pos-1);
-            if (saleLine.getId() != d.getTrigger().getId())
-                throw new IllegalArgumentException("Els productes del descompte i de la línia no coincideixen");
-            SaleLine newLine = new SaleLine(d, saleLine.getAmount());
-            lines.add(pos, newLine);
-        }
+    public void addDiscount(Discount d, int pos) {
+        if (pos > lines.size())
+            throw new IndexOutOfBoundsException("No es pot accedir a la línia " + pos +
+                    " de la venta, aquesta només té " + lines.size() + " línies");
+        SaleLine saleLine = lines.get(pos-1);
+        if (saleLine.getId() != d.getTrigger().getId() || saleLine.getBarCode() != d.getTrigger().getBarCode())
+            throw new IllegalArgumentException("Els productes del descompte i de la línia no coincideixen");
+        lines.add(pos, new SaleLine(d, saleLine.getAmount()));
     }
 
     /**
@@ -91,10 +80,19 @@ public class Sale {
         return false;
     }
 
+    /**
+     * Afegeix un nou producte a la venta.
+     * @param product producte a afegir a la venta.
+     * @param unitats nombre d'unitats del producte a afegir
+     * */
     public void addProduct(Product product, int unitats) {
         lines.add(new SaleLine(product, unitats));
     }
 
+    /**
+     * Consulta si la venta té algun producte amb el nom indicat.
+     * @return <code>true</code> si la té algun producte amb el nom indicat, <code>false</code> altrment.
+     * */
     public boolean hasProductByName(String nom) {
         for (SaleLine line : lines) {
             if (line.getName().equals(nom)) {
@@ -132,7 +130,7 @@ public class Sale {
         /**
          * Codi de barres del producte o despompte
          * */
-        private int barCode;
+        private long barCode;
 
         /**
          * Crea una nova instància de <code>SaleLine</code> a partir de les dades d'un producte.
@@ -155,9 +153,9 @@ public class Sale {
         public SaleLine(Discount discount, int amount) {
             id = discount.getTrigger().getId();
             name = discount.getName();
-            unitPrice = (int) discount.getDiscount(); //TODO: passem tots els preus a double plz ^^'
+            unitPrice = discount.getDiscount();
             this.amount = amount;
-            barCode = discount.getBarCode();
+            barCode = -1;
         }
 
         /**
@@ -201,10 +199,10 @@ public class Sale {
         }
 
         /**
-         * Consulta el codi de barres del producte o descompte de la línia.
-         * @return codi de barres del producte o descompte de la línia.
+         * Consulta el codi de barres del producte de la línia.
+         * @return codi de barres del producte de la línia.
          */
-        public int getBarCode() {
+        public long getBarCode() {
             return barCode;
         }
 

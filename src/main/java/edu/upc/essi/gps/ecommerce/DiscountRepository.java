@@ -24,7 +24,6 @@ public class DiscountRepository extends Repository<Discount> {
         return list((d) -> d.getTrigger().getId() == productId);
     }
 
-
     @Override
     protected void checkInsert(Discount discount) throws RuntimeException {
         if(findByName(discount.getName())!=null)

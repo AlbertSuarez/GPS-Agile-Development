@@ -4,7 +4,7 @@ package edu.upc.essi.gps.domain;
  * Classe que representa un producte del nostre sistema.<br>
  * Aquest producte té associat un identificador, un nom i un codi de barres.
  * */
-public class Product implements Entity, HasName {
+public class Product implements Entity, HasName, HasBarCode {
 
     /**
      * Identificador únic d'aquest producte al sistema.
@@ -29,12 +29,7 @@ public class Product implements Entity, HasName {
     /**
      * Codi de barres d'aquest producte. Aquest codi és únic al sistema.
      * */
-    private final int barCode;
-
-    /**
-     * Índex de popularitat del producte.
-     * */
-    private float popularity;
+    private final long barCode;
 
     /**
      * Crea una nova instància d'un producte.
@@ -44,7 +39,7 @@ public class Product implements Entity, HasName {
      * @param vatPct dafuq is dat? (:|)
      * @param barCode Codi de barres d'aquest producte.
      * */
-    public Product(long id, String name, double price, double vatPct, int barCode) {
+    public Product(long id, String name, double price, double vatPct, long barCode) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -62,12 +57,9 @@ public class Product implements Entity, HasName {
         return name;
     }
 
-    /**
-     * Consulta l'índex de popularitat del producte.
-     * @return l'índex de popularitat del producte.
-     * */
-    public float getPopularity() {
-        return popularity;
+    @Override
+    public long getBarCode() {
+        return barCode;
     }
 
     /**
@@ -86,11 +78,4 @@ public class Product implements Entity, HasName {
         return vatPct;
     }
 
-    /**
-     * Consulta el codi de barres d'aquest producte.
-     * @return el codi de barres d'aquest producte.
-     * */
-    public int getBarCode() {
-        return barCode;
-    }
 }

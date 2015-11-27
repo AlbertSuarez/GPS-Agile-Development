@@ -1,5 +1,6 @@
 package edu.upc.essi.gps.ecommerce;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
 import cucumber.api.java.ca.I;
@@ -314,4 +315,25 @@ public class StepDefinitions {
     public void la_venta_esta_tancada() throws Throwable {
         assertFalse(TPVController.isSaleStarted());
     }
+
+    @Quan("^creo un nou descompte del tipus percentatge anomenat \"([^\"]*)\" del %([^\"]*)% sobre el producte amb codi de barres (\\d+)$")
+    public void newPercentatge(String name, String percent, int codiBarres) throws Throwable {
+
+    }
+
+    @Quan("^creo un nou descompte del tipus promoció anomenat \"([^\"]*)\" de (\\d+)x(\\d+) sobre el producte amb codi de barres (\\d+)$")
+    public void newPromocio(String name, int A, int B, int codiBarres) throws Throwable {
+
+    }
+
+    @Quan("^creo un nou descompte del tipus regal anomenat \"([^\"]*)\", on amb la compra del producte amb codi de barres (\\d+) es regala una unitat del producte amb codi de barres (\\d+)$")
+    public void newRegal(String name, int codiBarresA, int codiBarresB) throws Throwable {
+
+    }
+
+    @Aleshores("^el descompte \"([^\"]*)\" sobre el producte \"([^\"]*)\" té un valor de €([^\"]*)€$")
+    public void checkDescompte(String name, String prodName, String valor) throws Throwable {
+
+    }
+
 }

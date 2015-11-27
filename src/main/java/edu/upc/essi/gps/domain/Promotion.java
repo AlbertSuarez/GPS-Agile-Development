@@ -24,14 +24,12 @@ public class Promotion extends Discount {
      * Crea una nova instància d'una promoció a partir d'un producte.
      * @param product producte amb el qual s'asocia el descompte.
      * @param name nom del descompte.
-     * @param barCode codi de barres del descompte.
-     * En cas que es tracti d'un descompte manual, aquest paràmetre ha de tenir valor <code>-1</code>.
      * @param id identificador del descompte al sistema.
      * @param A quantitat de producte que reps si s'aplica la promoció.
      * @param B quantitat de producte que has de comprar per a que s'apliqui la promoció.
      * */
-    public Promotion(Product product, String name, int barCode, long id, int A, int B) {
-        super(product, name, barCode, id);
+    public Promotion(Product product, String name, long id, int A, int B) {
+        super(product, name, id);
         this.A = A;
         this.B = B;
     }

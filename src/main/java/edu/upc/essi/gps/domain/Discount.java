@@ -22,12 +22,6 @@ public abstract class Discount implements Entity, HasName {
     private final long id;
 
     /**
-     * Codi de barres del descompte.<br>
-     * En cas que es tracti d'un descompte manual, aquest camp té valor <code>-1</code>.
-     * */
-    private final int barCode;
-
-    /**
      * Crea una nova instància d'un descompte a partir d'un producte.
      * @param product producte amb el qual s'asocia el descompte.
      * @param name nom del descompte.
@@ -35,16 +29,20 @@ public abstract class Discount implements Entity, HasName {
      * En cas que es tracti d'un descompte manual, aquest paràmetre ha de tenir valor <code>-1</code>.
      * @param id identificador del descompte al sistema.
      * */
-    public Discount(Product product, String name, int barCode, long id) {
+    public Discount(Product product, String name, long id) {
         trigger = product;
         this.id = id;
         this.name = name;
-        this.barCode = barCode;
     }
 
     @Override
     public long getId() {
         return id;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     /**
@@ -59,19 +57,6 @@ public abstract class Discount implements Entity, HasName {
      * */
     public Product getTrigger() {
         return trigger;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Consulta el codi de barres del descompte (si en té).
-     * @return el codi de barres del descompte no és un descompte manual, el valor <code>-1</code> altrament.
-     * */
-    public int getBarCode() {
-        return barCode;
     }
 
 }
