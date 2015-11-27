@@ -25,6 +25,15 @@ Característica: Afegir producte per codi de barres
     Total: 23.0€
     """
 
+  Escenari: Obtinc preu producte amb 5 unitats
+    Quan afegeixo 5 unitats del producte amb codi de barres 1234567 a la venta
+    Aleshores la pantalla del client del tpv mostra
+    """
+    Hipopotamo traga-bolas - 23.0€/u x 5u = 115.0€
+    ---
+    Total: 115.0€
+    """
+
   Escenari: Afegim producte amb 2 unitats
     Quan afegeixo 2 unitats del producte amb codi de barres 1234567 a la venta
     Aleshores la venta esta iniciada
