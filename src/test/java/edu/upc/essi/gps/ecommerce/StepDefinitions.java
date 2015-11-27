@@ -23,7 +23,7 @@ public class StepDefinitions {
     private Exception exception;
     private TPVController TPVController;
     private ProductManagerController productManagerController;
-    private int change;
+    private double change;
     private List<SaleLine> lines;
     private List<Product> productes;
     private List<Balance> balances;
@@ -158,8 +158,8 @@ public class StepDefinitions {
         TPVController.startSale();
     }
 
-    @Donat("^un producte amb nom \"([^\"]*)\", preu (\\d+)€, iva (\\d+)% i codi de barres (\\d+)$")
-    public void productCreated(String productName, int price, int vatPct, int barCode) throws Throwable {
+    @Donat("^un producte amb nom \"([^\"]*)\", preu ([0-9]*\\.?[0-9]{2})€, iva (\\d+)% i codi de barres (\\d+)$")
+    public void productCreated(String productName, double price, int vatPct, int barCode) throws Throwable {
         productsService.newProduct(productName, price, vatPct, barCode);
     }
 
@@ -178,8 +178,8 @@ public class StepDefinitions {
         assertEquals(expectedNumberOfLines, TPVController.getCurrentSale().getLines().size());
     }
 
-    @Aleshores("^línia de venta (\\d+) és de (\\d+) unitats de \"([^\"]*)\" a (\\d+)€ cada una per un total de (\\d+)€$")
-    public void línia_de_venta_és_de_unitats_de_a_€_cada_una_per_un_total_de_€(int lineNumber, int units, String productName, int unitPrice, int totalPrice) throws Throwable {
+    @Aleshores("^línia de venta (\\d+) és de (\\d+) unitats de \"([^\"]*)\" a ([0-9]*\\.?[0-9]{2})€ cada una per un total de ([0-9]*\\.?[0-9]{2})€$")
+    public void línia_de_venta_és_de_unitats_de_a_€_cada_una_per_un_total_de_€(int lineNumber, int units, String productName, double unitPrice, double totalPrice) throws Throwable {
         SaleLine sl = TPVController.getCurrentSale().getLines().get(lineNumber - 1);
         assertEquals(units,sl.getAmount());
         assertEquals(unitPrice,sl.getUnitPrice());
@@ -187,8 +187,8 @@ public class StepDefinitions {
         assertEquals(productName, sl.getName());
     }
 
-    @Aleshores("^el total de la venta actual és de (\\d+)€$")
-    public void el_total_de_la_venta_actual_és_de_€(int saleTotal) throws Throwable {
+    @Aleshores("^el total de la venta actual és de ([0-9]*\\.?[0-9]{2})€$")
+    public void el_total_de_la_venta_actual_és_de_€(double saleTotal) throws Throwable {
         assertEquals(saleTotal, TPVController.getCurrentSale().getTotal());
     }
 
@@ -197,18 +197,18 @@ public class StepDefinitions {
         assertEquals(msg, TPVController.getCustomerScreenMessage());
     }
 
-    @Quan("^indico que el client ha entregat (\\d+)€ per a pagar en metàlic$")
-    public void cashPayment(int delivered) throws Throwable {
+    @Quan("^indico que el client ha entregat ([0-9]*\\.?[0-9]{2})€ per a pagar en metàlic$")
+    public void cashPayment(double delivered) throws Throwable {
         tryCatch(() -> change = TPVController.cashPayment(delivered));
     }
 
-    @Quan("^indico que el client paga (\\d+)€ amb targeta$")
+    @Quan("^indico que el client paga ([0-9]*\\.?[0-9]{2})€ amb targeta$")
     public void tarjetPayment(int delivered) throws Throwable {
         tryCatch(() -> change = TPVController.tarjetPayment(delivered));
     }
 
-    @Aleshores("^el tpv m'indica que el canvi a retornar és de (\\d+)€$")
-    public void checkChange(int expectedChange) throws Throwable {
+    @Aleshores("^el tpv m'indica que el canvi a retornar és de ([0-9]*\\.?[0-9]{2})€$")
+    public void checkChange(double expectedChange) throws Throwable {
         assertEquals(expectedChange, change);
     }
 
@@ -299,8 +299,8 @@ public class StepDefinitions {
     }
 
 
-    @I("^obtinc una linia de venda amb el (\\d+)er producte amb nom \"([^\"]*)\", preu (\\d+)€ i codi de barres (\\d+)$")
-    public void obtinc_una_linia_de_venda_amb_x_producte(int ind, String productName, int price, int barCode) throws Throwable {
+    @I("^obtinc una linia de venda amb el (\\d+)er producte amb nom \"([^\"]*)\", preu ([0-9]*\\.?[0-9]{2})€ i codi de barres (\\d+)$")
+    public void obtinc_una_linia_de_venda_amb_x_producte(int ind, String productName, double price, int barCode) throws Throwable {
         assertTrue(TPVController.getCurrentSale().hasProductByBarCode(barCode));
         SaleLine line = TPVController.getCurrentSale().getLines().get(ind-1);
         assertEquals(line.getName(),productName);
