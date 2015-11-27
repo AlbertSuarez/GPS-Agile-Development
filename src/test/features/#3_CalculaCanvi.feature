@@ -18,5 +18,5 @@ Característica: Obtenir el canvi d'una venta
   Escenari: Error si intentem cobrar una venta amb un import inferior al total de la venta
     Donat que hi ha una venta iniciada
     I que he afegit el producte de codi de barres 1234567 a la venta
-    Quan indico que el client ha entregat 20.00€ per a pagar en metàlic
+    Quan indico que el client ha entregat 20€ per a pagar en metàlic
     Aleshores obtinc un error que diu: "No es pot cobrar una venta amb un import inferior al total de la venta"
