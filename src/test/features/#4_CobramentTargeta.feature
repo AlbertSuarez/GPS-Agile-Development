@@ -13,7 +13,8 @@ Característica: Cobrar una venta amb targeta
     Donat que hi ha una venta iniciada
     I que he afegit el producte de codi de barres 1234567 a la venta
     Quan indico que el client paga el total de la venda amb targeta
-    Aleshores el tpv tanca la venda actual
+    Aleshores el tpv indica que s'ha pagat amb targeta i tanca la venda
+    I la venta no esta iniciada
 
   Escenari: Error si intentem cobrar una venta sense productes
     Donat que hi ha una venta iniciada

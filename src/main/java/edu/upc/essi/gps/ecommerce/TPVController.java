@@ -88,12 +88,6 @@ public class TPVController {
         return tpv.hasSale();
     }
 
-    public void endSale() {
-        if (!tpv.hasSale())
-            throw new IllegalStateException("Aquest tpv no té una venta iniciada");
-        tpv.endSale();
-    }
-
     public void addProductByBarCode(int barCode) {
         addProductByBarCode(barCode, 1);
     }
@@ -131,7 +125,9 @@ public class TPVController {
         if(tpv.getCurrentSale().isEmpty())
             throw new IllegalStateException("No es pot cobrar una venta sense cap producte");
         tpv.addCash(getCurrentSale().getTotal());
-        return getCanvi(delivered);
+        double canvi = getCanvi(delivered);
+        tpv.endSale();
+        return canvi;
     }
 
     private double getCanvi(double delivered) {
@@ -146,6 +142,7 @@ public class TPVController {
             throw new IllegalStateException("No es pot cobrar una venta si no està iniciada");
         if(tpv.getCurrentSale().isEmpty())
             throw new IllegalStateException("No es pot cobrar una venta sense cap producte");
+        tpv.endSale();
     }
 
     public void addProductByBarCode(int barCode, int unitats) {

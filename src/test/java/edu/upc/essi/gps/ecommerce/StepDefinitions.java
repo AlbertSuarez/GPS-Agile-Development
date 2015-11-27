@@ -55,7 +55,7 @@ public class StepDefinitions {
         assertEquals(saleAssistantName, TPVController.getCurrentSaleAssistant().getName());
     }
 
-    @Aleshores("^el tpv té un efectiu inicial de (.+)€$")
+    @Aleshores("^el tpv té un efectiu inicial de ((?:\\d|\\.)+)€$")
     public void checkInitialCash(double cash) throws Throwable {
         assertEquals(cash, TPVController.getTpv().getInitialCash(), 0.005);
     }
@@ -75,12 +75,12 @@ public class StepDefinitions {
         tryCatch(() -> saleAssistantService.insert(name, password, saleAssistantID));
     }
 
-    @Donat("^que s'inica el torn al tpv amb identificador (\\d+) i password \"([^\"]*)\", amb un efectiu inicial de (.+)€$")
+    @Donat("^que s'inica el torn al tpv amb identificador (\\d+) i password \"([^\"]*)\", amb un efectiu inicial de ((?:\\d|\\.)+)€$")
     public void loginDonat(long saleAssistantID, String password, double cash) throws Throwable {
         TPVController.login(saleAssistantID, password, cash);
     }
 
-    @Quan("^inicio el torn al tpv amb identificador (\\d+) i password \"([^\"]*)\", amb un efectiu inicial de (.+)€$")
+    @Quan("^inicio el torn al tpv amb identificador (\\d+) i password \"([^\"]*)\", amb un efectiu inicial de ((?:\\d|\\.)+)€$")
     public void login(long saleAssistantID, String password, double cash) throws Throwable {
         tryCatch(() -> TPVController.login(saleAssistantID, password, cash));
     }
@@ -90,22 +90,22 @@ public class StepDefinitions {
         tryCatch(() -> TPVController.unblock(password));
     }
 
-    @Quan("^incremento l'efectiu de la caixa en (.+)€$")
+    @Quan("^incremento l'efectiu de la caixa en ((?:\\d|\\.)+)€$")
     public void increaseCash(double cash) throws Throwable {
         tryCatch(() -> TPVController.getTpv().addCash(cash));
     }
 
-    @Quan("^decremento l'efectiu de la caixa en (.+)€$")
+    @Quan("^decremento l'efectiu de la caixa en ((?:\\d|\\.)+)€$")
     public void dereaseCash(double cash) throws Throwable {
         tryCatch(() -> TPVController.getTpv().addCash(-cash));
     }
 
-    @Quan("^finalitzo el meu torn, amb un efectiu final de (.+)€$")
+    @Quan("^intento finalitzar el meu torn, indicant un efectiu final de ((?:\\d|\\.)+)€$")
     public void logout(double cash) throws Throwable {
         tryCatch(() -> TPVController.quadra(cash));
     }
 
-    @Quan("^finalitzo el meu torn amb un desquadrament, amb un efectiu final de (.+)€$")
+    @Quan("^finalitzo el meu torn amb un desquadrament, amb un efectiu final de ((?:\\d|\\.)+)€$")
     public void desquadrament(double cash) throws Throwable {
         tryCatch(() -> TPVController.addDesquadrament(cash));
     }
@@ -125,7 +125,7 @@ public class StepDefinitions {
         assertEquals(n, balances.size());
     }
 
-    @Aleshores("^obtinc un desquadrament número (\\d+) del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de (.+)€$")
+    @Aleshores("^obtinc un desquadrament número (\\d+) del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de ((?:\\d|\\.)+)€$")
     public void checkDesquadraments(int pos, String nomCaixer, String nomBotiga, double imbalance) {
         assertEquals(nomCaixer, balances.get(pos-1).getSaleAssistantName());
         assertEquals(nomBotiga, balances.get(pos-1).getNomBotiga());
@@ -133,7 +133,7 @@ public class StepDefinitions {
     }
 
     //TODO: STUB - NO ÉS FUNCIONALITAT FINAL
-    @Quan("^inicio el torn al tpv amb identificador (\\d+) i password \"([^\"]*)\", amb un efectiu inicial de (.+)€ (\\d+) cops$")
+    @Quan("^inicio el torn al tpv amb identificador (\\d+) i password \"([^\"]*)\", amb un efectiu inicial de ((?:\\d|\\.)+)€ (\\d+) cops$")
     public void login(long saleAssistantID, String password, double cash, int n) throws Throwable {
         for (int i = 0; i < n; ++i)
             tryCatch(() -> TPVController.login(saleAssistantID, password, cash));
@@ -154,7 +154,7 @@ public class StepDefinitions {
         TPVController.startSale();
     }
 
-    @Donat("^un producte amb nom \"([^\"]*)\", preu (.+)€, iva (\\d+)% i codi de barres (\\d+)$")
+    @Donat("^un producte amb nom \"([^\"]*)\", preu ((?:\\d|\\.)+)€, iva (\\d+)% i codi de barres (\\d+)$")
     public void productCreated(String productName, double price, int vatPct, int barCode) throws Throwable {
         productsService.newProduct(productName, price, vatPct, barCode);
     }
@@ -174,7 +174,7 @@ public class StepDefinitions {
         assertEquals(expectedNumberOfLines, TPVController.getCurrentSale().getLines().size());
     }
 
-    @Aleshores("^línia de venta (\\d+) és de (\\d+) unitats de \"([^\"]*)\" a (.+)€ cada una per un total de (.+)€$")
+    @Aleshores("^línia de venta (\\d+) és de (\\d+) unitats de \"([^\"]*)\" a ((?:\\d|\\.)+)€ cada una per un total de ((?:\\d|\\.)+)€$")
     public void línia_de_venta_és_de_unitats_de_a_€_cada_una_per_un_total_de_€(int lineNumber, int units, String productName, double unitPrice, double totalPrice) throws Throwable {
         SaleLine sl = TPVController.getCurrentSale().getLines().get(lineNumber - 1);
         assertEquals(units,sl.getAmount());
@@ -183,7 +183,7 @@ public class StepDefinitions {
         assertEquals(productName, sl.getName());
     }
 
-    @Aleshores("^el total de la venta actual és de (.+)€$")
+    @Aleshores("^el total de la venta actual és de ((?:\\d|\\.)+)€$")
     public void el_total_de_la_venta_actual_és_de_€(double saleTotal) throws Throwable {
         assertEquals(saleTotal, TPVController.getCurrentSale().getTotal(), DELTA);
     }
@@ -193,7 +193,7 @@ public class StepDefinitions {
         assertEquals(msg, TPVController.getCustomerScreenMessage());
     }
 
-    @Quan("^indico que el client ha entregat (.+)€ per a pagar en metàlic$")
+    @Quan("^indico que el client ha entregat ((?:\\d|\\.)+)€ per a pagar en metàlic$")
     public void cashPayment(double delivered) throws Throwable {
         tryCatch(() -> change = TPVController.cashPayment(delivered));
     }
@@ -203,14 +203,14 @@ public class StepDefinitions {
         tryCatch(() -> TPVController.tarjetPayment());
     }
 
-    @Aleshores("^el tpv m'indica que el canvi a retornar és de (.+)€$")
+    @Aleshores("^el tpv m'indica que el canvi a retornar és de ((?:\\d|\\.)+)€$")
     public void checkChange(double expectedChange) throws Throwable {
         assertEquals(expectedChange, change, DELTA);
     }
 
-    @Aleshores("^el tpv tanca la venda actual$")
-    public void el_tpv_tanca_la_venda_actual() throws Throwable {
-        tryCatch(TPVController::endSale);
+    @Aleshores("^el tpv indica que s'ha pagat amb targeta i tanca la venda$")
+    public void setTarget() throws Throwable {
+
     }
 
     @Aleshores("^la venta esta iniciada$")
@@ -248,7 +248,7 @@ public class StepDefinitions {
         productManagerController = new ProductManagerController(balancesService);
     }
 
-    @Donat("^un desquadrament del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de (.+)€")
+    @Donat("^un desquadrament del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de ((?:\\d|\\.)+)€")
     public void addDesquadrament(String nomCaixer, String shopName, double qtt) throws Throwable {
         balancesService.newBalance(qtt, nomCaixer, shopName);
     }
@@ -285,7 +285,7 @@ public class StepDefinitions {
     }
 
 
-    @I("^obtinc una linia de venda amb el (\\d+)er producte amb nom \"([^\"]*)\", preu (.+)€ i codi de barres (\\d+)$")
+    @I("^obtinc una linia de venda amb el (\\d+)er producte amb nom \"([^\"]*)\", preu ((?:\\d|\\.)+)€ i codi de barres (\\d+)$")
     public void obtinc_una_linia_de_venda_amb_x_producte(int ind, String productName, double price, int barCode) throws Throwable {
         assertTrue(TPVController.getCurrentSale().hasProductByBarCode(barCode));
         SaleLine line = TPVController.getCurrentSale().getLines().get(ind-1);

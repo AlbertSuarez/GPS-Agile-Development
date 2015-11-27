@@ -12,21 +12,18 @@ Característica: Quadrar la caixa en finalitzar torn
   Escenari: El caixer comprova el quadrament i aquest és positiu o igual a 0
     Donat que he afegit el producte de codi de barres 1234567 a la venta
     I indico que el client ha entregat 30€ per a pagar en metàlic
-    I el tpv tanca la venda actual
-    Quan finalitzo el meu torn, amb un efectiu final de 60€
+    Quan intento finalitzar el meu torn, indicant un efectiu final de 60€
     Aleshores el tpv es troba en estat "disponible"
 
   Escenari: El caixer comprova el quadrament i aquest és negatiu
     Donat que he afegit el producte de codi de barres 1234567 a la venta
     I indico que el client ha entregat 30€ per a pagar en metàlic
-    I el tpv tanca la venda actual
-    Quan finalitzo el meu torn, amb un efectiu final de 56€
+    Quan intento finalitzar el meu torn, indicant un efectiu final de 56€
     Aleshores obtinc un error que diu: "La caixa no quadra: hi ha un desquadrament de 4.0€"
     I el tpv es troba en estat "ocupat"
 
   Escenari: El caixer decideix tancar torn tot i haver-hi desquadrament
     Donat que he afegit el producte de codi de barres 1234567 a la venta
     I indico que el client ha entregat 30€ per a pagar en metàlic
-    I el tpv tanca la venda actual
     Quan finalitzo el meu torn amb un desquadrament, amb un efectiu final de 56€
     Aleshores el tpv es troba en estat "disponible"
