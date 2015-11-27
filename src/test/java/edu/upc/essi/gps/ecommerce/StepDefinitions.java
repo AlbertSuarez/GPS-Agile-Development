@@ -1,6 +1,5 @@
 package edu.upc.essi.gps.ecommerce;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
 import cucumber.api.java.ca.I;

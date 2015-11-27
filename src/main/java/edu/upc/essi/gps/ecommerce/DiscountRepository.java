@@ -24,9 +24,10 @@ public class DiscountRepository extends Repository<Discount> {
         return list((d) -> d.getTrigger().getId() == productId);
     }
 
+
     @Override
-    protected void checkInsert(Discount entity) throws RuntimeException {
-        if(findByName(entity.getName())!=null)
+    protected void checkInsert(Discount discount) throws RuntimeException {
+        if(findByName(discount.getName())!=null)
             throw new IllegalArgumentException("Ja existeix un descompte amb aquest nom");
     }
 
