@@ -100,14 +100,9 @@ public class StepDefinitions {
         tryCatch(() -> TPVController.getTpv().addCash(-cash));
     }
 
-    @Aleshores("^s'emmagatzema el desquadrament de caixa amb un desquadrament de (.+)€$")
-    public void checkDesquadrament(double imbalance) throws Throwable {
-        tryCatch(() -> TPVController.logout(imbalance));
-    }
-
     @Quan("^finalitzo el meu torn, amb un efectiu final de (.+)€$")
     public void logout(double cash) throws Throwable {
-        tryCatch(() -> TPVController.logout(cash));
+        tryCatch(() -> TPVController.quadra(cash));
     }
 
     @Quan("^consulto els desquadraments$")

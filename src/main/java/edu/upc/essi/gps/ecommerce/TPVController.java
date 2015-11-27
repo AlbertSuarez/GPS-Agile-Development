@@ -62,10 +62,14 @@ public class TPVController {
             throw new IllegalStateException("Password d'administrador incorrecte");
     }
 
-    public void logout(double cash){
+    public void quadra(double cash){
 
-        balancesService.newBalance(cash, tpv.getCurrentSaleAssistant().getName(), tpv.getShop());
-        tpv.endTurn();
+        if (cash >= tpv.getCash()) {
+            tpv.endTurn();
+        }
+        else {
+           throw new IllegalStateException("La caixa no quadra: hi ha un desquadrament de " + (tpv.getCash() - cash) + "€");
+        }
 
     }
 
@@ -121,7 +125,7 @@ public class TPVController {
             throw new IllegalStateException("No es pot cobrar una venta si no està iniciada");
         if(tpv.getCurrentSale().isEmpty())
             throw new IllegalStateException("No es pot cobrar una venta sense cap producte");
-        tpv.addCash(delivered);
+        tpv.addCash(getCurrentSale().getTotal());
         return getCanvi(delivered);
     }
 

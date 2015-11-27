@@ -9,9 +9,17 @@ Característica: Quadrar la caixa en finalitzar torn
     I que s'inica el torn al tpv amb identificador 123 i password "asdf", amb un efectiu inicial de 37€
     I un producte amb nom "Hipopotamo traga-bolas", preu 23€, iva 21% i codi de barres 1234567
 
-  Escenari: La caixa quadra
+  Escenari: La caixa quadra o el quadrament és positiu
     Donat que he afegit el producte de codi de barres 1234567 a la venta
     I indico que el client ha entregat 30€ per a pagar en metàlic
     I el tpv tanca la venda actual
     Quan finalitzo el meu torn, amb un efectiu final de 60€
     Aleshores el tpv es troba en estat "disponible"
+
+  Escenari: La caixa no quadra i l'usuari reintenta
+    Donat que he afegit el producte de codi de barres 1234567 a la venta
+    I indico que el client ha entregat 30€ per a pagar en metàlic
+    I el tpv tanca la venda actual
+    Quan finalitzo el meu torn, amb un efectiu final de 56€
+    Aleshores obtinc un error que diu: "La caixa no quadra: hi ha un desquadrament de 4€"
+    I el tpv es troba en estat "ocupat"
