@@ -165,7 +165,7 @@ public class StepDefinitions {
 
     @Quan("^afegeixo el producte de codi de barres (\\d+) a la venta$")
     public void addProductByBarCode(int barCode) throws Throwable {
-        TPVController.addProductByBarCode(barCode);
+        tryCatch(()->TPVController.addProductByBarCode(barCode));
     }
 
     @Donat("^que he afegit el producte de codi de barres (\\d+) a la venta$")
