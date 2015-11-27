@@ -141,12 +141,11 @@ public class TPVController {
         return delivered-total;
     }
 
-    public double tarjetPayment(double delivered) {
+    public void tarjetPayment() {
         if(!tpv.hasSale())
             throw new IllegalStateException("No es pot cobrar una venta si no està iniciada");
         if(tpv.getCurrentSale().isEmpty())
             throw new IllegalStateException("No es pot cobrar una venta sense cap producte");
-        return delivered-tpv.getCurrentSale().getTotal();
     }
 
     public void addProductByBarCode(int barCode, int unitats) {

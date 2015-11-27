@@ -198,9 +198,9 @@ public class StepDefinitions {
         tryCatch(() -> change = TPVController.cashPayment(delivered));
     }
 
-    @Quan("^indico que el client paga (.+)€ amb targeta$")
-    public void tarjetPayment(double delivered) throws Throwable {
-        tryCatch(() -> change = TPVController.tarjetPayment(delivered));
+    @Quan("^indico que el client paga el total de la venda amb targeta$")
+    public void tarjetPayment() throws Throwable {
+        tryCatch(() -> TPVController.tarjetPayment());
     }
 
     @Aleshores("^el tpv m'indica que el canvi a retornar és de (.+)€$")
@@ -208,7 +208,7 @@ public class StepDefinitions {
         assertEquals(expectedChange, change, DELTA);
     }
 
-    @Aleshores("^el tpv indica que s'ha pagat amb targeta$")
+    @Aleshores("^el tpv indica que s'ha pagat amb targeta i tanca la venda$")
     public void setTarget() throws Throwable {
 
     }
