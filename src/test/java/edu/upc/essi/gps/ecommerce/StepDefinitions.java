@@ -208,11 +208,6 @@ public class StepDefinitions {
         assertEquals(expectedChange, change, DELTA);
     }
 
-    @Aleshores("^el tpv indica que s'ha pagat amb targeta$")
-    public void setTarget() throws Throwable {
-
-    }
-
     @Aleshores("^el tpv tanca la venda actual$")
     public void el_tpv_tanca_la_venda_actual() throws Throwable {
         tryCatch(TPVController::endSale);
