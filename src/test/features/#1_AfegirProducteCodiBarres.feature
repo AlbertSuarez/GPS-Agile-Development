@@ -20,9 +20,9 @@ Característica: Afegir producte per codi de barres
     Quan afegeixo el producte de codi de barres 1234567 a la venta
     Aleshores la pantalla del client del tpv mostra
     """
-    Hipopotamo traga-bolas - 23€/u x 1u = 23€
+    Hipopotamo traga-bolas - 23.0€/u x 1u = 23.0€
     ---
-    Total: 23€
+    Total: 23.0€
     """
 
   Escenari: Afegim producte amb 2 unitats
