@@ -6,6 +6,7 @@ Característica: Iniciar el torn al tpv
   Rerefons:
     Donat que estem al tpv número 1 de la botiga "Girona 1"
     I que el "Joan" s'ha registrat al sistema amb password "asdf" i rep l'identificador 123
+    I que el pssword mestre del sistema és "someMasterPass"
 
   Escenari: Iniciar el torn
     Quan inicio el torn al tpv amb identificador 123 i password "asdf", amb un efectiu inicial de 25€
@@ -20,7 +21,8 @@ Característica: Iniciar el torn al tpv
 
   Escenari: Usuari i/o password incorrectes
     Quan inicio el torn al tpv amb identificador 111 i password "qwerty", amb un efectiu inicial de 25€
-    Aleshores el tpv es troba en estat "disponible"
+    Aleshores obtinc un error que diu: "El nom d'usuari o el password és incorrecte"
+    I el tpv es troba en estat "disponible"
 
   Escenari: Excés d'intents d'inici
     Quan inicio el torn al tpv amb identificador 123 i password "asdfg", amb un efectiu inicial de 25€ 5 cops

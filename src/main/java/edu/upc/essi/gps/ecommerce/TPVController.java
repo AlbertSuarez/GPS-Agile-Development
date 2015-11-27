@@ -38,19 +38,23 @@ public class TPVController {
         return tpv.getCurrentSale();
     }
 
-    public boolean login(long saleAssistantId, @NotNull String password, double cash) {
+    public void login(long saleAssistantId, @NotNull String password, double cash) {
         if (tpv.getState().equals(TPVState.IDLE))
             throw new IllegalStateException("Aquest tpv està en ús per " + tpv.getCurrentSaleAssistant().getName());
-        if (tpv.getState().equals(TPVState.BLOCKED)) throw new IllegalStateException("Aquest tpv està bloquejat");
+        if (tpv.getState().equals(TPVState.BLOCKED))
+            throw new IllegalStateException("Aquest tpv està bloquejat");
 
         checkNotNull(password, "password");
 
-        boolean loggedIn = saleAssistantService.validate(saleAssistantId, password);
-        tpvService.validation(tpv.getId(), loggedIn);
-        if (loggedIn) {
-            tpv.newTurn(saleAssistantService.findById(saleAssistantId), cash);
+        try {
+            saleAssistantService.validate(saleAssistantId, password);
+        } catch (IllegalStateException e) {
+            tpvService.failLogin(tpv.getId());
+            throw e;
         }
-        return loggedIn;
+
+        tpvService.successLogin(tpv.getId());
+        tpv.newTurn(saleAssistantService.findById(saleAssistantId), cash);
     }
 
     public void unblock(@NotNull String password) {
@@ -63,7 +67,6 @@ public class TPVController {
     }
 
     public void quadra(double cash){
-
         if (cash >= tpv.getCash()) {
             tpv.endTurn();
         }
@@ -111,11 +114,21 @@ public class TPVController {
         }
         StringBuilder sb = new StringBuilder();
         for (Sale.SaleLine sl : tpv.getCurrentSale().getLines()) {
-            sb.append(sl.getName()).append(" - ")
-                    .append(sl.getUnitPrice()).append("€/u x ").append(sl.getAmount()).append("u = ")
-                    .append(sl.getTotalPrice()).append("€" + System.lineSeparator());
+            sb.append(sl.getName())
+                    .append(" - ")
+                    .append(sl.getUnitPrice())
+                    .append("€/u x ")
+                    .append(sl.getAmount())
+                    .append("u = ")
+                    .append(sl.getTotalPrice())
+                    .append("€")
+                    .append(System.lineSeparator());
         }
-        sb.append("---" + System.lineSeparator()).append("Total: ").append(tpv.getCurrentSale().getTotal()).append("€");
+        sb.append("---")
+                .append(System.lineSeparator())
+                .append("Total: ")
+                .append(tpv.getCurrentSale().getTotal())
+                .append("€");
         return sb.toString();
     }
 

@@ -4,6 +4,7 @@ import edu.upc.essi.gps.domain.SaleAssistant;
 import edu.upc.essi.gps.utils.Comparators;
 import edu.upc.essi.gps.utils.Matchers;
 import edu.upc.essi.gps.utils.Validations;
+import sun.plugin.dom.exception.InvalidStateException;
 
 import java.util.List;
 
@@ -45,8 +46,13 @@ public class SaleAssistantService {
         return saleAssistantRepository.findById(caixerId);
     }
 
-    public boolean validate(long id, String password) {
-        return Validations.validPassword(password, findById(id).getEncryptedPass());
+    public void validate(long id, String password) {
+        SaleAssistant saleAssistant = findById(id);
+        if (saleAssistant == null)
+            throw new IllegalStateException("El nom d'usuari o el password és incorrecte");
+        if (!Validations.validPassword(password, saleAssistant.getEncryptedPass()))
+            throw new IllegalStateException("El nom d'usuari o el password és incorrecte");
+
     }
 
 }

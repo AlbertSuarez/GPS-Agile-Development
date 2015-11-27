@@ -9,7 +9,11 @@ import java.util.List;
 
 public class TPVService {
 
-    private static final String MASTER_PASS = "someMasterPass";
+    private static String MASTER_PASS = "asdfg";
+
+    public static void setMasterPass(String pass) {
+        MASTER_PASS = pass;
+    }
 
     private TPVRepository tpvRepository;
 
@@ -40,14 +44,17 @@ public class TPVService {
         return tpvRepository.findByShopPos(shop, pos);
     }
 
-    public void validation(long TVPid, boolean validated) {
+    public void failLogin(long TVPid) {
         TPV tpv = findById(TVPid);
-        if (validated) tpv.setState(TPVState.IDLE);
-        else {
-            if (tpv.getnIntents() == 4) tpv.setState(TPVState.BLOCKED);
-            else tpv.addNIntents(1);
-        }
+        if (tpv.getnIntents() == 4) tpv.setState(TPVState.BLOCKED);
+        else tpv.addNIntents(1);
     }
+
+    public void successLogin(long TVPid) {
+        TPV tpv = findById(TVPid);
+        tpv.setState(TPVState.IDLE);
+    }
+
 
     public boolean validateAdmin(long TVPid, String password) {
         TPV tpv = findById(TVPid);
@@ -57,5 +64,6 @@ public class TPVService {
         }
         return false;
     }
+
 
 }

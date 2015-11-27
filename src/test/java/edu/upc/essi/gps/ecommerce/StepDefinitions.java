@@ -9,7 +9,6 @@ import edu.upc.essi.gps.domain.Balance;
 import edu.upc.essi.gps.domain.Product;
 import edu.upc.essi.gps.domain.Sale;
 import edu.upc.essi.gps.domain.Sale.SaleLine;
-import edu.upc.essi.gps.domain.TPV;
 
 import java.util.List;
 
@@ -78,7 +77,7 @@ public class StepDefinitions {
 
     @Donat("^que s'inica el torn al tpv amb identificador (\\d+) i password \"([^\"]*)\", amb un efectiu inicial de ((?:\\d|\\.)+)€$")
     public void loginDonat(long saleAssistantID, String password, double cash) throws Throwable {
-        TPVController.login(saleAssistantID, password, cash);
+        tryCatch(() -> TPVController.login(saleAssistantID, password, cash));
     }
 
     @Quan("^inicio el torn al tpv amb identificador (\\d+) i password \"([^\"]*)\", amb un efectiu inicial de ((?:\\d|\\.)+)€$")
@@ -201,7 +200,7 @@ public class StepDefinitions {
 
     @Quan("^indico que el client paga el total de la venda amb targeta$")
     public void tarjetPayment() throws Throwable {
-        tryCatch(() -> TPVController.tarjetPayment());
+        tryCatch(TPVController::tarjetPayment);
     }
 
     @Aleshores("^el tpv m'indica que el canvi a retornar és de ((?:\\d|\\.)+)€$")
@@ -296,7 +295,12 @@ public class StepDefinitions {
 
     @Quan("^afegeixo (\\d+) unitats del producte per nom \"([^\"]*)\" a la venta$")
     public void afegeixo_unitats_del_producte_per_nom_a_la_venta(int unitatsProducte, String nomProducte) throws Throwable {
-        TPVController.addProductByName(nomProducte, unitatsProducte);
+        tryCatch(() -> TPVController.addProductByName(nomProducte, unitatsProducte));
+    }
+
+    @Donat("^que el pssword mestre del sistema és \"([^\"]*)\"$")
+    public void setMasterPassword(String newPassword) {
+        TPVService.setMasterPass(newPassword);
     }
 
     @Aleshores("^la venta esta tancada$")
