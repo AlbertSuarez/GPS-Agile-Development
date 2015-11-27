@@ -26,4 +26,5 @@ Característica: Quadrar la caixa en finalitzar torn
     Donat que he afegit el producte de codi de barres 1234567 a la venta
     I indico que el client ha entregat €30€ per a pagar en metàlic
     Quan finalitzo el meu torn amb un desquadrament, amb un efectiu final de €56€
-    Aleshores el tpv es troba en estat "disponible"
+    Aleshores queda registrat un desquadrament del caixer amb nom "Joan" a la botiga "Girona 1" d'una quantitat de €4€
+    I el tpv es troba en estat "disponible"

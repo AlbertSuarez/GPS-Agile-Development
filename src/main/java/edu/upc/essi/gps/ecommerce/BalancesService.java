@@ -25,11 +25,11 @@ public class BalancesService {
         return balanceRepository.listByShopName(shopName);
     }
 
-    public long newBalance(double qtt, String saleAssistantName, String nomBotiga ) {
+    public Balance newBalance(double qtt, String saleAssistantName, String nomBotiga ) {
         long id = balanceRepository.newId();
         Balance imbalance = new Balance(id, qtt, saleAssistantName, nomBotiga);
         balanceRepository.insert(imbalance);
-        return id;
+        return imbalance;
     }
 
 }
