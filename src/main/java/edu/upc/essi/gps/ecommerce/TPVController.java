@@ -118,15 +118,15 @@ public class TPVController {
         String welcomeMessage = "Li donem la benvinguda a Joguets i Joguines!";
         if (!tpv.hasSale()) return welcomeMessage;
         if (tpv.getCurrentSale().isEmpty()) {
-            return welcomeMessage + "\nL'atén " + tpv.getCurrentSaleAssistant().getName();
+            return welcomeMessage + System.lineSeparator() + "L'atén " + tpv.getCurrentSaleAssistant().getName();
         }
         StringBuilder sb = new StringBuilder();
         for (Sale.SaleLine sl : tpv.getCurrentSale().getLines()) {
             sb.append(sl.getName()).append(" - ")
                     .append(sl.getUnitPrice()).append("€/u x ").append(sl.getAmount()).append("u = ")
-                    .append(sl.getTotalPrice()).append("€\n");
+                    .append(sl.getTotalPrice()).append("€" + System.lineSeparator());
         }
-        sb.append("---\n").append("Total: ").append(tpv.getCurrentSale().getTotal()).append("€");
+        sb.append("---" + System.lineSeparator()).append("Total: ").append(tpv.getCurrentSale().getTotal()).append("€");
         return sb.toString();
     }
 
