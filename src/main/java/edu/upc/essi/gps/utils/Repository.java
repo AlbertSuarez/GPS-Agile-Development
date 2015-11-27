@@ -37,7 +37,10 @@ public abstract class Repository<T extends Entity> {
     }
 
     public List<T> list(Matcher<? super T> matcher, Comparator<? super T> sortedBy) {
-        List<T> result = entities.stream().filter(matcher::matches).collect(Collectors.toCollection(LinkedList::new));
+        List<T> result = entities
+                .stream()
+                .filter(matcher::matches)
+                .collect(Collectors.toCollection(LinkedList::new));
         result.sort(sortedBy);
         return Collections.unmodifiableList(result);
     }

@@ -62,8 +62,8 @@ public class Sale {
      * Consulta el còmput total de la venta.
      * @return el total a pagar en aquesta venta.
      * */
-    public int getTotal() {
-        int res = 0;
+    public double getTotal() {
+        double res = 0;
         for(SaleLine l : lines){
             res += l.getTotalPrice();
         }
@@ -122,7 +122,7 @@ public class Sale {
         /**
          * Valor del producte o despompte
          * */
-        private int unitPrice;
+        private double unitPrice;
 
         /**
          * Quantitat d'unitats del producte o despompte
@@ -180,7 +180,7 @@ public class Sale {
          * Consulta el valor unitari del producte o descompte indicat a la línia.
          * @return valor unitari del producte o descompte indicat a la línia.
          */
-        public int getUnitPrice() {
+        public double getUnitPrice() {
             return unitPrice;
         }
 
@@ -196,7 +196,7 @@ public class Sale {
          * Consulta el valor total de la línia.
          * @return valor total de la línia.
          */
-        public int getTotalPrice() {
+        public double getTotalPrice() {
             return unitPrice * amount;
         }
 

@@ -19,7 +19,7 @@ public class Product implements Entity, HasName {
     /**
      * Preu unitar d'aquest producte.
      * */
-    private final int price;
+    private final double price;
 
     /**
      * TODO: dafuq is dat? (:|)
@@ -44,7 +44,7 @@ public class Product implements Entity, HasName {
      * @param vatPct dafuq is dat? (:|)
      * @param barCode Codi de barres d'aquest producte.
      * */
-    public Product(long id, String name, int price, int vatPct, int barCode) {
+    public Product(long id, String name, double price, int vatPct, int barCode) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -74,7 +74,7 @@ public class Product implements Entity, HasName {
      * Consulta el preu unitar d'aquest producte.
      * @return el preu unitar d'aquest producte.
      * */
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 

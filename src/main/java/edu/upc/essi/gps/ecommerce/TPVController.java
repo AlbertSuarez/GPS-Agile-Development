@@ -130,7 +130,7 @@ public class TPVController {
         return sb.toString();
     }
 
-    public int cashPayment(int delivered) {
+    public double cashPayment(double delivered) {
         if(!tpv.hasSale())
             throw new IllegalStateException("No es pot cobrar una venta si no està iniciada");
         if(tpv.getCurrentSale().isEmpty())
@@ -138,14 +138,14 @@ public class TPVController {
         return getCanvi(delivered);
     }
 
-    private int getCanvi(int delivered) {
-        int total = tpv.getCurrentSale().getTotal();
+    private double getCanvi(double delivered) {
+        double total = tpv.getCurrentSale().getTotal();
         if(total > delivered)
             throw new IllegalStateException("No es pot cobrar una venta amb un import inferior al total de la venta");
         return delivered-total;
     }
 
-    public int tarjetPayment(int delivered) {
+    public double tarjetPayment(double delivered) {
         if(!tpv.hasSale())
             throw new IllegalStateException("No es pot cobrar una venta si no està iniciada");
         if(tpv.getCurrentSale().isEmpty())
