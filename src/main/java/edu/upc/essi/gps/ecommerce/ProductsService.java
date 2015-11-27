@@ -13,7 +13,7 @@ public class ProductsService {
         this.productsRepository = productsRepository;
     }
 
-    public long newProduct(String name, double price, int vatPct, int barCode){
+    public long newProduct(String name, double price, double vatPct, int barCode){
         long id = productsRepository.newId();
         Product result = new Product(id,name, price, vatPct, barCode);
         productsRepository.insert(result);

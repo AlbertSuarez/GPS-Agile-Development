@@ -17,14 +17,14 @@ public class Product implements Entity, HasName {
     private String name;
 
     /**
-     * Preu unitar d'aquest producte.
+     * Preu unitari d'aquest producte.
      * */
     private final double price;
 
     /**
-     * TODO: dafuq is dat? (:|)
+     * Percentatge d'IVA corresponent
      * */
-    private final int vatPct;
+    private final double vatPct;
 
     /**
      * Codi de barres d'aquest producte. Aquest codi és únic al sistema.
@@ -44,7 +44,7 @@ public class Product implements Entity, HasName {
      * @param vatPct dafuq is dat? (:|)
      * @param barCode Codi de barres d'aquest producte.
      * */
-    public Product(long id, String name, double price, int vatPct, int barCode) {
+    public Product(long id, String name, double price, double vatPct, int barCode) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -78,11 +78,11 @@ public class Product implements Entity, HasName {
         return price;
     }
 
-    /** TODO
-     * Consulta ¿¿??.
-     * @return ¿¿??.
+    /**
+     * Consulta el percentatge d'IVA corresponent al producte
+     * @return el percentatge d'IVA d'aquest producte
      * */
-    public int getVatPct() {
+    public double getVatPct() {
         return vatPct;
     }
 

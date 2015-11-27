@@ -153,7 +153,7 @@ public class StepDefinitions {
         TPVController.startSale();
     }
 
-    @Donat("^un producte amb nom \"([^\"]*)\", preu €([^\"]*)€, iva (\\d+)% i codi de barres (\\d+)$")
+    @Donat("^un producte amb nom \"([^\"]*)\", preu €([^\"]*)€, iva %([^\"]*)% i codi de barres (\\d+)$")
     public void productCreated(String productName, double price, int vatPct, int barCode) throws Throwable {
         productsService.newProduct(productName, price, vatPct, barCode);
     }

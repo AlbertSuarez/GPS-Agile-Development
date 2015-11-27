@@ -7,7 +7,7 @@ Característica: Quadrar la caixa en finalitzar torn
     Donat que estem al tpv número 1 de la botiga "Girona 1"
     I que el "Joan" s'ha registrat al sistema amb password "asdf" i rep l'identificador 123
     I que s'inica el torn al tpv amb identificador 123 i password "asdf", amb un efectiu inicial de €37€
-    I un producte amb nom "Hipopotamo traga-bolas", preu €23€, iva 21% i codi de barres 1234567
+    I un producte amb nom "Hipopotamo traga-bolas", preu €23€, iva %21% i codi de barres 1234567
 
   Escenari: El caixer comprova el quadrament i aquest és positiu o igual a 0
     Donat que he afegit el producte de codi de barres 1234567 a la venta
