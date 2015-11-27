@@ -21,5 +21,5 @@ Característica: Quadrar la caixa en finalitzar torn
     I indico que el client ha entregat 30€ per a pagar en metàlic
     I el tpv tanca la venda actual
     Quan finalitzo el meu torn, amb un efectiu final de 56€
-    Aleshores obtinc un error que diu: "La caixa no quadra: hi ha un desquadrament de 4€"
+    Aleshores obtinc un error que diu: "La caixa no quadra: hi ha un desquadrament de 4.0€"
     I el tpv es troba en estat "ocupat"
