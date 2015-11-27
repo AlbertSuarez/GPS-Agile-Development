@@ -105,6 +105,11 @@ public class StepDefinitions {
         tryCatch(() -> TPVController.quadra(cash));
     }
 
+    @Quan("^finalitzo el meu torn amb un desquadrament, amb un efectiu final de (.+)€$")
+    public void desquadrament(double cash) throws Throwable {
+        tryCatch(() -> TPVController.addDesquadrament(cash));
+    }
+
     @Quan("^consulto els desquadraments$")
     public void consultaDesquadraments() {
         tryCatch(() -> balances = productManagerController.listBalances());

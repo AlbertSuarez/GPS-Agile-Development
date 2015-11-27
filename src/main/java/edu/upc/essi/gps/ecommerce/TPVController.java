@@ -73,6 +73,11 @@ public class TPVController {
 
     }
 
+    public void addDesquadrament(double cash) {
+        balancesService.newBalance(tpv.getCash() - cash, tpv.getCurrentSaleAssistant().getName(), tpv.getShop());
+        tpv.endTurn();
+    }
+
     public void startSale() {
         if (tpv.hasSale())
             throw new IllegalStateException("Aquest tpv ja té una venta iniciada");
