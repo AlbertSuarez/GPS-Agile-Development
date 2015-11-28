@@ -1,5 +1,7 @@
 package edu.upc.essi.gps.domain;
 
+import java.util.List;
+
 /**
  * Classe que representa un descompte del tipus x% (10% de descompte, 23% de descompte...).
  * */
@@ -30,6 +32,21 @@ public class Percent extends Discount {
     @Override
     public double getDiscount() {
         return -trigger.getPrice()*percent/100;
+    }
+
+    @Override
+    public boolean checkSale(Sale currentSale) {
+        List<Sale.SaleLine> list = currentSale.getLines();
+        Sale.SaleLine line = list.get(list.size()-1);
+        return line.getId() == trigger.getId();
+    }
+
+    @Override
+    public int getAmount(Sale currentSale) {
+        if (!checkSale(currentSale)) return 0;
+        List<Sale.SaleLine> list = currentSale.getLines();
+        Sale.SaleLine line = list.get(list.size()-1);
+        return line.getAmount();
     }
 
 }

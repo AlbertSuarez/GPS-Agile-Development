@@ -80,7 +80,7 @@ public class DiscountService {
         return discountRepository.findById(id);
     }
 
-    public List<Discount> listByTriggerId(int id) {
+    public List<Discount> listByTriggerId(long id) {
         return discountRepository.findByTriggerId(id);
     }
 

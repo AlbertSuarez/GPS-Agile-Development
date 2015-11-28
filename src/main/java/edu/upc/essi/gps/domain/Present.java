@@ -1,5 +1,8 @@
 package edu.upc.essi.gps.domain;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Classe que representa un descompte del tipus amb el producte A et regalem B.
  * */
@@ -30,6 +33,42 @@ public class Present extends Discount{
     @Override
     public double getDiscount() {
         return -present.getPrice();
+    }
+
+    @Override
+    public boolean checkSale(Sale currentSale) {
+        List<Sale.SaleLine> list = currentSale.getLines();
+        Sale.SaleLine line = list.get(list.size() - 1);
+        return line.getId() == trigger.getId()
+                && list
+                .stream()
+                .filter(l -> l.getId() == present.getId() && l.getAmount() == line.getAmount())
+                .collect(Collectors.toList())
+                .size() > 0;
+    }
+
+    @Override
+    public int getAmount(Sale currentSale) {
+        if (!checkSale(currentSale)) return 0;
+        List<Sale.SaleLine> list = currentSale.getLines();
+        Sale.SaleLine line = list.get(list.size() - 1);
+
+        //Nombre de triggers d'igual quantitat que el nostre
+        int amountT = list
+                .stream()
+                .filter(l -> l.getId() == trigger.getId() && l.getAmount() == line.getAmount())
+                .collect(Collectors.toList())
+                .size();
+
+        //Nombre de presents d'igual quantitat que el nostre
+        int amountP = list
+                .stream()
+                .filter(l -> l.getId() == present.getId() && l.getAmount() == line.getAmount())
+                .collect(Collectors.toList())
+                .size();
+
+        if (amountP < amountT) return 0;
+        else return line.getAmount();
     }
 
 }

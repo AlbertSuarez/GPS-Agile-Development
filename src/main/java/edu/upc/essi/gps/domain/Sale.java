@@ -3,6 +3,7 @@ package edu.upc.essi.gps.domain;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Classe que representa una venta mitjançant un conjunt de línies de venta.
@@ -17,7 +18,7 @@ public class Sale {
     /**
      * Afegeix un nou descompte a la venta.
      * @param d producte a afegir a la venta.
-     * @param posicions índex dels articles als que es vol aplicar el descompte.
+     * @param pos índex dels articles als que es vol aplicar el descompte.
      * */
     public void addDiscount(Discount d, int pos) {
         if (pos > lines.size())
@@ -85,8 +86,15 @@ public class Sale {
      * @param product producte a afegir a la venta.
      * @param unitats nombre d'unitats del producte a afegir
      * */
-    public void addProduct(Product product, int unitats) {
+    public void addProduct(Product product, int unitats, List<Discount> discountList) {
         lines.add(new SaleLine(product, unitats));
+        lines.addAll(
+                discountList
+                        .stream()
+                        .filter(d -> d.checkSale(this))
+                        .map(d -> new SaleLine(d, d.getAmount(this)))
+                        .collect(Collectors.toList())
+        );
     }
 
     /**

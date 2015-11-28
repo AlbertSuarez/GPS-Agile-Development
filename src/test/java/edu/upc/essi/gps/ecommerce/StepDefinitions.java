@@ -330,9 +330,9 @@ public class StepDefinitions {
         tryCatch(() -> tpvController.newDiscountPresent(name, codiBarresA, codiBarresB));
     }
 
-    @Aleshores("^el descompte \"([^\"]*)\" sobre el producte \"([^\"]*)\" té un valor de €([^\"]*)€$")
-    public void checkDescompte(String name, String prodName, String valor) throws Throwable {
-
+    @Aleshores("^el descompte \"([^\"]*)\" té un valor de €([^\"]*)€$")
+    public void checkDescompte(String name, String valor) throws Throwable {
+        assertEquals(Double.parseDouble(valor), discountService.findByName(name).getDiscount(), DELTA);
     }
 
 }

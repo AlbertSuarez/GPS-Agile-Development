@@ -184,7 +184,8 @@ public class TPVController {
         if (p == null) {
             throw new IllegalStateException(ADD_NON_EXISTING_PRODUCT_ERROR);
         }
-        tpv.addProduct(p, unitats);
+        List<Discount> dList = discountService.listByTriggerId(p.getId());
+        tpv.addProduct(p, unitats, dList);
     }
 
     public List<Product> addProductByName(@NotNull String nom) {
@@ -204,7 +205,9 @@ public class TPVController {
             throw new IllegalStateException(ADD_NON_EXISTING_PRODUCT_ERROR);
         }
         if (products.size() == 1) {
-            tpv.addProduct(products.get(0), unitatsProducte);
+            Product p = products.get(0);
+            List<Discount> dList= discountService.listByTriggerId(p.getId());
+            tpv.addProduct(p, unitatsProducte, dList);
         }
         return products;
     }

@@ -1,5 +1,7 @@
 package edu.upc.essi.gps.domain;
 
+import java.util.List;
+
 /**
  * Classe que representa un Terminal Punt de Venda (TPV), identificat per <code>id</code>.<br>
  * A més, cada tpv es pot identificar per la botiga on es troba i el seu numero de terminal.<br>
@@ -207,8 +209,8 @@ public class TPV implements Entity {
     }
 
 
-    public void addProduct(Product p, int unitats) {
+    public void addProduct(Product p, int unitats, List<Discount> discountList) {
         if (!hasSale()) newSale();
-        currentSale.addProduct(p, unitats);
+        currentSale.addProduct(p, unitats, discountList);
     }
 }
