@@ -32,7 +32,7 @@ public class ProductsService {
         return productsRepository.lookForName(productName);
     }
 
-    public Product findByBarCode(int barCode) {
+    public Product findByBarCode(long barCode) {
         return productsRepository.findByBarCode(barCode);
     }
 

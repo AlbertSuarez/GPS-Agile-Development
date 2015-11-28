@@ -15,13 +15,16 @@ public class TPVController {
     private final SaleAssistantService saleAssistantService;
     private final TPVService tpvService;
     private final BalancesService balancesService;
+    private final DiscountService discountService;
+
     private final TPV tpv;
 
-    public TPVController(ProductsService productsService, SaleAssistantService saleAssistantService, TPVService tpvService, BalancesService balancesService, String shop, int pos) {
+    public TPVController(ProductsService productsService, SaleAssistantService saleAssistantService, TPVService tpvService, BalancesService balancesService, DiscountService discountService, String shop, int pos) {
         this.productsService = productsService;
         this.saleAssistantService = saleAssistantService;
         this.tpvService = tpvService;
         this.balancesService = balancesService;
+        this.discountService = discountService;
         tpv = tpvService.findByShopPos(shop, pos);
         tpv.endTurn();
     }
@@ -96,8 +99,9 @@ public class TPVController {
         addProductByBarCode(barCode, 1);
     }
 
-    public void addNewDiscountToCurrentSale(int prodLine, String name, double percent) {
-        if (!isSaleStarted()) throw new IllegalStateException("No hi ha cap venda iniciada");
+    public void addNewDiscountToCurrentSale(int prodLine, @NotNull String name, double percent) {
+        if (!isSaleStarted())
+            throw new IllegalStateException("No hi ha cap venda iniciada");
         int max = getCurrentSale().getLines().size();
         if (prodLine-1 < 0 || prodLine-1 >= max)
             throw new IndexOutOfBoundsException("No es pot accedir a la línia " + prodLine +
@@ -105,6 +109,22 @@ public class TPVController {
         Product product = productsService.findById(tpv.getCurrentSale().getId(prodLine-1));
         Discount discount = new Percent(product, name, -1, percent);
         getCurrentSale().addDiscount(discount, prodLine);
+    }
+
+    public void newDiscountPercent(String name, long barCode, double percent) {
+        Product product = productsService.findByBarCode(barCode);
+        discountService.newDiscount(Percent.TYPE_NAME, product, name, percent);
+    }
+
+    public void newDiscountPromotion(String name, long barCode, int A, int B) {
+        Product product = productsService.findByBarCode(barCode);
+        discountService.newDiscount(Promotion.TYPE_NAME, product, name, A, B);
+    }
+
+    public void newDiscountPresent(String name, long barCodeA, long barCodeB) {
+        Product productA = productsService.findByBarCode(barCodeA);
+        Product productB = productsService.findByBarCode(barCodeB);
+        discountService.newDiscount(Present.TYPE_NAME, productA, name, productB);
     }
 
     public String getCustomerScreenMessage() {
@@ -167,7 +187,7 @@ public class TPVController {
         tpv.addProduct(p, unitats);
     }
 
-    public List<Product> addProductByName(String nom) {
+    public List<Product> addProductByName(@NotNull String nom) {
         return addProductByName(nom, 1);
     }
 
@@ -178,7 +198,7 @@ public class TPVController {
      * @param unitatsProducte units added
      * @return products that match the name introduced
      */
-    public List<Product> addProductByName(String nomProducte, int unitatsProducte) {
+    public List<Product> addProductByName(@NotNull String nomProducte, int unitatsProducte) {
         List<Product> products = productsService.findByName(nomProducte);
         if (products.isEmpty()) {
             throw new IllegalStateException(ADD_NON_EXISTING_PRODUCT_ERROR);
@@ -188,4 +208,5 @@ public class TPVController {
         }
         return products;
     }
+
 }

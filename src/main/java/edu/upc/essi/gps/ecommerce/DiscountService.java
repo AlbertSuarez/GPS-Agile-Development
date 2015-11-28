@@ -1,9 +1,6 @@
 package edu.upc.essi.gps.ecommerce;
 
-import edu.upc.essi.gps.domain.Discount;
-import edu.upc.essi.gps.domain.Percent;
-import edu.upc.essi.gps.domain.Product;
-import edu.upc.essi.gps.domain.Promotion;
+import edu.upc.essi.gps.domain.*;
 import edu.upc.essi.gps.utils.Comparators;
 
 import java.util.List;
@@ -16,7 +13,7 @@ public class DiscountService {
         this.discountRepository = discountRepository;
     }
 
-    public long newDiscount(String discountType, Product product, String name, int barCode, Object... params){
+    public long newDiscount(String discountType, Product product, String name, Object... params){
         Discount discount;
         long id;
         switch (discountType) {
@@ -33,7 +30,7 @@ public class DiscountService {
                     );
                 }
                 id = discountRepository.newId();
-                discount = new Promotion(product, name, barCode, id, A, B);
+                discount = new Promotion(product, name, id, A, B);
                 break;
             case Percent.TYPE_NAME:
                 double percent;
@@ -45,7 +42,19 @@ public class DiscountService {
                     );
                 }
                 id = discountRepository.newId();
-                discount = new Percent(product, name, barCode, id, percent);
+                discount = new Percent(product, name, id, percent);
+                break;
+            case Present.TYPE_NAME:
+                Product present;
+                try {
+                    present = (Product) params[0];
+                } catch (ClassCastException e) {
+                    throw new IllegalArgumentException("Paràmetres incorrectes: S'espera "
+                            + Product.class.getSimpleName()
+                    );
+                }
+                id = discountRepository.newId();
+                discount = new Present(product, name, id, present);
                 break;
             default:
                 throw new IllegalArgumentException("El tipus de descompte indicat no existeix");
@@ -69,10 +78,6 @@ public class DiscountService {
 
     public Discount findById(long id) {
         return discountRepository.findById(id);
-    }
-
-    public Discount findByBarCode(int barCode) {
-        return discountRepository.findByBarCode(barCode);
     }
 
     public List<Discount> listByTriggerId(int id) {

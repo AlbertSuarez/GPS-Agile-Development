@@ -16,10 +16,6 @@ public class DiscountRepository extends Repository<Discount> {
         return find((d) -> d.getId() == id);
     }
 
-    public Discount findByBarCode(final long id){
-        return find((d) -> d.getId() == id);
-    }
-
     public List<Discount> findByTriggerId(final long productId) {
         return list((d) -> d.getTrigger().getId() == productId);
     }

@@ -25,7 +25,6 @@ public abstract class Discount implements Entity, HasName {
      * Crea una nova instància d'un descompte a partir d'un producte.
      * @param product producte amb el qual s'asocia el descompte.
      * @param name nom del descompte.
-     * @param barCode codi de barres del descompte.<br>
      * En cas que es tracti d'un descompte manual, aquest paràmetre ha de tenir valor <code>-1</code>.
      * @param id identificador del descompte al sistema.
      * */
