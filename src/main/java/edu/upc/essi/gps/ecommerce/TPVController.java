@@ -87,7 +87,8 @@ public class TPVController {
     }
 
     public Balance addDesquadrament(double cash) {
-        Balance b = balancesService.newBalance(tpv.getCash() - cash, tpv.getCurrentSaleAssistant().getName(), tpv.getShop());
+        double qtt = Math.round((tpv.getCash() - cash) * 100.0) / 100.0;
+        Balance b = balancesService.newBalance(qtt, tpv.getCurrentSaleAssistant().getName(), tpv.getShop());
         tpv.endTurn();
         return b;
     }
