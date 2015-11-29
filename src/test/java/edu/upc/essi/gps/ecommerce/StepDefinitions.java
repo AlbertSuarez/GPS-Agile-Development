@@ -27,7 +27,7 @@ public class StepDefinitions {
     private ProductManagerController productManagerController;
     private double change;
     private List<SaleLine> lines;
-    private List<Product> productes;
+    private List<Product> products;
     private List<Balance> balances;
     private Balance lastBalance;
 
@@ -98,7 +98,7 @@ public class StepDefinitions {
     }
 
     @Quan("^decremento l'efectiu de la caixa en €([^\"]*)€$")
-    public void dereaseCash(double cash) throws Throwable {
+    public void decreaseCash(double cash) throws Throwable {
         tryCatch(() -> tpvController.getTpv().addCash(-cash));
     }
 
@@ -214,11 +214,13 @@ public class StepDefinitions {
 
     @Quan("^indico que el client ha entregat €([^\"]*)€ per a pagar en metàlic$")
     public void cashPayment(double delivered) throws Throwable {
+        tryCatch(() -> salesService.newSale(tpvController.getCurrentSale().getLines()));
         tryCatch(() -> change = tpvController.cashPayment(delivered));
     }
 
     @Quan("^indico que el client paga el total de la venda amb targeta$")
-    public void tarjetPayment() throws Throwable {
+    public void cardPayment() throws Throwable {
+        tryCatch(() -> salesService.newSale(tpvController.getCurrentSale().getLines()));
         tryCatch(tpvController::tarjetPayment);
     }
 
@@ -274,9 +276,8 @@ public class StepDefinitions {
 
     @Quan("^afegeixo el producte per nom \"([^\"]*)\" a la venta$")
     public void afegeixo_el_producte_per_nom_a_la_venta(String nom) throws Throwable {
-        tryCatch(() -> productes = tpvController.addProductByName(nom));
+        tryCatch(() -> products = tpvController.addProductByName(nom));
     }
-
 
     @Aleshores("^la venda conté el producte amb nom \"([^\"]*)\"$")
     public void la_venda_conté_el_producte_amb_nom(String nomProducte) throws Throwable {
@@ -285,12 +286,12 @@ public class StepDefinitions {
 
     @Aleshores("^obtinc (\\d+) noms de productes$")
     public void obtinc_noms_de_productes(int nProductes) throws Throwable {
-        assertEquals(nProductes, productes.size());
+        assertEquals(nProductes, products.size());
     }
 
     @Aleshores("^el producte numero (\\d+) es \"([^\"]*)\"$")
     public void el_numero_es(int index, String nomProducte) throws Throwable {
-        assertEquals(nomProducte, productes.get(index - 1).getName());
+        assertEquals(nomProducte, products.get(index - 1).getName());
     }
 
     @Aleshores("^la venta no esta iniciada$")
@@ -302,7 +303,6 @@ public class StepDefinitions {
     public void obtinc_una_linia_de_venda_amb_venda(int n) throws Throwable {
         assertEquals(n, lines.size());
     }
-
 
     @Aleshores("^obtinc una linia de venda amb el (\\d+)er producte amb nom \"([^\"]*)\", preu €([^\"]*)€ i codi de barres (\\d+)$")
     public void obtinc_una_linia_de_venda_amb_x_producte(int ind, String productName, double price, int barCode) throws Throwable {
