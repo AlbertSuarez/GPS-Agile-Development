@@ -154,28 +154,28 @@ public class TPVController {
     }
 
     public double cashPayment(double delivered) {
-        if(!tpv.hasSale())
-            throw new IllegalStateException("No es pot cobrar una venta si no està iniciada");
-        if(tpv.getCurrentSale().isEmpty())
-            throw new IllegalStateException("No es pot cobrar una venta sense cap producte");
-        double canvi = getCanvi(delivered);
-        if(canvi < 0)
+        checkPaymentConditions();
+        double total = getCurrentSale().getTotal();
+        if (total > delivered)
             throw new IllegalStateException("No es pot cobrar una venta amb un import inferior al total de la venta");
-        tpv.addCash(getCurrentSale().getTotal());
+        tpv.addCash(total);
         tpv.endSale();
-        return canvi;
+        return calculateChange(delivered, total);
     }
 
-    private double getCanvi(double delivered) {
-        double total = tpv.getCurrentSale().getTotal();
-        return delivered-total;
+    private double calculateChange(double delivered, double total) {
+        return Math.round((delivered - total) * 100.0) / 100.0;
+    }
+
+    private void checkPaymentConditions() {
+        if (!tpv.hasSale())
+            throw new IllegalStateException("No es pot cobrar una venta si no està iniciada");
+        if (tpv.getCurrentSale().isEmpty())
+            throw new IllegalStateException("No es pot cobrar una venta sense cap producte");
     }
 
     public void tarjetPayment() {
-        if(!tpv.hasSale())
-            throw new IllegalStateException("No es pot cobrar una venta si no està iniciada");
-        if(tpv.getCurrentSale().isEmpty())
-            throw new IllegalStateException("No es pot cobrar una venta sense cap producte");
+        checkPaymentConditions();
         tpv.endSale();
     }
 
