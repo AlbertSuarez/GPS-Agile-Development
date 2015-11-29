@@ -9,14 +9,14 @@ import java.util.List;
 
 public class TPVService {
 
-    private static String MASTER_PASS = "asdfg";
+    private String MASTER_PASS = "asdfg";
     private TPVRepository tpvRepository;
 
     public TPVService(TPVRepository tpvRepository) {
         this.tpvRepository = tpvRepository;
     }
 
-    public static void setMasterPass(String pass) {
+    public void setMasterPass(String pass) {
         MASTER_PASS = Validations.crypt(pass);
     }
 

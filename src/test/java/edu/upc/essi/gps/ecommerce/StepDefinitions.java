@@ -264,7 +264,7 @@ public class StepDefinitions {
 
     @Donat("^que estem al panell de gestió del product manager$")
     public void initManagement() throws Throwable {
-        productManagerController = new ProductManagerController(balancesService, salesService);
+        productManagerController = new ProductManagerController(balancesService, tpvService,salesService);
     }
 
     @Donat("^un desquadrament del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de €([^\"]*)€")

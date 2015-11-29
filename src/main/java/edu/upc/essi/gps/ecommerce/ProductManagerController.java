@@ -13,13 +13,14 @@ import java.util.List;
  */
 public class ProductManagerController {
 
-    BalancesService balancesService;
+    private final TPVService tpvService;
+    private final SalesService salesService;
+    private final BalancesService balancesService;
 
-    SalesService salesService;
-
-    public ProductManagerController(BalancesService balancesService, SalesService salesService) {
+    public ProductManagerController(BalancesService balancesService, TPVService tpvService, SalesService salesService) {
         this.balancesService = balancesService;
         this.salesService = salesService;
+        this.tpvService = tpvService;
     }
 
     /**
@@ -44,7 +45,7 @@ public class ProductManagerController {
     }
 
     public void setMasterPassword(String password) {
-        TPVService.setMasterPass(password);
+        tpvService.setMasterPass(password);
     }
 
 }
