@@ -139,9 +139,9 @@ public class StepDefinitions {
 
     @Aleshores("^queda registrat un desquadrament del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de €([^\"]*)€$")
     public void getLastDesquadrament(String nomCaixer, String nomBotiga, double imbalance) {
-        assertEquals(nomCaixer, balancesService.getLastBalance().getSaleAssistantName());
-        assertEquals(nomBotiga, balancesService.getLastBalance().getNomBotiga());
-        assertEquals(imbalance, balancesService.getLastBalance().getQtt(), DELTA);
+        assertEquals(nomCaixer, tpvController.getLastBalance().getSaleAssistantName());
+        assertEquals(nomBotiga, tpvController.getLastBalance().getNomBotiga());
+        assertEquals(imbalance, tpvController.getLastBalance().getQtt(), DELTA);
     }
 
     @Aleshores("^obtinc un desquadrament número (\\d+) del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de €([^\"]*)€$")

@@ -219,4 +219,8 @@ public class TPVController {
         return products;
     }
 
+    public Balance getLastBalance() {
+        return balancesService.getLastBalance();
+    }
+
 }
