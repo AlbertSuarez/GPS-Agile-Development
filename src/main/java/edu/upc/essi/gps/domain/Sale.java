@@ -30,7 +30,7 @@ public class Sale implements Entity {
      * @param d producte a afegir a la venta.
      * @param pos índex dels articles als que es vol aplicar el descompte.
      * */
-    public void addDiscount(Discount d, int pos) {
+    public void addManualDiscount(Discount d, int pos) {
         if (pos > lines.size())
             throw new IndexOutOfBoundsException("No es pot accedir a la línia " + pos +
                     " de la venta, aquesta només té " + lines.size() + " línies");

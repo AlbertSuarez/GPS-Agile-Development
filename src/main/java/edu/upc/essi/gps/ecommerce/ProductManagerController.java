@@ -35,4 +35,8 @@ public class ProductManagerController {
         return balancesService.listByShopName(name);
     }
 
+    public void setMasterPassword(String password) {
+        TPVService.setMasterPass(password);
+    }
+
 }

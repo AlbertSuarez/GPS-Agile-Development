@@ -4,9 +4,11 @@
 Característica: Iniciar el torn al tpv
 
   Rerefons:
-    Donat que estem al tpv número 1 de la botiga "Girona 1"
+    Donat que estem al panell de gestió del product manager
+    I que configurem el password mestre del sistema com a "someMasterPass"
+    I que ens desconectem del panell de gestio del product manager
+    I que estem al tpv número 1 de la botiga "Girona 1"
     I que el "Joan" s'ha registrat al sistema amb password "asdf" i rep l'identificador 123
-    I que el pssword mestre del sistema és "someMasterPass"
 
   Escenari: Iniciar el torn
     Quan inicio el torn al tpv amb identificador 123 i password "asdf", amb un efectiu inicial de €25€

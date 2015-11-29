@@ -2,6 +2,7 @@ package edu.upc.essi.gps.ecommerce;
 
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
+import cucumber.api.java.ca.I;
 import cucumber.api.java.ca.Quan;
 import edu.upc.essi.gps.domain.Balance;
 import edu.upc.essi.gps.domain.Product;
@@ -305,9 +306,9 @@ public class StepDefinitions {
         tryCatch(() -> tpvController.addProductByName(nomProducte, unitatsProducte));
     }
 
-    @Donat("^que el pssword mestre del sistema és \"([^\"]*)\"$")
+    @Donat("^que configurem el password mestre del sistema com a \"([^\"]*)\"$")
     public void setMasterPassword(String newPassword) {
-        TPVService.setMasterPass(newPassword);
+        productManagerController.setMasterPassword(newPassword);
     }
 
     @Aleshores("^la venta esta tancada$")
@@ -335,4 +336,8 @@ public class StepDefinitions {
         assertEquals(Double.parseDouble(valor), discountService.findByName(name).getDiscount(), DELTA);
     }
 
+    @I("^que ens desconectem del panell de gestio del product manager$")
+    public void que_ens_desconectem_del_panell_de_gestio_del_product_manager() throws Throwable {
+        productManagerController = null;
+    }
 }

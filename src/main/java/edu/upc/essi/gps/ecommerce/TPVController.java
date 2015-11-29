@@ -108,7 +108,7 @@ public class TPVController {
                     " de la venta, aquesta només té " + max + " línies");
         Product product = productsService.findById(tpv.getCurrentSale().getId(prodLine-1));
         Discount discount = new Percent(product, name, -1, percent);
-        getCurrentSale().addDiscount(discount, prodLine);
+        getCurrentSale().addManualDiscount(discount, prodLine);
     }
 
     public void newDiscountPercent(String name, long barCode, double percent) {
