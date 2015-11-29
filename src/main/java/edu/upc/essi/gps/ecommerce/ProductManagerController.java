@@ -40,8 +40,16 @@ public class ProductManagerController {
         return balancesService.listByShopName(name);
     }
 
-    public List<Sale> list() {
-        return salesService.list();
+    public List<Sale> listAll() {
+        return salesService.listAll();
+    }
+
+    public List<Sale> listRefunds() {
+        return salesService.listRefunds();
+    }
+
+    public List<Sale> listSales() {
+        return salesService.listSales();
     }
 
     public void setMasterPassword(String password) {

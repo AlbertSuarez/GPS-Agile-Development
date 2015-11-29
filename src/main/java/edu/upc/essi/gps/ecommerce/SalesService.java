@@ -21,8 +21,15 @@ public class SalesService {
         return sale;
     }
 
-    public List<Sale> list() {
+    public List<Sale> listAll() {
         return salesRepository.list();
     }
 
+    public List<Sale> listRefunds () {
+        return salesRepository.listRefunds();
+    }
+
+    public List<Sale> listSales () {
+        return salesRepository.listSales();
+    }
 }
