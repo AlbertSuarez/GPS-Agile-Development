@@ -14,4 +14,4 @@ Característica: Retornar un producte
     Donat que hi ha una venta iniciada
     I que he afegit el producte de codi de barres 1234567 a la devolució
     Quan indico que s'ha fet la devolució
-    I la venta esta tancada
+    Aleshores la venta esta tancada
