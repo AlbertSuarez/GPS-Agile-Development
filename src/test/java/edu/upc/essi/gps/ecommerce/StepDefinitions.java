@@ -1,5 +1,6 @@
 package edu.upc.essi.gps.ecommerce;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
 import cucumber.api.java.ca.I;
@@ -179,12 +180,12 @@ public class StepDefinitions {
 
     @Quan("^afegeixo el producte de codi de barres (\\d+) a la venta$")
     public void addProductByBarCode(int barCode) throws Throwable {
-        tryCatch(() -> tpvController.addProductByBarCode(barCode));
+        tryCatch(() -> tpvController.addProductByBarCode(barCode, false));
     }
 
     @Donat("^que he afegit el producte de codi de barres (\\d+) a la venta$")
     public void productByBarCodeAdded(int barCode) throws Throwable {
-        tpvController.addProductByBarCode(barCode);
+        tpvController.addProductByBarCode(barCode, false);
     }
 
     @Aleshores("^la venta té (\\d+) (?:línia|línies)$")
@@ -260,7 +261,7 @@ public class StepDefinitions {
 
     @Quan("^afegeixo (\\d+) unitats del producte amb codi de barres (\\d+) a la venta$")
     public void addProducteCodiBarresUnitats(int unitats, int codiBarra) throws Throwable {
-        tpvController.addProductByBarCode(codiBarra, unitats);
+        tpvController.addProductByBarCode(codiBarra, unitats, false);
     }
 
     @Donat("^que estem al panell de gestió del product manager$")
@@ -275,7 +276,7 @@ public class StepDefinitions {
 
     @Quan("^afegeixo el producte per nom \"([^\"]*)\" a la venta$")
     public void afegeixo_el_producte_per_nom_a_la_venta(String nom) throws Throwable {
-        tryCatch(() -> products = tpvController.addProductByName(nom));
+        tryCatch(() -> products = tpvController.addProductByName(nom, false));
     }
 
     @Aleshores("^la venda conté el producte amb nom \"([^\"]*)\"$")
@@ -313,7 +314,7 @@ public class StepDefinitions {
 
     @Quan("^afegeixo (\\d+) unitats del producte per nom \"([^\"]*)\" a la venta$")
     public void afegeixo_unitats_del_producte_per_nom_a_la_venta(int unitatsProducte, String nomProducte) throws Throwable {
-        tryCatch(() -> tpvController.addProductByName(nomProducte, unitatsProducte));
+        tryCatch(() -> tpvController.addProductByName(nomProducte, unitatsProducte, false));
     }
 
     @Donat("^que configurem el password mestre del sistema com a \"([^\"]*)\"$")
@@ -349,5 +350,16 @@ public class StepDefinitions {
     @I("^que ens desconectem del panell de gestio del product manager$")
     public void que_ens_desconectem_del_panell_de_gestio_del_product_manager() throws Throwable {
         productManagerController = null;
+    }
+
+    @I("^que he afegit el producte de codi de barres (\\d+) a la devolució$")
+    public void addRefund(int barCode) throws Throwable {
+        tpvController.addProductByBarCode(barCode, true);
+    }
+
+    @Quan("^indico que s'ha fet la devolució$")
+    public void recordRefund() throws Throwable {
+        salesService.newSale(tpvController.getCurrentSale().getLines());
+        tpvController.getTpv().endSale();
     }
 }

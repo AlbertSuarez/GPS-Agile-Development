@@ -113,8 +113,8 @@ public class Sale implements Entity {
      * @param product producte a afegir a la venta.
      * @param unitats nombre d'unitats del producte a afegir
      * */
-    public void addProduct(Product product, int unitats, List<Discount> discountList) {
-        lines.add(new SaleLine(product, unitats));
+    public void addProduct(Product product, int unitats, List<Discount> discountList, boolean refund) {
+        lines.add(new SaleLine(product, unitats, refund));
         lines.addAll(
                 discountList
                         .stream()
@@ -171,11 +171,13 @@ public class Sale implements Entity {
          * Crea una nova instància de <code>SaleLine</code> a partir de les dades d'un producte.
          * @param product producte a partir del qual es crea la línia de venta.
          * @param amount quantitat d'aquest producte.
+         * @param refund indica si es una devolució o no
          */
-        public SaleLine(Product product, int amount) {
+        public SaleLine(Product product, int amount, boolean refund) {
             this.id = product.getId();
             this.name = product.getName();
-            this.unitPrice = product.getPrice();
+            if (!refund) this.unitPrice = product.getPrice();
+            else this.unitPrice = -product.getPrice();
             this.barCode = product.getBarCode();
             this.amount = amount;
         }
