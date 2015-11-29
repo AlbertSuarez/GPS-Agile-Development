@@ -21,7 +21,13 @@ public enum TPVState {
      * Estat corresponent a un TPV que es troba bloquejat.<br>
      * El seu nom associat és "<i>bloquejat</i>".
      * */
-    BLOCKED("bloquejat");
+    BLOCKED("bloquejat"),
+
+    /**
+     * Estat corresponent a un TPV que es troba en quadrament de caixa.<br>
+     * El seu nom associat és "<i>en quadrament</i>".
+     */
+    BALANCE("en quadrament");
 
     /**
      * Nom associat a un estat concret.

@@ -69,7 +69,14 @@ public class TPVController {
             throw new IllegalStateException("Password d'administrador incorrecte");
     }
 
+    public void iniciaQuadrament() {
+        if (!tpv.getState().equals(TPVState.IDLE)) throw new IllegalStateException("Aquest tpv no està en un torn actualment");
+        if (tpv.getCurrentSale() != null) throw new IllegalStateException("Actualment hi ha una venta iniciada");
+        tpv.setState(TPVState.BALANCE);
+    }
+
     public void quadra(double cash){
+        if (!tpv.getState().equals(TPVState.BALANCE)) throw new IllegalStateException("La caixa no es troba actualment en procés de quadrament");
         if (cash >= tpv.getCash()) {
             tpv.endTurn();
         }

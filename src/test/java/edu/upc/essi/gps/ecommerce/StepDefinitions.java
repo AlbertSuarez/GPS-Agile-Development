@@ -107,6 +107,16 @@ public class StepDefinitions {
         tryCatch(() -> tpvController.quadra(cash));
     }
 
+    @Donat("^que el TPV es troba en procés de quadrament$")
+    public void quadramentIniciat() throws Throwable {
+        tryCatch(() -> tpvController.iniciaQuadrament());
+    }
+
+    @Quan("^indico al TPV que inicio el procés de quadrament$")
+    public void iniciaQuadrament() throws Throwable {
+        tryCatch(() -> tpvController.iniciaQuadrament());
+    }
+
     @Quan("^finalitzo el meu torn amb un desquadrament, amb un efectiu final de €([^\"]*)€$")
     public void desquadrament(double cash) throws Throwable {
         tryCatch(() -> lastBalance = tpvController.addDesquadrament(cash));
