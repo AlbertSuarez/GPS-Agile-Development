@@ -25,6 +25,8 @@ public class BalancesService {
         return balanceRepository.listByShopName(shopName);
     }
 
+    public Balance getLastBalance() { return balanceRepository.list().get(balanceRepository.list().size()-1);}
+
     public Balance newBalance(double qtt, String saleAssistantName, String nomBotiga ) {
         long id = balanceRepository.newId();
         Balance imbalance = new Balance(id, qtt, saleAssistantName, nomBotiga);

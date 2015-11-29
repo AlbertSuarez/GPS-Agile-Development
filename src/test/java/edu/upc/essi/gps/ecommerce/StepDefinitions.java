@@ -29,7 +29,6 @@ public class StepDefinitions {
     private List<SaleLine> lines;
     private List<Product> products;
     private List<Balance> balances;
-    private Balance lastBalance;
 
     public void tryCatch(Runnable r){
         try {
@@ -119,7 +118,7 @@ public class StepDefinitions {
 
     @Quan("^finalitzo el meu torn amb un desquadrament, amb un efectiu final de €([^\"]*)€$")
     public void desquadrament(double cash) throws Throwable {
-        tryCatch(() -> lastBalance = tpvController.addDesquadrament(cash));
+        tryCatch(() -> tpvController.addDesquadrament(cash));
     }
 
     @Quan("^consulto els desquadraments$")
@@ -139,9 +138,9 @@ public class StepDefinitions {
 
     @Aleshores("^queda registrat un desquadrament del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de €([^\"]*)€$")
     public void getLastDesquadrament(String nomCaixer, String nomBotiga, double imbalance) {
-        assertEquals(nomCaixer, lastBalance.getSaleAssistantName());
-        assertEquals(nomBotiga, lastBalance.getNomBotiga());
-        assertEquals(imbalance, lastBalance.getQtt(), DELTA);
+        assertEquals(nomCaixer, balancesService.getLastBalance().getSaleAssistantName());
+        assertEquals(nomBotiga, balancesService.getLastBalance().getNomBotiga());
+        assertEquals(imbalance, balancesService.getLastBalance().getQtt(), DELTA);
     }
 
     @Aleshores("^obtinc un desquadrament número (\\d+) del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de €([^\"]*)€$")
