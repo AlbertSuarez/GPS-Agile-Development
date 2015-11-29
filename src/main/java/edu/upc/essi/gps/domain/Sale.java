@@ -8,12 +8,22 @@ import java.util.stream.Collectors;
 /**
  * Classe que representa una venta mitjançant un conjunt de línies de venta.
  * */
-public class Sale {
+public class Sale implements Entity {
+
+    /**
+     * Identificador únic d'aquesta venda al sistema.
+     * */
+    private long id;
 
     /**
      * Conjunt de línies de venta associats a la venta.
      * */
     private final List<SaleLine> lines = new LinkedList<>();
+
+    @Override
+    public long getId() {
+        return id;
+    }
 
     /**
      * Afegeix un nou descompte a la venta.
