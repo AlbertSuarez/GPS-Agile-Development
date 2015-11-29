@@ -1,6 +1,7 @@
 package edu.upc.essi.gps.ecommerce;
 
 import edu.upc.essi.gps.domain.Balance;
+import edu.upc.essi.gps.domain.Sale;
 
 import java.util.List;
 
@@ -14,8 +15,11 @@ public class ProductManagerController {
 
     BalancesService balancesService;
 
-    public ProductManagerController(BalancesService balancesService) {
+    SalesService salesService;
+
+    public ProductManagerController(BalancesService balancesService, SalesService salesService) {
         this.balancesService = balancesService;
+        this.salesService = salesService;
     }
 
     /**
@@ -33,6 +37,10 @@ public class ProductManagerController {
      */
     public List<Balance> listBalancesByShopName(String name) {
         return balancesService.listByShopName(name);
+    }
+
+    public List<Sale> list() {
+        return salesService.list();
     }
 
     public void setMasterPassword(String password) {

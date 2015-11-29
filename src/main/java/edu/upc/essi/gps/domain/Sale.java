@@ -18,7 +18,24 @@ public class Sale implements Entity {
     /**
      * Conjunt de línies de venta associats a la venta.
      * */
-    private final List<SaleLine> lines = new LinkedList<>();
+    private List<SaleLine> lines = new LinkedList<>();
+
+    /**
+     * Constructora sense parametres.
+     */
+    public Sale() {
+
+    }
+
+    /**
+     * Constructora amb parametres.
+     * @param id Identificador.
+     * @param lines Linies de venda.
+     */
+    public Sale(long id, List<SaleLine> lines) {
+        this.id = id;
+        this.lines = lines;
+    }
 
     @Override
     public long getId() {

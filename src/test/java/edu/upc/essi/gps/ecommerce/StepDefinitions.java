@@ -21,6 +21,7 @@ public class StepDefinitions {
     private SaleAssistantService saleAssistantService = new SaleAssistantService(new SaleAssistantRepository());
     private BalancesService balancesService = new BalancesService(new BalancesRepository());
     private DiscountService discountService = new DiscountService(new DiscountRepository());
+    private SalesService salesService = new SalesService(new SalesRepository());
     private Exception exception;
     private TPVController tpvController;
     private ProductManagerController productManagerController;
@@ -253,7 +254,7 @@ public class StepDefinitions {
 
     @Donat("^que estem al panell de gestió del product manager$")
     public void initManagement() throws Throwable {
-        productManagerController = new ProductManagerController(balancesService);
+        productManagerController = new ProductManagerController(balancesService, salesService);
     }
 
     @Donat("^un desquadrament del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de €([^\"]*)€")
