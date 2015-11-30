@@ -47,8 +47,9 @@ Característica: Crear nous descomptes
   Escenari: Aplicar un descompte (combinat)
     Donat creo un nou descompte del tipus percentatge anomenat "20%-Nintendo" del %20% sobre el producte amb codi de barres 7777777
     I creo un nou descompte del tipus regal anomenat "Choripan+OptPrime", on amb la compra del producte amb codi de barres 7777777 es regala una unitat del producte amb codi de barres 1234567
+    Donat creo un nou descompte del tipus promoció anomenat "3x2OptPri" de 3x2 sobre el producte amb codi de barres 1234567
     I inicio una nova venta
-    Quan afegeixo 1 unitats del producte amb codi de barres 1234567 a la venta
+    Quan afegeixo 3 unitats del producte amb codi de barres 1234567 a la venta
     I afegeixo 1 unitats del producte amb codi de barres 7777777 a la venta
     Aleshores la venta té 4 línies
-    I el total de la venta actual és de €120€
+    I el total de la venta actual és de €160€

@@ -1,6 +1,7 @@
 package edu.upc.essi.gps.domain;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Classe que representa un descompte del tipus AxB (3x2, 2x1...).
@@ -42,18 +43,19 @@ public class Promotion extends Discount {
     }
 
     @Override
-    public boolean checkSale(Sale currentSale) {
-        List<Sale.SaleLine> list = currentSale.getLines();
-        Sale.SaleLine line = list.get(list.size() - 1);
-        return line.getId() == trigger.getId() && line.getAmount() >= A;
-    }
-
-    @Override
     public int getAmount(Sale currentSale) {
-        if (!checkSale(currentSale)) return 0;
-        List<Sale.SaleLine> list = currentSale.getLines();
-        Sale.SaleLine line = list.get(list.size()-1);
-        return line.getAmount()/A;
+        List<Integer> list = currentSale
+                .getLines()
+                .stream()
+                .filter((l) -> l.getId() == trigger.getId())
+                .map(Sale.SaleLine::getAmount)
+                .collect(Collectors.toList());
+
+        int total = 0;
+        for (Integer i : list) {
+            total += i;
+        }
+        return total/A;
     }
 
 }

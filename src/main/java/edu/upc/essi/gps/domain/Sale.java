@@ -1,8 +1,7 @@
 package edu.upc.essi.gps.domain;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -21,10 +20,20 @@ public class Sale implements Entity {
     private List<SaleLine> lines = new LinkedList<>();
 
     /**
+     * Conjunt de descomptes aplicables a cada producte.
+     * */
+    private Map<Product, List<Discount>> desc = new HashMap<>();
+
+    /**
+     * Conjunt de descomptes aplicats a la venta.
+     * */
+    private List<SaleLine> descLines;
+
+
+    /**
      * Constructora sense parametres.
      */
     public Sale() {
-
     }
 
     /**
@@ -72,7 +81,11 @@ public class Sale implements Entity {
      * */
     public List<SaleLine> getLines() {
         if (lines.isEmpty()) throw new IllegalStateException("No hi ha cap venda");
-        return Collections.unmodifiableList(lines);
+        if (descLines == null) testDiscounts();
+        List<SaleLine> finalLines = new LinkedList<>();
+        finalLines.addAll(lines);
+        finalLines.addAll(descLines);
+        return Collections.unmodifiableList(finalLines);
     }
 
     /**
@@ -81,10 +94,43 @@ public class Sale implements Entity {
      * */
     public double getTotal() {
         double res = 0;
-        for(SaleLine l : lines){
+        for (SaleLine l : lines){
+            res += l.getTotalPrice();
+        }
+        if (descLines == null) testDiscounts();
+        for (SaleLine l : descLines) {
             res += l.getTotalPrice();
         }
         return res;
+    }
+
+    /**
+     * Calcula la millor combinació de descomptes tals que:<br>
+     *     a) Cap producte té dos descomptes aplicats alhora.<br>
+     *     b) De totes les combinacions de descomptes, és la que aplica una major rebaixa del preu final.
+     * */
+    private void testDiscounts() {
+        Discount best;
+        double min;
+        double value;
+        int bestAmount;
+        int valueAmount;
+        descLines = new LinkedList<>();
+        for (Product p : desc.keySet()) {
+            min = 0.0;
+            bestAmount = 0;
+            best = null;
+            for(Discount d : desc.get(p)) {
+                valueAmount = d.getAmount(this);
+                value = d.getDiscount()*valueAmount;
+                if (value < min) {
+                    best = d;
+                    min = value;
+                    bestAmount = valueAmount;
+                }
+            }
+            if (best != null) descLines.add(new SaleLine(best, bestAmount));
+        }
     }
 
     /**
@@ -92,7 +138,7 @@ public class Sale implements Entity {
      * @return <code>true</code> si la venta és buida, <code>false</code> altrment.
      * */
     public boolean isEmpty() {
-        return lines.isEmpty();
+        return lines.isEmpty() && desc.isEmpty();
     }
 
     /**
@@ -100,12 +146,9 @@ public class Sale implements Entity {
      * @return <code>true</code> si la té algun producte amb el codi de barres indicat, <code>false</code> altrment.
      * */
     public boolean hasProductByBarCode(int barCode) {
-        for (SaleLine line : lines) {
-            if (line.getBarCode() == barCode) {
-                return true;
-            }
-        }
-        return false;
+        return lines
+                .stream()
+                .anyMatch((l) -> l.getBarCode() == barCode);
     }
 
     /**
@@ -115,13 +158,8 @@ public class Sale implements Entity {
      * */
     public void addProduct(Product product, int unitats, List<Discount> discountList, boolean refund) {
         lines.add(new SaleLine(product, unitats, refund));
-        lines.addAll(
-                discountList
-                        .stream()
-                        .filter(d -> d.checkSale(this))
-                        .map(d -> new SaleLine(d, d.getAmount(this)))
-                        .collect(Collectors.toList())
-        );
+        desc.put(product, discountList);
+        descLines = null;
     }
 
     /**
@@ -129,12 +167,9 @@ public class Sale implements Entity {
      * @return <code>true</code> si la té algun producte amb el nom indicat, <code>false</code> altrment.
      * */
     public boolean hasProductByName(String nom) {
-        for (SaleLine line : lines) {
-            if (line.getName().equals(nom)) {
-                return true;
-            }
-        }
-        return false;
+        return lines
+                .stream()
+                .anyMatch((l) -> l.getName().equals(nom));
     }
 
     /**

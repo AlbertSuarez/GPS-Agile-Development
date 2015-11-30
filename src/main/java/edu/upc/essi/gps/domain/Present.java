@@ -36,39 +36,34 @@ public class Present extends Discount{
     }
 
     @Override
-    public boolean checkSale(Sale currentSale) {
-        List<Sale.SaleLine> list = currentSale.getLines();
-        Sale.SaleLine line = list.get(list.size() - 1);
-        return line.getId() == trigger.getId()
-                && list
-                .stream()
-                .filter(l -> l.getId() == present.getId() && l.getAmount() == line.getAmount())
-                .collect(Collectors.toList())
-                .size() > 0;
-    }
-
-    @Override
     public int getAmount(Sale currentSale) {
-        if (!checkSale(currentSale)) return 0;
-        List<Sale.SaleLine> list = currentSale.getLines();
-        Sale.SaleLine line = list.get(list.size() - 1);
+        List<Integer> list;
+        int triggers = 0;
+        int presents = 0;
 
-        //Nombre de triggers d'igual quantitat que el nostre
-        int amountT = list
+        list = currentSale
+                .getLines()
                 .stream()
-                .filter(l -> l.getId() == trigger.getId() && l.getAmount() == line.getAmount())
-                .collect(Collectors.toList())
-                .size();
+                .filter((l) -> l.getId() == trigger.getId())
+                .map(Sale.SaleLine::getAmount)
+                .collect(Collectors.toList());
 
-        //Nombre de presents d'igual quantitat que el nostre
-        int amountP = list
+        for (Integer i : list) {
+            triggers += i;
+        }
+
+        list = currentSale
+                .getLines()
                 .stream()
-                .filter(l -> l.getId() == present.getId() && l.getAmount() == line.getAmount())
-                .collect(Collectors.toList())
-                .size();
+                .filter((l) -> l.getId() == present.getId())
+                .map(Sale.SaleLine::getAmount)
+                .collect(Collectors.toList());
 
-        if (amountP < amountT) return 0;
-        else return line.getAmount();
+        for (Integer i : list) {
+            presents += i;
+        }
+
+        return Math.min(presents, triggers);
     }
 
 }
