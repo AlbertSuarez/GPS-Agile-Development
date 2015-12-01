@@ -48,7 +48,7 @@ public class Promotion extends Discount {
                 .getLines()
                 .stream()
                 .filter((l) -> l.getId() == trigger.getId())
-                .map(Sale.SaleLine::getAmount)
+                .map(SaleLine::getAmount)
                 .collect(Collectors.toList());
 
         int total = 0;

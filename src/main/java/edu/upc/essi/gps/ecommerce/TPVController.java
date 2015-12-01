@@ -141,7 +141,7 @@ public class TPVController {
             return welcomeMessage + System.lineSeparator() + "L'atén " + tpv.getCurrentSaleAssistant().getName();
         }
         StringBuilder sb = new StringBuilder();
-        for (Sale.SaleLine sl : tpv.getCurrentSale().getLines()) {
+        for (SaleLine sl : tpv.getCurrentSale().getLines()) {
             sb.append(sl.getName())
                     .append(" - ")
                     .append(sl.getUnitPrice())

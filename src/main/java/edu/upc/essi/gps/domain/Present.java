@@ -41,14 +41,14 @@ public class Present extends Discount{
                 .getLines()
                 .stream()
                 .filter((l) -> l.getId() == trigger.getId())
-                .map(Sale.SaleLine::getAmount)
+                .map(SaleLine::getAmount)
                 .forEach((i) -> triggers[0] += i);
 
         currentSale
                 .getLines()
                 .stream()
                 .filter((l) -> l.getId() == required.getId())
-                .map(Sale.SaleLine::getAmount)
+                .map(SaleLine::getAmount)
                 .forEach((i) -> requireds[0] += i);
 
         return Math.min(requireds[0], triggers[0]);

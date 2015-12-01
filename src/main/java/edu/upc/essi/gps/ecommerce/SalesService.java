@@ -1,6 +1,8 @@
 package edu.upc.essi.gps.ecommerce;
 
 import edu.upc.essi.gps.domain.Sale;
+import edu.upc.essi.gps.domain.SaleLine;
+
 import java.util.List;
 
 /**
@@ -14,7 +16,7 @@ public class SalesService {
         this.salesRepository = salesRepository;
     }
 
-    public Sale newSale(List<Sale.SaleLine> lines) {
+    public Sale newSale(List<SaleLine> lines) {
         long id = salesRepository.newId();
         Sale sale = new Sale(id, lines);
         salesRepository.insert(sale);

@@ -6,7 +6,7 @@ import cucumber.api.java.ca.Quan;
 import edu.upc.essi.gps.domain.Balance;
 import edu.upc.essi.gps.domain.Product;
 import edu.upc.essi.gps.domain.Sale;
-import edu.upc.essi.gps.domain.Sale.SaleLine;
+import edu.upc.essi.gps.domain.SaleLine;
 
 import java.util.List;
 
