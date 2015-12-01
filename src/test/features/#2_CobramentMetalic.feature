@@ -12,14 +12,14 @@ Característica: Cobrar una venta en metàlic
   Escenari: Cobrar una venta en metàlic
     Donat que hi ha una venta iniciada
     I que he afegit el producte de codi de barres 1234567 a la venta
-    Quan indico que el client ha entregat €30,10€ per a pagar en metàlic
+    Quan indico que el client ha entregat €30,10€ per a pagar en metàlic, i registro la venda amb codi de venda 123456789
     Aleshores la venta esta tancada
 
   Escenari: Error si intentem cobrar una venta sense productes
     Donat que hi ha una venta iniciada
-    Quan indico que el client ha entregat €30€ per a pagar en metàlic
+    Quan indico que el client ha entregat €30,10€ per a pagar en metàlic, i registro la venda amb codi de venda 123456789
     Aleshores obtinc un error que diu: "No es pot cobrar una venta sense cap producte"
 
   Escenari: Error si intentem cobrar una venta no iniciada
-    Quan indico que el client ha entregat €30€ per a pagar en metàlic
+    Quan indico que el client ha entregat €30,10€ per a pagar en metàlic, i registro la venda amb codi de venda 123456789
     Aleshores obtinc un error que diu: "No es pot cobrar una venta si no està iniciada"

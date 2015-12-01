@@ -13,23 +13,23 @@ Característica: Obtenir el canvi d'una venta
   Escenari: Cobrar una venta en metàlic
     Donat que hi ha una venta iniciada
     I que he afegit el producte de codi de barres 1234567 a la venta
-    Quan indico que el client ha entregat €30€ per a pagar en metàlic
+    Quan indico que el client ha entregat €30€ per a pagar en metàlic, i registro la venda amb codi de venda 123456789
     Aleshores el tpv m'indica que el canvi a retornar és de €7€
 
   Escenari: Cobrar una venta en metàlic i amb centims
     Donat que hi ha una venta iniciada
     I que he afegit el producte de codi de barres 1234567 a la venta
-    Quan indico que el client ha entregat €30,12€ per a pagar en metàlic
+    Quan indico que el client ha entregat €30,12€ per a pagar en metàlic, i registro la venda amb codi de venda 123456789
     Aleshores el tpv m'indica que el canvi a retornar és de €7,12€
 
   Escenari: Cobrar una venta d'un producte amb centims
     Donat que hi ha una venta iniciada
     I que he afegit el producte de codi de barres 42 a la venta
-    Quan indico que el client ha entregat €30,15€ per a pagar en metàlic
+    Quan indico que el client ha entregat €30,15€ per a pagar en metàlic, i registro la venda amb codi de venda 123456789
     Aleshores el tpv m'indica que el canvi a retornar és de €15,16€
 
   Escenari: Error si intentem cobrar una venta amb un import inferior al total de la venta
     Donat que hi ha una venta iniciada
     I que he afegit el producte de codi de barres 1234567 a la venta
-    Quan indico que el client ha entregat €20€ per a pagar en metàlic
+    Quan indico que el client ha entregat €20€ per a pagar en metàlic, i registro la venda amb codi de venda 123456789
     Aleshores obtinc un error que diu: "No es pot cobrar una venta amb un import inferior al total de la venta"

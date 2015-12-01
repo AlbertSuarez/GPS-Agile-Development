@@ -16,8 +16,7 @@ public class SalesService {
         this.salesRepository = salesRepository;
     }
 
-    public Sale newSale(List<SaleLine> lines) {
-        long id = salesRepository.newId();
+    public Sale newSale(long id, List<SaleLine> lines) {
         Sale sale = new Sale(id, lines);
         salesRepository.insert(sale);
         return sale;
@@ -25,10 +24,6 @@ public class SalesService {
 
     public List<Sale> listAll() {
         return salesRepository.list();
-    }
-
-    public List<Sale> listRefunds () {
-        return salesRepository.listRefunds();
     }
 
     public List<Sale> listSales () {

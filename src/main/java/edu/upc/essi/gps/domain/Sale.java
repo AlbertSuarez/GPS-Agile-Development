@@ -156,8 +156,8 @@ public class Sale implements Entity {
      * @param product producte a afegir a la venta.
      * @param unitats nombre d'unitats del producte a afegir
      * */
-    public void addProduct(Product product, int unitats, List<Discount> discountList, boolean refund) {
-        lines.add(new SaleLine(product, unitats, refund));
+    public void addProduct(Product product, int unitats, List<Discount> discountList) {
+        lines.add(new SaleLine(product, unitats));
         desc.put(product, discountList);
         descLines = null;
     }

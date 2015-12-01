@@ -44,10 +44,6 @@ public class ProductManagerController {
         return salesService.listAll();
     }
 
-    public List<Sale> listRefunds() {
-        return salesService.listRefunds();
-    }
-
     public List<Sale> listSales() {
         return salesService.listSales();
     }

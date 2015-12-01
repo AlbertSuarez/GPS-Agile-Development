@@ -12,15 +12,15 @@ Característica: Cobrar una venta amb targeta
   Escenari: Cobrar una venta en targeta
     Donat que hi ha una venta iniciada
     I que he afegit el producte de codi de barres 1234567 a la venta
-    Quan indico que el client paga el total de la venda amb targeta
+    Quan indico que el client paga el total de la venda amb targeta i registro la venda amb codi de venda 123456789
     Aleshores el tpv indica que s'ha pagat amb targeta i tanca la venda
     I la venta no esta iniciada
 
   Escenari: Error si intentem cobrar una venta sense productes
     Donat que hi ha una venta iniciada
-    Quan indico que el client paga el total de la venda amb targeta
+    Quan indico que el client paga el total de la venda amb targeta i registro la venda amb codi de venda 123456789
     Aleshores obtinc un error que diu: "No es pot cobrar una venta sense cap producte"
 
   Escenari: Error si intentem cobrar una venta no iniciada
-    Quan indico que el client paga el total de la venda amb targeta
+    Quan indico que el client paga el total de la venda amb targeta i registro la venda amb codi de venda 123456789
     Aleshores obtinc un error que diu: "No es pot cobrar una venta si no està iniciada"

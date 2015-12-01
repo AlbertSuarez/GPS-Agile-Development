@@ -9,16 +9,8 @@ import java.util.List;
  */
 public class SalesRepository extends Repository<Sale> {
 
-    public List<Sale> listRefunds() {
-        List<Sale> l = list((s) -> s.getTotal() < 0);
-        if (l.size() == 0) {
-            throw new IllegalStateException("No hi ha cap devolució enregistrada al sistema");
-        }
-        return l;
-    }
-
     public List<Sale> listSales() {
-        List<Sale> l = list((s) -> s.getTotal() > 0);
+        List<Sale> l = list();
         if (l.size() == 0) {
             throw new IllegalStateException("No hi ha cap venda enregistrada al sistema");
         }

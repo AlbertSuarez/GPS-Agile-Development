@@ -102,8 +102,8 @@ public class TPVController {
         return tpv.hasSale();
     }
 
-    public void addProductByBarCode(int barCode, boolean refund) {
-        addProductByBarCode(barCode, 1, refund);
+    public void addProductByBarCode(int barCode) {
+        addProductByBarCode(barCode, 1);
     }
 
     public void addNewDiscountToCurrentSale(int prodLine, @NotNull String name, double percent) {
@@ -186,17 +186,17 @@ public class TPVController {
         tpv.endSale();
     }
 
-    public void addProductByBarCode(int barCode, int unitats, boolean refund) {
+    public void addProductByBarCode(int barCode, int unitats) {
         Product p = productsService.findByBarCode(barCode);
         if (p == null) {
             throw new IllegalStateException(ADD_NON_EXISTING_PRODUCT_ERROR);
         }
         List<Discount> dList = discountService.listByTriggerId(p.getId());
-        tpv.addProduct(p, unitats, dList, refund);
+        tpv.addProduct(p, unitats, dList);
     }
 
-    public List<Product> addProductByName(@NotNull String nom, boolean refund) {
-        return addProductByName(nom, 1, refund);
+    public List<Product> addProductByName(@NotNull String nom) {
+        return addProductByName(nom, 1);
     }
 
     /**
@@ -206,7 +206,7 @@ public class TPVController {
      * @param unitatsProducte units added
      * @return products that match the name introduced
      */
-    public List<Product> addProductByName(@NotNull String nomProducte, int unitatsProducte, boolean refund) {
+    public List<Product> addProductByName(@NotNull String nomProducte, int unitatsProducte) {
         List<Product> products = productsService.findByName(nomProducte);
         if (products.isEmpty()) {
             throw new IllegalStateException(ADD_NON_EXISTING_PRODUCT_ERROR);
@@ -214,7 +214,7 @@ public class TPVController {
         if (products.size() == 1) {
             Product p = products.get(0);
             List<Discount> dList= discountService.listByTriggerId(p.getId());
-            tpv.addProduct(p, unitatsProducte, dList, refund);
+            tpv.addProduct(p, unitatsProducte, dList);
         }
         return products;
     }

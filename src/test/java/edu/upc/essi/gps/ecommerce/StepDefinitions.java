@@ -74,7 +74,7 @@ public class StepDefinitions {
 
     @Donat("^que he afegit el producte de codi de barres (\\d+) a la venta$")
     public void productByBarCodeAdded(int barCode) throws Throwable {
-        tpvController.addProductByBarCode(barCode, false);
+        tpvController.addProductByBarCode(barCode);
     }
 
     @Donat("^que no hi ha cap venda a la linia de venda$")
@@ -104,7 +104,7 @@ public class StepDefinitions {
 
     @Donat("^que he afegit el producte de codi de barres (\\d+) a la devolució$")
     public void addRefund(int barCode) throws Throwable {
-        tpvController.addProductByBarCode(barCode, true);
+        //TODO devolució
     }
 
     ////////////////////////////////////////////////////// @Quan //////////////////////////////////////////////////////
@@ -167,18 +167,18 @@ public class StepDefinitions {
 
     @Quan("^afegeixo el producte de codi de barres (\\d+) a la venta$")
     public void addProductByBarCode(int barCode) throws Throwable {
-        tryCatch(() -> tpvController.addProductByBarCode(barCode, false));
+        tryCatch(() -> tpvController.addProductByBarCode(barCode));
     }
 
-    @Quan("^indico que el client ha entregat €([^\"]*)€ per a pagar en metàlic$")
-    public void cashPayment(double delivered) throws Throwable {
-        tryCatch(() -> salesService.newSale(tpvController.getCurrentSale().getLines()));
+    @Quan("^indico que el client ha entregat €([^\"]*)€ per a pagar en metàlic, i registro la venda amb codi de venda (\\d+)$")
+    public void cashPayment(double delivered, long id) throws Throwable {
+        tryCatch(() -> salesService.newSale(id, tpvController.getCurrentSale().getLines()));
         tryCatch(() -> change = tpvController.cashPayment(delivered));
     }
 
-    @Quan("^indico que el client paga el total de la venda amb targeta$")
-    public void cardPayment() throws Throwable {
-        tryCatch(() -> salesService.newSale(tpvController.getCurrentSale().getLines()));
+    @Quan("^indico que el client paga el total de la venda amb targeta i registro la venda amb codi de venda (\\d+)$")
+    public void cardPayment(long id) throws Throwable {
+        tryCatch(() -> salesService.newSale(id, tpvController.getCurrentSale().getLines()));
         tryCatch(tpvController::tarjetPayment);
     }
 
@@ -194,17 +194,17 @@ public class StepDefinitions {
 
     @Quan("^afegeixo (\\d+) unitats del producte amb codi de barres (\\d+) a la venta$")
     public void addProducteCodiBarresUnitats(int unitats, int codiBarra) throws Throwable {
-        tpvController.addProductByBarCode(codiBarra, unitats, false);
+        tpvController.addProductByBarCode(codiBarra, unitats);
     }
 
     @Quan("^afegeixo el producte per nom \"([^\"]*)\" a la venta$")
     public void afegeixo_el_producte_per_nom_a_la_venta(String nom) throws Throwable {
-        tryCatch(() -> products = tpvController.addProductByName(nom, false));
+        tryCatch(() -> products = tpvController.addProductByName(nom));
     }
 
     @Quan("^afegeixo (\\d+) unitats del producte per nom \"([^\"]*)\" a la venta$")
     public void afegeixo_unitats_del_producte_per_nom_a_la_venta(int unitatsProducte, String nomProducte) throws Throwable {
-        tryCatch(() -> tpvController.addProductByName(nomProducte, unitatsProducte, false));
+        tryCatch(() -> tpvController.addProductByName(nomProducte, unitatsProducte));
     }
 
     @Quan("^creo un nou descompte del tipus percentatge anomenat \"([^\"]*)\" del %([^\"]*)% sobre el producte amb codi de barres (\\d+)$")
@@ -220,12 +220,6 @@ public class StepDefinitions {
     @Quan("^creo un nou descompte del tipus regal anomenat \"([^\"]*)\", on amb la compra del producte amb codi de barres (\\d+) es regala una unitat del producte amb codi de barres (\\d+)$")
     public void newRegal(String name, int codiBarresRequerit, int codiBarresRegal) throws Throwable {
         tryCatch(() -> tpvController.newDiscountPresent(name, codiBarresRequerit, codiBarresRegal));
-    }
-
-    @Quan("^indico que s'ha fet la devolució$")
-    public void recordRefund() throws Throwable {
-        salesService.newSale(tpvController.getCurrentSale().getLines());
-        tpvController.getTpv().endSale();
     }
 
     //////////////////////////////////////////////////// @Aleshores ////////////////////////////////////////////////////

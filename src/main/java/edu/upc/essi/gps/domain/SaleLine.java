@@ -37,13 +37,11 @@ public class SaleLine {
      * Crea una nova instància de <code>SaleLine</code> a partir de les dades d'un producte.
      * @param product producte a partir del qual es crea la línia de venta.
      * @param amount quantitat d'aquest producte.
-     * @param refund indica si es una devolució o no
      */
-    public SaleLine(Product product, int amount, boolean refund) {
+    public SaleLine(Product product, int amount) {
         this.id = product.getId();
         this.name = product.getName();
-        if (!refund) this.unitPrice = product.getPrice();
-        else this.unitPrice = -product.getPrice();
+        this.unitPrice = product.getPrice();
         this.barCode = product.getBarCode();
         this.amount = amount;
     }
