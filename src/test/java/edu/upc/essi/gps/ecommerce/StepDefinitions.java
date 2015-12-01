@@ -218,8 +218,8 @@ public class StepDefinitions {
     }
 
     @Quan("^creo un nou descompte del tipus regal anomenat \"([^\"]*)\", on amb la compra del producte amb codi de barres (\\d+) es regala una unitat del producte amb codi de barres (\\d+)$")
-    public void newRegal(String name, int codiBarresA, int codiBarresB) throws Throwable {
-        tryCatch(() -> tpvController.newDiscountPresent(name, codiBarresA, codiBarresB));
+    public void newRegal(String name, int codiBarresRequerit, int codiBarresRegal) throws Throwable {
+        tryCatch(() -> tpvController.newDiscountPresent(name, codiBarresRequerit, codiBarresRegal));
     }
 
     @Quan("^indico que s'ha fet la devolució$")

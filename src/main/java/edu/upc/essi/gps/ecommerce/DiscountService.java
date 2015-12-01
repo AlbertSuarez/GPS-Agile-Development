@@ -45,16 +45,16 @@ public class DiscountService {
                 discount = new Percent(product, name, id, percent);
                 break;
             case Present.TYPE_NAME:
-                Product present;
+                Product required;
                 try {
-                    present = (Product) params[0];
+                    required = (Product) params[0];
                 } catch (ClassCastException e) {
                     throw new IllegalArgumentException("Paràmetres incorrectes: S'espera "
                             + Product.class.getSimpleName()
                     );
                 }
                 id = discountRepository.newId();
-                discount = new Present(product, name, id, present);
+                discount = new Present(product, name, id, required);
                 break;
             default:
                 throw new IllegalArgumentException("El tipus de descompte indicat no existeix");

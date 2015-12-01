@@ -1,17 +1,14 @@
 package edu.upc.essi.gps.domain;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 /**
  * Classe que representa un descompte del tipus amb el producte A et regalem B.
  * */
 public class Present extends Discount{
 
     /**
-     * Producte que es regala amb la compra del disparador.
+     * Producte que cal comprar per a que es regali el disparador.
      * */
-    private final Product present;
+    private final Product required;
 
     /**
      * Nom que identifica aquesta classe com a un tipus concret de descompte.
@@ -23,47 +20,38 @@ public class Present extends Discount{
      * @param product producte amb el qual s'asocia el descompte.
      * @param name nom del descompte.
      * @param id identificador del descompte al sistema.
-     * @param present producte que es regala amb la compra del producte anterior.
+     * @param required producte que cal comprar per a que es regali el disparador.
      * */
-    public Present(Product product, String name, long id, Product present) {
+    public Present(Product product, String name, long id, Product required) {
         super(product, name, id);
-        this.present = present;
+        this.required = required;
     }
 
     @Override
     public double getDiscount() {
-        return -present.getPrice();
+        return -trigger.getPrice();
     }
 
     @Override
     public int getAmount(Sale currentSale) {
-        List<Integer> list;
-        int triggers = 0;
-        int presents = 0;
+        final int[] triggers = {0};
+        final int[] requireds = {0};
 
-        list = currentSale
+        currentSale
                 .getLines()
                 .stream()
                 .filter((l) -> l.getId() == trigger.getId())
                 .map(Sale.SaleLine::getAmount)
-                .collect(Collectors.toList());
+                .forEach((i) -> triggers[0] += i);
 
-        for (Integer i : list) {
-            triggers += i;
-        }
-
-        list = currentSale
+        currentSale
                 .getLines()
                 .stream()
-                .filter((l) -> l.getId() == present.getId())
+                .filter((l) -> l.getId() == required.getId())
                 .map(Sale.SaleLine::getAmount)
-                .collect(Collectors.toList());
+                .forEach((i) -> requireds[0] += i);
 
-        for (Integer i : list) {
-            presents += i;
-        }
-
-        return Math.min(presents, triggers);
+        return Math.min(requireds[0], triggers[0]);
     }
 
 }

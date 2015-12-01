@@ -128,10 +128,10 @@ public class TPVController {
         discountService.newDiscount(Promotion.TYPE_NAME, product, name, A, B);
     }
 
-    public void newDiscountPresent(String name, long barCodeA, long barCodeB) {
-        Product productA = productsService.findByBarCode(barCodeA);
-        Product productB = productsService.findByBarCode(barCodeB);
-        discountService.newDiscount(Present.TYPE_NAME, productA, name, productB);
+    public void newDiscountPresent(String name, long barCodeRequired, long barCodePresent) {
+        Product present = productsService.findByBarCode(barCodePresent);
+        Product required = productsService.findByBarCode(barCodeRequired);
+        discountService.newDiscount(Present.TYPE_NAME, present, name, required);
     }
 
     public String getCustomerScreenMessage() {
