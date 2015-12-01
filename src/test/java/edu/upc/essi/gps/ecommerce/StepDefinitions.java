@@ -21,10 +21,12 @@ public class StepDefinitions {
     private BalancesService balancesService = new BalancesService(new BalancesRepository());
     private DiscountService discountService = new DiscountService(new DiscountRepository());
     private SalesService salesService = new SalesService(new SalesRepository());
+    private RefundsService refundsService = new RefundsService(new RefundsRepository());
     private Exception exception;
     private TPVController tpvController;
     private ProductManagerController productManagerController;
     private double change;
+    private double refund;
     private List<SaleLine> lines;
     private List<Product> products;
     private List<Balance> balances;
@@ -84,7 +86,7 @@ public class StepDefinitions {
 
     @Donat("^que estem al panell de gestió del product manager$")
     public void initManagement() throws Throwable {
-        productManagerController = new ProductManagerController(balancesService, tpvService,salesService);
+        productManagerController = new ProductManagerController(balancesService, tpvService,salesService, refundsService);
     }
 
     @Donat("^un desquadrament del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de €([^\"]*)€")
@@ -220,6 +222,11 @@ public class StepDefinitions {
     @Quan("^creo un nou descompte del tipus regal anomenat \"([^\"]*)\", on amb la compra del producte amb codi de barres (\\d+) es regala una unitat del producte amb codi de barres (\\d+)$")
     public void newRegal(String name, int codiBarresRequerit, int codiBarresRegal) throws Throwable {
         tryCatch(() -> tpvController.newDiscountPresent(name, codiBarresRequerit, codiBarresRegal));
+    }
+
+    @Quan("^creo una devolució de (\\d+) unitat/s del producte amb codi de barres (\\d+) de la venta (\\d+)")
+    public void addDevolucio(int unitats, int barCode, long idVenda) throws Throwable {
+        //TODO add devolucio
     }
 
     //////////////////////////////////////////////////// @Aleshores ////////////////////////////////////////////////////
@@ -358,6 +365,11 @@ public class StepDefinitions {
     @Aleshores("^el descompte \"([^\"]*)\" té un valor de €([^\"]*)€$")
     public void checkDescompte(String name, String valor) throws Throwable {
         assertEquals(Double.parseDouble(valor), discountService.findByName(name).getDiscount(), DELTA);
+    }
+
+    @Aleshores("^el TPV m'indica que haig de retornar una quantitat de €([^\"]*)€$")
+    public void checkRefund(String refund) throws Throwable {
+        //TODO check refund
     }
 
 }
