@@ -107,4 +107,13 @@ public class SaleLine {
         return barCode;
     }
 
+    /**
+     * Consulta del producte de la lina de venda
+     * @return producte de la linia
+     */
+    public Product getProduct() {
+        // TODO El zero que hi ha esta perque ni idea com obtenir el vatPct
+        return new Product(id, name, unitPrice, 0, barCode);
+    }
+
 }

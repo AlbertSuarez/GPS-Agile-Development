@@ -89,6 +89,30 @@ public class Sale implements Entity {
     }
 
     /**
+     * Consulta del producte de la linia de venda donat un codi de barres
+     * @param barcode codi de barres que identifica el producte
+     * @return el producte amb codi de barres <code>barcode</code>
+     */
+    public Product getProductByBarCode(int barcode) {
+        for (SaleLine s : lines) {
+            if (s.getBarCode() == barcode) return s.getProduct();
+        }
+        return null;
+    }
+
+    /**
+     * Consulta de la quantitat de productes donat el producte en una venda
+     * @param product el producte
+     * @return la quantitat de producte venut
+     */
+    public int getAmountByProduct(Product product) {
+        for (SaleLine s : lines) {
+            if (s.getBarCode() == product.getBarCode()) return s.getAmount();
+        }
+        return 0;
+    }
+
+    /**
      * Consulta el còmput total de la venta.
      * @return el total a pagar en aquesta venta.
      * */

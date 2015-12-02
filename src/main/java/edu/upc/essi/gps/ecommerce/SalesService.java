@@ -22,6 +22,10 @@ public class SalesService {
         return sale;
     }
 
+    public Sale findById(long id) {
+        return salesRepository.findById(id);
+    }
+
     public List<Sale> listAll() {
         return salesRepository.list();
     }

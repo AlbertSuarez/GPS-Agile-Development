@@ -15,8 +15,13 @@ public class Refund implements Entity {
 
     /**
      * Conjunt de línies de devolucions associades a la devolució
-     * */
+     */
     private List<SaleLine> devolucions = new LinkedList<>();
+
+    /**
+     * Moitu de la devolució
+     */
+    private String reason;
 
     /**
      * Constructora sense paràmetres
@@ -28,9 +33,10 @@ public class Refund implements Entity {
      * @param id
      * @param devolucions
      */
-    public Refund(long id, List<SaleLine> devolucions) {
+    public Refund(long id, List<SaleLine> devolucions, String reason) {
         this.id = id;
         this.devolucions = devolucions;
+        this.reason = reason;
     }
 
     @Override

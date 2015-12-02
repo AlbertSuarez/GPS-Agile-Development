@@ -8,6 +8,7 @@ import edu.upc.essi.gps.domain.Product;
 import edu.upc.essi.gps.domain.Sale;
 import edu.upc.essi.gps.domain.SaleLine;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -224,9 +225,17 @@ public class StepDefinitions {
         tryCatch(() -> tpvController.newDiscountPresent(name, codiBarresRequerit, codiBarresRegal));
     }
 
-    @Quan("^creo una devolució de (\\d+) unitat/s del producte amb codi de barres (\\d+) de la venta (\\d+)")
-    public void addDevolucio(int unitats, int barCode, long idVenda) throws Throwable {
+    @Quan("^creo una devolució de (\\d+) unitat/s del producte amb codi de barres (\\d+) de la venta (\\d+) amb el motiu \"([^\"]*)\"")
+    public void addDevolucio(int unitats, int barCode, long idVenda, String reason) throws Throwable {
         //TODO add devolucio
+        Product p = salesService.findById(idVenda).getProductByBarCode(barCode);
+        if (p == null)
+            throw new IllegalStateException("El producte que es vol retornar no s'ha venut amb anterioritat");
+        if (unitats > salesService.findById(idVenda).getAmountByProduct(p))
+            throw new IllegalStateException("La quantitat de producte retornat es major a la que es va vendre");
+        List<SaleLine> s = new LinkedList<>();
+        s.add(new SaleLine(p, unitats));
+        refundsService.newRefund(s, reason);
     }
 
     //////////////////////////////////////////////////// @Aleshores ////////////////////////////////////////////////////

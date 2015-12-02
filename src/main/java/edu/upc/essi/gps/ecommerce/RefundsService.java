@@ -21,9 +21,9 @@ public class RefundsService {
         return l;
     }
 
-    public long newRefund(List<SaleLine> refunds) {
+    public long newRefund(List<SaleLine> refunds, String reason) {
         long id = refundsRepository.newId();
-        Refund refund = new Refund(id, refunds);
+        Refund refund = new Refund(id, refunds, reason);
         refundsRepository.insert(refund);
         return id;
     }

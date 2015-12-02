@@ -17,8 +17,14 @@ public class SalesRepository extends Repository<Sale> {
         return l;
     }
 
+    public Sale findById(long id) {
+        return find((s) -> s.getId() == id);
+    }
+
     @Override
     protected void checkInsert(final Sale sale) throws RuntimeException {
-
+        if (findById(sale.getId()) != null) {
+            throw new IllegalArgumentException("Ja existeix una devolucio amb aquest identificador");
+        }
     }
 }
