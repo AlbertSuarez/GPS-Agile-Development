@@ -14,4 +14,4 @@ Característica: Retornar un producte
     Donat que he afegit el producte de codi de barres 1234567 a la venta
     I indico que el client paga el total de la venda amb targeta i registro la venda amb codi de venda 123456789
     Quan creo una devolució de 1 unitat/s del producte amb codi de barres 1234567 de la venta 123456789 amb el motiu "No funciona"
-    Aleshores el TPV m'indica que haig de retornar una quantitat de €20€
+    Aleshores el TPV m'indica que haig de retornar una quantitat de €20€ per a 1 unitat/s del producte amb codi de barres 1234567

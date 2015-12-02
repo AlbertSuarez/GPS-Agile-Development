@@ -1,5 +1,6 @@
 package edu.upc.essi.gps.ecommerce;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
 import cucumber.api.java.ca.Quan;
@@ -376,9 +377,9 @@ public class StepDefinitions {
         assertEquals(Double.parseDouble(valor), discountService.findByName(name).getDiscount(), DELTA);
     }
 
-    @Aleshores("^el TPV m'indica que haig de retornar una quantitat de €([^\"]*)€$")
-    public void checkRefund(String refund) throws Throwable {
-        //TODO check refund
+    @Aleshores("^el TPV m'indica que haig de retornar una quantitat de €(\\d+)€ per a (\\d+) unitat/s del producte amb codi de barres (\\d+)$")
+    public void checkRefund(int price, int amount, int barCode) throws Throwable {
+        int refund = (int)productsService.findByBarCode(barCode).getPrice() * amount;
+        assertEquals(price, refund);
     }
-
 }
