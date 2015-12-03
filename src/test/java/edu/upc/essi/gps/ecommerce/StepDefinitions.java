@@ -1,9 +1,7 @@
 package edu.upc.essi.gps.ecommerce;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
-import cucumber.api.java.ca.I;
 import cucumber.api.java.ca.Quan;
 import edu.upc.essi.gps.domain.Balance;
 import edu.upc.essi.gps.domain.Product;
@@ -14,7 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 public class StepDefinitions {
 
@@ -81,11 +78,6 @@ public class StepDefinitions {
     @Donat("^que he afegit el producte de codi de barres (\\d+) a la venta$")
     public void productByBarCodeAdded(int barCode) throws Throwable {
         tpvController.addProductByBarCode(barCode);
-    }
-
-    @Donat("^que no hi ha cap venda a la linia de venda$")
-    public void que_no_hi_ha_cap_venda_a_la_linia_de_venda() throws Throwable {
-        assertTrue(tpvController.getCurrentSale().isEmpty());
     }
 
     @Donat("^que estem al panell de gestió del product manager$")

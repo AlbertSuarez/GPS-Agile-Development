@@ -18,6 +18,5 @@ Característica: Veure les linies de venda
 
   Escenari: Error si no hi ha cap venda i consultem les linies de venda
     Donat que hi ha una venta iniciada
-    I que no hi ha cap venda a la linia de venda
     Quan indico que vull consultar la linia de venda
     Aleshores obtinc un error que diu: "No hi ha cap venda"
