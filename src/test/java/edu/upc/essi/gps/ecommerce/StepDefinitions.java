@@ -2,14 +2,12 @@ package edu.upc.essi.gps.ecommerce;
 
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
-import cucumber.api.java.ca.I;
 import cucumber.api.java.ca.Quan;
 import edu.upc.essi.gps.domain.Balance;
 import edu.upc.essi.gps.domain.Product;
 import edu.upc.essi.gps.domain.Sale;
 import edu.upc.essi.gps.domain.SaleLine;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -252,6 +250,11 @@ public class StepDefinitions {
     @Quan("^vull llistar totes les vendes$")
     public void vull_llistar_totes_les_vendes() throws Throwable {
         tryCatch(() -> sales = productManagerController.listSales());
+    }
+
+    @Quan("^indico que el client paga el total de la venda amb targeta$")
+    public void indico_que_el_client_paga_el_total_de_la_venda_amb_targeta() throws Throwable {
+        tryCatch(tpvController::tarjetPayment);
     }
 
     //////////////////////////////////////////////////// @Aleshores ////////////////////////////////////////////////////
