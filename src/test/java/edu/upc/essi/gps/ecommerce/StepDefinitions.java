@@ -135,6 +135,7 @@ public class StepDefinitions {
         salesService.insertSale(s);
     }
 
+
     ////////////////////////////////////////////////////// @Quan //////////////////////////////////////////////////////
 
     @Quan("^inicio el torn al tpv amb identificador (\\d+) i password \"([^\"]*)\", amb un efectiu inicial de €([^\"]*)€$")
