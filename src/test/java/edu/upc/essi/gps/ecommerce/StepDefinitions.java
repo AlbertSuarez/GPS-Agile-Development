@@ -47,7 +47,7 @@ public class StepDefinitions {
     @Donat("^que estem al tpv número (\\d+) de la botiga \"([^\"]*)\"$")
     public void setupPos(int posNumber, String shop) throws Throwable {
         tpvService.newTPV(shop, posNumber);
-        tpvController = new TPVController(productsService, saleAssistantService, tpvService, balancesService, discountService, shop, posNumber);
+        tpvController = new TPVController(salesService, productsService, saleAssistantService, tpvService, balancesService, discountService, shop, posNumber);
     }
 
     @Donat("^que el \"([^\"]*)\" s'ha registrat al sistema amb password \"([^\"]*)\" i rep l'identificador (\\d+)$")
