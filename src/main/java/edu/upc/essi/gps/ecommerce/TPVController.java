@@ -3,6 +3,7 @@ package edu.upc.essi.gps.ecommerce;
 import com.sun.istack.internal.NotNull;
 import edu.upc.essi.gps.domain.*;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static edu.upc.essi.gps.utils.Validations.checkNotNull;
@@ -227,6 +228,10 @@ public class TPVController {
 
     public Balance getLastBalance() {
         return balancesService.getLastBalance();
+    }
+
+    public void refund(){
+
     }
 
 }

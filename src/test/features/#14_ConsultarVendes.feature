@@ -10,6 +10,7 @@ Característica: Consultar vendes
 
   Escenari: llista totes les vendes
     Donat que hi ha hagut una venda del producte amb codi de barres 1234567 pagat en metode "card"
+    Quan vull llistar totes les vendes
     Aleshores obtinc el producte amb nom "Optimus Prime"
 
   Escenari: no hi ha vendes
@@ -20,5 +21,6 @@ Característica: Consultar vendes
     Donat que hi ha hagut una venda del producte amb codi de barres 1234567 pagat en metode "card"
     Quan vull llistar les vendes pagades en "card"
     Aleshores obtinc el producte amb nom "Optimus Prime" pagat en "card"
+
 
 

@@ -31,6 +31,7 @@ public class StepDefinitions {
     private List<SaleLine> lines;
     private List<Product> products;
     private List<Balance> balances;
+    private List<Sale> sales;
 
     public void tryCatch(Runnable r){
         try {
@@ -239,24 +240,22 @@ public class StepDefinitions {
     @Quan("^creo una devolució de (\\d+) unitat/s del producte amb codi de barres (\\d+) de la venta (\\d+) amb el motiu \"([^\"]*)\"")
     public void addDevolucio(int unitats, int barCode, long idVenda, String reason) throws Throwable {
         //TODO add devolucio
-        Product p = salesService.findById(idVenda).getProductByBarCode(barCode);
-        if (p == null)
-            throw new IllegalStateException("El producte que es vol retornar no s'ha venut amb anterioritat");
-        if (unitats > salesService.findById(idVenda).getAmountByProduct(p))
-            throw new IllegalStateException("La quantitat de producte retornat es major a la que es va vendre");
-        List<SaleLine> s = new LinkedList<>();
-        s.add(new SaleLine(p, unitats));
-        refundsService.newRefund(s, reason);
+
     }
 
     @Quan("^consulto les vendes$")
     public void consulto_les_vendes() throws Throwable {
-        tryCatch(()-> salesService.listSales());
+        tryCatch(()-> sales = productManagerController.listSales());
     }
 
     @Quan("^vull llistar les vendes pagades en \"([^\"]*)\"$")
     public void getSalesType(String type) throws Throwable {
         tryCatch(() -> productManagerController.llistaVentesPerTipusPagament(type));
+    }
+
+    @Quan("^vull llistar totes les vendes$")
+    public void vull_llistar_totes_les_vendes() throws Throwable {
+        tryCatch(()->sales = productManagerController.listSales());
     }
 
     //////////////////////////////////////////////////// @Aleshores ////////////////////////////////////////////////////
@@ -405,7 +404,7 @@ public class StepDefinitions {
 
     @Aleshores("^obtinc el producte amb nom \"([^\"]*)\"$")
     public void checkName(String name) throws Throwable {
-        assertEquals(name, productManagerController.listSales().get(0).getLines().get(0).getName());
+        assertTrue(sales.get(0).hasProductByName(name));
     }
 
 

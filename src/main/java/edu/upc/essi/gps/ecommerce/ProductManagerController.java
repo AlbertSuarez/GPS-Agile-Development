@@ -2,6 +2,7 @@ package edu.upc.essi.gps.ecommerce;
 
 import edu.upc.essi.gps.domain.Balance;
 import edu.upc.essi.gps.domain.Sale;
+import edu.upc.essi.gps.domain.SaleLine;
 
 import java.sql.Ref;
 import java.util.List;
@@ -18,6 +19,7 @@ public class ProductManagerController {
     private final SalesService salesService;
     private final BalancesService balancesService;
     private final RefundsService refundsService;
+    private List<Sale> sales;
 
     public ProductManagerController(BalancesService balancesService, TPVService tpvService, SalesService salesService, RefundsService refundsService) {
         this.balancesService = balancesService;
@@ -48,7 +50,8 @@ public class ProductManagerController {
     }
 
     public List<Sale> listSales() {
-        return salesService.listSales();
+        sales = salesService.listSales();
+        return sales;
     }
 
     public void setMasterPassword(String password) {
@@ -57,5 +60,35 @@ public class ProductManagerController {
 
     public List<Sale> llistaVentesPerTipusPagament(String tipus) {
         return salesService.listByTipus(tipus);
+    }
+
+    public String getScreenSales(){
+        StringBuilder sb = new StringBuilder();
+        for(Sale sale:sales){
+            sb.append("Linies de venda");
+            sb.append(sale.getId());
+            for(SaleLine s:sale.getLines()){
+                sb.append(s.getName())
+                        .append(" - ")
+                        .append(s.getUnitPrice())
+                        .append("€/u x ")
+                        .append(s.getAmount())
+                        .append("u = ")
+                        .append(s.getTotalPrice())
+                        .append("€")
+                        .append(System.lineSeparator());
+            }
+            sb.append("---")
+                    .append(System.lineSeparator())
+                    .append("Total: ")
+                    .append(sale.getTotal())
+                    .append("€")
+                    .append("Mètode pagament: ")
+                    .append(sale.getTipusPagament());
+                    //.append()
+
+        }
+        return sb.toString();
+
     }
 }
