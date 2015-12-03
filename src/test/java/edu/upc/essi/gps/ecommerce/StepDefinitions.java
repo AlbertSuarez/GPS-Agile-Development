@@ -96,12 +96,12 @@ public class StepDefinitions {
     }
 
     @Donat("^que ens desconectem del panell de gestio del product manager$")
-    public void que_ens_desconectem_del_panell_de_gestio_del_product_manager() throws Throwable {
+    public void disconnectProductManager() throws Throwable {
         productManagerController = null;
     }
 
     @Donat("^el producte amb codi de barres (\\d+) esta pagat en targeta$")
-    public void el_producte_amb_codi_de_barres_esta_pagat_en_targeta(int barCode) throws Throwable {
+    public void productIsPaidWithCard(int barCode) throws Throwable {
         tpvController.startSale();
         tpvController.addProductByBarCode(barCode);
         tpvController.tarjetPayment();
@@ -109,7 +109,7 @@ public class StepDefinitions {
 
 
     @Donat("^el producte amb codi de barres (\\d+) esta pagat en metalic: €(\\d+)€$")
-    public void el_producte_amb_codi_de_barres_esta_pagat_en_metalic_€(int barCode, int pagat) throws Throwable {
+    public void productIsPaidWithCash(int barCode, int pagat) throws Throwable {
         tpvController.startSale();
         tpvController.addProductByBarCode(barCode);
         tpvController.cashPayment(pagat);
@@ -122,21 +122,21 @@ public class StepDefinitions {
     }
 
     @Donat("^que es fa una venda amb id (\\d+) del producte amb codi de barres (\\d+)$")
-    public void que_es_fa_una_venda_amb_id_del_producte_amb_codi_de_barres(long id, int barCode) throws Throwable {
+    public void thereIsASaleWithIdAndBarCode(long id, int barCode) throws Throwable {
         Sale s = new Sale(id);
         s.addProduct(productsService.findByBarCode(barCode), 1, null);
         salesService.insertSale(s);
     }
 
     @Donat("^que es fa una venda amb id (\\d+) amb (\\d+) unitats del producte amb codi de barres (\\d+)$")
-    public void que_es_fa_una_venda_amb_id_amb_unitats_del_producte_amb_codi_de_barres(int id, int unitats, int barCode) throws Throwable {
+    public void thereIsASaleWithIdAmountAndBarCode(int id, int unitats, int barCode) throws Throwable {
         Sale s = new Sale(id);
         s.addProduct(productsService.findByBarCode(barCode), unitats, null);
         salesService.insertSale(s);
     }
 
-    @I("^una devolució de (\\d+) unitats del producte amb codi de barres (\\d+) amb motiu \"([^\"]*)\"$")
-    public void una_devolució_de_unitats_del_producte_amb_codi_de_barres_amb_motiu(int unitats, int codiBarres, String motiu) throws Throwable {
+    @Donat("^una devolució de (\\d+) unitats del producte amb codi de barres (\\d+) amb motiu \"([^\"]*)\"$")
+    public void thereIsARefundWithAmountBarCodeAndReason(int unitats, int codiBarres, String motiu) throws Throwable {
         refundsService.newRefund(productsService.findByBarCode(codiBarres), unitats, motiu);
     }
 
@@ -211,12 +211,12 @@ public class StepDefinitions {
 
 
     @Quan("^indico que vull consultar la linia de venda$")
-    public void indico_que_vull_consulta_la_linia_de_venda() throws Throwable {
+    public void indicateToGetSale() throws Throwable {
         tryCatch(() -> lines = tpvController.getCurrentSale().getLines());
     }
 
     @Quan("^Aplico un descompte manual que anomeno \"([^\"]*)\" al producte (\\d+) de la venda amb valor (\\d+)%$")
-    public void Aplico_un_descompte_de_tipus_que_anomeno_al_producte_amb_valor_(String name, int prodLine, int percent) throws Throwable {
+    public void applyDiscount(String name, int prodLine, int percent) throws Throwable {
         tryCatch(() -> tpvController.addNewDiscountToCurrentSale(prodLine, name, (double) percent));
     }
 
@@ -226,12 +226,12 @@ public class StepDefinitions {
     }
 
     @Quan("^afegeixo el producte per nom \"([^\"]*)\" a la venta$")
-    public void afegeixo_el_producte_per_nom_a_la_venta(String nom) throws Throwable {
+    public void addProductByName(String nom) throws Throwable {
         tryCatch(() -> products = tpvController.addProductByName(nom));
     }
 
     @Quan("^afegeixo (\\d+) unitats del producte per nom \"([^\"]*)\" a la venta$")
-    public void afegeixo_unitats_del_producte_per_nom_a_la_venta(int unitatsProducte, String nomProducte) throws Throwable {
+    public void addAmountToProductByName(int unitatsProducte, String nomProducte) throws Throwable {
         tryCatch(() -> tpvController.addProductByName(nomProducte, unitatsProducte));
     }
 
@@ -251,7 +251,7 @@ public class StepDefinitions {
     }
 
     @Quan("^indico que el client ha entregat €([^\"]*)€ per a pagar en metàlic$")
-    public void indico_que_el_client_ha_entregat_€_€_per_a_pagar_en_metàlic(double delivered) throws Throwable {
+    public void clientHasDeliveredInCash(double delivered) throws Throwable {
         tryCatch(() -> change = tpvController.cashPayment(delivered));
     }
 
@@ -262,7 +262,7 @@ public class StepDefinitions {
     }
 
     @Quan("^consulto les vendes$")
-    public void consulto_les_vendes() throws Throwable {
+    public void getSales() throws Throwable {
         tryCatch(() -> sales = productManagerController.listSales());
     }
 
@@ -272,12 +272,12 @@ public class StepDefinitions {
     }
 
     @Quan("^vull llistar totes les vendes$")
-    public void vull_llistar_totes_les_vendes() throws Throwable {
+    public void getAllSales() throws Throwable {
         tryCatch(() -> sales = productManagerController.listSales());
     }
 
     @Quan("^indico que el client paga el total de la venda amb targeta$")
-    public void indico_que_el_client_paga_el_total_de_la_venda_amb_targeta() throws Throwable {
+    public void clientHasDeliveredInCard() throws Throwable {
         tryCatch(tpvController::tarjetPayment);
     }
 
@@ -333,12 +333,12 @@ public class StepDefinitions {
     }
 
     @Aleshores("^la venta té (\\d+) (?:línia|línies)$")
-    public void la_venta_té_n_linies(int expectedNumberOfLines) throws Throwable {
+    public void saleHasNLines(int expectedNumberOfLines) throws Throwable {
         assertEquals(expectedNumberOfLines, tpvController.getCurrentSale().getLines().size());
     }
 
     @Aleshores("^línia de venta (\\d+) és de (\\d+) unitats de \"([^\"]*)\" a €([^\"]*)€ cada una per un total de €([^\"]*)€$")
-    public void línia_de_venta_és_de_unitats_de_a_€_cada_una_per_un_total_de_€(int lineNumber, int units, String productName, double unitPrice, double totalPrice) throws Throwable {
+    public void checkSaleLine(int lineNumber, int units, String productName, double unitPrice, double totalPrice) throws Throwable {
         SaleLine sl = tpvController.getCurrentSale().getLines().get(lineNumber - 1);
         assertEquals(units,sl.getAmount());
         assertEquals(unitPrice,sl.getUnitPrice(), DELTA);
@@ -347,12 +347,12 @@ public class StepDefinitions {
     }
 
     @Aleshores("^el total de la venta actual és de €([^\"]*)€$")
-    public void el_total_de_la_venta_actual_és_de_€(double saleTotal) throws Throwable {
+    public void checkTotalPrice(double saleTotal) throws Throwable {
         assertEquals(saleTotal, tpvController.getCurrentSale().getTotal(), DELTA);
     }
 
     @Aleshores("^la pantalla del client del tpv mostra$")
-    public void la_pantalla_del_client_del_tpv_mostra(String msg) throws Throwable {
+    public void checkClientScreen(String msg) throws Throwable {
         assertEquals(msg, tpvController.getCustomerScreenMessage());
     }
 
@@ -362,42 +362,42 @@ public class StepDefinitions {
     }
 
     @Aleshores("^la venta esta iniciada$")
-    public void la_venta_esta_iniciada() throws Throwable {
+    public void checkIniSale() throws Throwable {
         assertTrue(tpvController.isSaleStarted());
     }
 
     @Aleshores("^la venda conté el producte amb codi de barres (\\d+)$")
-    public void la_venda_conté_el_producte_amb_codi_de_barres(int barCode) {
+    public void checkSaleHasProductByBarCode(int barCode) {
         assertTrue(tpvController.getCurrentSale().hasProductByBarCode(barCode));
     }
 
     @Aleshores("^la venda conté el producte amb nom \"([^\"]*)\"$")
-    public void la_venda_conté_el_producte_amb_nom(String nomProducte) throws Throwable {
+    public void checkSaleHasProductByName(String nomProducte) throws Throwable {
         assertTrue(tpvController.getCurrentSale().hasProductByName(nomProducte));
     }
 
     @Aleshores("^obtinc (\\d+) noms de productes$")
-    public void obtinc_noms_de_productes(int nProductes) throws Throwable {
+    public void checkProductSize(int nProductes) throws Throwable {
         assertEquals(nProductes, products.size());
     }
 
     @Aleshores("^el producte numero (\\d+) es \"([^\"]*)\"$")
-    public void el_numero_es(int index, String nomProducte) throws Throwable {
+    public void checkProductByIndex(int index, String nomProducte) throws Throwable {
         assertEquals(nomProducte, products.get(index - 1).getName());
     }
 
     @Aleshores("^la venta no esta iniciada$")
-    public void la_venta_no_esta_iniciada() throws Throwable {
+    public void checkNotIniSale() throws Throwable {
         assertFalse(tpvController.isSaleStarted());
     }
 
     @Aleshores("^obtinc una linia de venda amb (\\d+) venda$")
-    public void obtinc_una_linia_de_venda_amb_venda(int n) throws Throwable {
+    public void checkSaleLineSize(int n) throws Throwable {
         assertEquals(n, lines.size());
     }
 
     @Aleshores("^obtinc una linia de venda amb el (\\d+)er producte amb nom \"([^\"]*)\", preu €([^\"]*)€ i codi de barres (\\d+)$")
-    public void obtinc_una_linia_de_venda_amb_x_producte(int ind, String productName, double price, int barCode) throws Throwable {
+    public void getSaleLineWithProductByBarCode(int ind, String productName, double price, int barCode) throws Throwable {
         assertTrue(tpvController.getCurrentSale().hasProductByBarCode(barCode));
         SaleLine line = tpvController.getCurrentSale().getLines().get(ind-1);
         assertEquals(line.getName(),productName);
@@ -405,7 +405,7 @@ public class StepDefinitions {
     }
 
     @Aleshores("^la venta esta tancada$")
-    public void la_venta_esta_tancada() throws Throwable {
+    public void checkClosedSale() throws Throwable {
         assertFalse(tpvController.isSaleStarted());
     }
 
@@ -430,12 +430,12 @@ public class StepDefinitions {
     }
 
     @Aleshores("^obtinc (\\d+) devolucions$")
-    public void obtinc_devolucions(int quantitat) throws Throwable {
+    public void getRefundSize(int quantitat) throws Throwable {
         assertEquals(quantitat, refunds.size());
     }
 
     @Aleshores("^obtinc una devolució número (\\d+)  amb (\\d+) linia de devolucio de (\\d+) unitats del producte amb nom \"([^\"]*)\" amb motiu \"([^\"]*)\"$")
-    public void obtinc_una_devolució_número_amb_linia_de_devolucio_de_unitats_del_producte_amb_nom_amb_motiu(int pos, int linia, int unitats, String name, String motiu) throws Throwable {
+    public void getSpecifiedRefund(int pos, int linia, int unitats, String name, String motiu) throws Throwable {
         List<RefundLine> linies = refunds.get(pos - 1).getLiniesDevolucions();
         assertEquals(linia, linies.size());
         assertEquals(unitats, linies.get(linia - 1).getQuantitat());
