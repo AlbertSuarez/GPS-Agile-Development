@@ -3,7 +3,6 @@ package edu.upc.essi.gps.ecommerce;
 import edu.upc.essi.gps.domain.Sale;
 import edu.upc.essi.gps.utils.Repository;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -17,10 +16,6 @@ public class SalesRepository extends Repository<Sale> {
             throw new IllegalStateException("No hi ha cap venda enregistrada al sistema");
         }
         return l;
-    }
-
-    public Sale findById(long id) {
-        return find((s) -> s.getId() == id);
     }
 
     @Override

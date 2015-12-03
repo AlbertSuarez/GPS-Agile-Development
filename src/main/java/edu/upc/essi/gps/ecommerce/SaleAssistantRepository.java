@@ -11,8 +11,7 @@ public class SaleAssistantRepository extends Repository<SaleAssistant> {
 
     @Override
     protected void checkInsert(final SaleAssistant entity) throws RuntimeException {
-        if(findById(entity.getId()) != null)
-            throw new IllegalArgumentException("Ja existeix un caixer amb aquest id");
+
     }
 
 }

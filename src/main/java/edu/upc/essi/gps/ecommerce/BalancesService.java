@@ -2,7 +2,6 @@ package edu.upc.essi.gps.ecommerce;
 
 import edu.upc.essi.gps.domain.Balance;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,9 +24,12 @@ public class BalancesService {
         return balanceRepository.listByShopName(shopName);
     }
 
-    public Balance getLastBalance() { return balanceRepository.list().get(balanceRepository.list().size()-1);}
+    public Balance getLastBalance() {
+        List<Balance> balanceList = balanceRepository.list();
+        return balanceList.get(balanceList.size() - 1);
+    }
 
-    public Balance newBalance(double qtt, String saleAssistantName, String nomBotiga ) {
+    public Balance newBalance(double qtt, String saleAssistantName, String nomBotiga) {
         long id = balanceRepository.newId();
         Balance imbalance = new Balance(id, qtt, saleAssistantName, nomBotiga);
         balanceRepository.insert(imbalance);

@@ -1,5 +1,6 @@
 package edu.upc.essi.gps.utils;
 
+import com.sun.istack.internal.NotNull;
 import edu.upc.essi.gps.domain.Entity;
 
 import java.util.Collections;
@@ -36,15 +37,22 @@ public abstract class Repository<T extends Entity> {
      * @param t objecte que es vol insertar.
      * @throws RuntimeException si l'objecte no pot ser inserit al repositori.
      * */
-    protected abstract void checkInsert(T t) throws RuntimeException;
+    protected abstract void checkInsert(@NotNull T t) throws RuntimeException;
 
     /**
      * Insereix un objecte al repositori.
      * @param t objecte que es vol insertar.
      * */
     public void insert(T t) {
+        checkIdDuplicate(t);
         checkInsert(t);
         entities.add(t);
+    }
+
+    private void checkIdDuplicate(T t) {
+        if (findById(t.getId()) != null) {
+            throw new IllegalArgumentException("Ja existeix un " + t.getClass().getSimpleName() + " amb aquest id");
+        }
     }
 
     /**
@@ -99,6 +107,10 @@ public abstract class Repository<T extends Entity> {
             if (matcher.matches(entity)) return entity;
         }
         return null;
+    }
+
+    public T findById(long id) {
+        return find(Matchers.idMatcher(id));
     }
 
 }

@@ -1,7 +1,6 @@
 package edu.upc.essi.gps.ecommerce;
 
 import edu.upc.essi.gps.domain.*;
-import edu.upc.essi.gps.utils.Comparators;
 
 import java.util.List;
 
@@ -66,10 +65,6 @@ public class DiscountService {
 
     public List<Discount> list(){
         return discountRepository.list();
-    }
-
-    public List<Discount> listByName(){
-        return discountRepository.list(Comparators.byName);
     }
 
     public Discount findByName(String productName) {

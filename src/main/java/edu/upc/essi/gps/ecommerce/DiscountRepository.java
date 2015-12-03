@@ -12,10 +12,6 @@ public class DiscountRepository extends Repository<Discount> {
         return find(Matchers.nameMatcher(name));
     }
 
-    public Discount findById(final long id){
-        return find((d) -> d.getId() == id);
-    }
-
     public List<Discount> findByTriggerId(final long productId) {
         return list((d) -> d.getTrigger().getId() == productId);
     }

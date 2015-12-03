@@ -3,7 +3,6 @@ package edu.upc.essi.gps.ecommerce;
 import com.sun.istack.internal.NotNull;
 import edu.upc.essi.gps.domain.*;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import static edu.upc.essi.gps.utils.Validations.checkNotNull;
@@ -246,7 +245,7 @@ public class TPVController {
 
         double refundMoney = p.getPrice()*unitats;
         tpv.addCash(-refundMoney);
-        refundsService.insertRefund(p,unitats, reason);
+        refundsService.newRefund(p, unitats, reason);
         return refundMoney;
     }
 }

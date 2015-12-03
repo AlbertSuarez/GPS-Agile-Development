@@ -1,5 +1,6 @@
 package edu.upc.essi.gps.utils;
 
+import edu.upc.essi.gps.domain.Entity;
 import edu.upc.essi.gps.domain.HasName;
 
 /**
@@ -31,6 +32,10 @@ public final class Matchers {
      * */
     public static Matcher<HasName> containsNameMatcher(final String name) {
         return entity -> entity.getName().contains(name);
+    }
+
+    public static Matcher<Entity> idMatcher(long id) {
+        return entity -> entity.getId() == id;
     }
 
 }
