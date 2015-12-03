@@ -53,4 +53,8 @@ public class SalesService {
     public List<Sale> listByTipus(String tipus) {
         return salesRepository.listByTipus(tipus);
     }
+
+    public void insertSale(Sale currentSale) {
+        salesRepository.insert(currentSale);
+    }
 }

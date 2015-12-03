@@ -16,15 +16,16 @@ public class TPVController {
     private final TPVService tpvService;
     private final BalancesService balancesService;
     private final DiscountService discountService;
-
+    private final SalesService salesService;
     private final TPV tpv;
 
-    public TPVController(ProductsService productsService, SaleAssistantService saleAssistantService, TPVService tpvService, BalancesService balancesService, DiscountService discountService, String shop, int pos) {
+    public TPVController(SalesService salesService, ProductsService productsService, SaleAssistantService saleAssistantService, TPVService tpvService, BalancesService balancesService, DiscountService discountService, String shop, int pos) {
         this.productsService = productsService;
         this.saleAssistantService = saleAssistantService;
         this.tpvService = tpvService;
         this.balancesService = balancesService;
         this.discountService = discountService;
+        this.salesService = salesService;
         tpv = tpvService.findByShopPos(shop, pos);
         tpv.endTurn();
     }
@@ -168,6 +169,7 @@ public class TPVController {
             throw new IllegalStateException("No es pot cobrar una venta amb un import inferior al total de la venta");
         tpv.addCash(total);
         tpv.getCurrentSale().setTipusPagament("cash");
+        salesService.insertSale(tpv.getCurrentSale());
         tpv.endSale();
         return calculateChange(delivered, total);
     }
@@ -186,6 +188,7 @@ public class TPVController {
     public void tarjetPayment() {
         checkPaymentConditions();
         tpv.getCurrentSale().setTipusPagament("card");
+        salesService.insertSale(tpv.getCurrentSale());
         tpv.endSale();
     }
 

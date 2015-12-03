@@ -189,17 +189,7 @@ public class StepDefinitions {
         tryCatch(() -> tpvController.addProductByBarCode(barCode));
     }
 
-    @Quan("^indico que el client ha entregat €([^\"]*)€ per a pagar en metàlic, i registro la venda amb codi de venda (\\d+)$")
-    public void cashPayment(double delivered, long id) throws Throwable {
-        tryCatch(() -> salesService.newSale(id, tpvController.getCurrentSale().getLines()));
-        tryCatch(() -> change = tpvController.cashPayment(delivered));
-    }
 
-    @Quan("^indico que el client paga el total de la venda amb targeta i registro la venda amb codi de venda (\\d+)$")
-    public void cardPayment(long id) throws Throwable {
-        tryCatch(() -> salesService.newSale(id, tpvController.getCurrentSale().getLines()));
-        tryCatch(tpvController::tarjetPayment);
-    }
 
     @Quan("^indico que vull consultar la linia de venda$")
     public void indico_que_vull_consulta_la_linia_de_venda() throws Throwable {
@@ -213,7 +203,7 @@ public class StepDefinitions {
 
     @Quan("^afegeixo (\\d+) unitats del producte amb codi de barres (\\d+) a la venta$")
     public void addProducteCodiBarresUnitats(int unitats, int codiBarra) throws Throwable {
-        tpvController.addProductByBarCode(codiBarra, unitats);
+        tryCatch(() -> tpvController.addProductByBarCode(codiBarra, unitats));
     }
 
     @Quan("^afegeixo el producte per nom \"([^\"]*)\" a la venta$")
@@ -239,6 +229,11 @@ public class StepDefinitions {
     @Quan("^creo un nou descompte del tipus regal anomenat \"([^\"]*)\", on amb la compra del producte amb codi de barres (\\d+) es regala una unitat del producte amb codi de barres (\\d+)$")
     public void newRegal(String name, int codiBarresRequerit, int codiBarresRegal) throws Throwable {
         tryCatch(() -> tpvController.newDiscountPresent(name, codiBarresRequerit, codiBarresRegal));
+    }
+
+    @Quan("^indico que el client ha entregat €([^\"]*)€ per a pagar en metàlic$")
+    public void indico_que_el_client_ha_entregat_€_€_per_a_pagar_en_metàlic(double delivered) throws Throwable {
+        tryCatch(() -> change = tpvController.cashPayment(delivered));
     }
 
     @Quan("^creo una devolució de (\\d+) unitat/s del producte amb codi de barres (\\d+) de la venta (\\d+) amb el motiu \"([^\"]*)\"")
@@ -344,11 +339,6 @@ public class StepDefinitions {
         assertEquals(expectedChange, change, DELTA);
     }
 
-    @Aleshores("^el tpv indica que s'ha pagat amb targeta i tanca la venda$")
-    public void setTarget() throws Throwable {
-
-    }
-
     @Aleshores("^la venta esta iniciada$")
     public void la_venta_esta_iniciada() throws Throwable {
         assertTrue(tpvController.isSaleStarted());
@@ -417,4 +407,6 @@ public class StepDefinitions {
     public void checkName(String name) throws Throwable {
         assertEquals(name, productManagerController.listSales().get(0).getLines().get(0).getName());
     }
+
+
 }
