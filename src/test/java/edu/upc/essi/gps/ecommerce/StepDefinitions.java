@@ -227,8 +227,8 @@ public class StepDefinitions {
     }
 
     @Quan("^creo un nou descompte del tipus percentatge anomenat \"([^\"]*)\" del %([^\"]*)% sobre el producte amb codi de barres (\\d+)$")
-    public void newPercentatge(String name, String percent, int codiBarres) throws Throwable {
-        tryCatch(() -> tpvController.newDiscountPercent(name, codiBarres, Double.parseDouble(percent)));
+    public void newPercentatge(String name, double percent, int codiBarres) throws Throwable {
+        tryCatch(() -> tpvController.newDiscountPercent(name, codiBarres, percent));
     }
 
     @Quan("^creo un nou descompte del tipus promoció anomenat \"([^\"]*)\" de (\\d+)x(\\d+) sobre el producte amb codi de barres (\\d+)$")
@@ -407,7 +407,7 @@ public class StepDefinitions {
 
     @Aleshores("^el TPV m'indica que haig de retornar una quantitat de €([^\"]*)€$")
     public void checkRefund(double expectedRefund) throws Throwable {
-        assertEquals(expectedRefund,refund,DELTA);
+        assertEquals(expectedRefund, refund, DELTA);
     }
 
     @Aleshores("^obtinc el producte amb nom \"([^\"]*)\" pagat en \"([^\"]*)\"$")
