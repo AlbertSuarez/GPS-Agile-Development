@@ -10,5 +10,11 @@ public class RefundLine{
         quantitat=unitats;
     }
 
+    public int getQuantitat() {
+        return quantitat;
+    }
 
+    public long getId() {
+        return id;
+    }
 }

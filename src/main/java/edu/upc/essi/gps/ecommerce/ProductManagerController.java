@@ -1,6 +1,7 @@
 package edu.upc.essi.gps.ecommerce;
 
 import edu.upc.essi.gps.domain.Balance;
+import edu.upc.essi.gps.domain.Refund;
 import edu.upc.essi.gps.domain.Sale;
 import edu.upc.essi.gps.domain.SaleLine;
 
@@ -17,13 +18,15 @@ public class ProductManagerController {
 
     private final TPVService tpvService;
     private final SalesService salesService;
+    private final RefundsService refundsService;
     private final BalancesService balancesService;
     private List<Sale> sales;
 
-    public ProductManagerController(BalancesService balancesService, TPVService tpvService, SalesService salesService) {
+    public ProductManagerController(BalancesService balancesService, TPVService tpvService, SalesService salesService, RefundsService refundsService) {
         this.balancesService = balancesService;
         this.salesService = salesService;
         this.tpvService = tpvService;
+        this.refundsService = refundsService;
     }
 
     /**
@@ -32,6 +35,15 @@ public class ProductManagerController {
      */
     public List<Balance> listBalances() {
         return balancesService.list();
+    }
+
+    /**
+     * Obté els desquadraments de tot el sistema
+     *
+     * @return llista amb els desquadraments
+     */
+    public List<Refund> listRefunds() {
+        return refundsService.list();
     }
 
     /**

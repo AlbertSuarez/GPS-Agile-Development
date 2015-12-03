@@ -36,7 +36,15 @@ public class Refund implements Entity {
         return id;
     }
 
+    /**
+     * @return motiu de devolució
+     */
+    public String getReason() {
+        return reason;
+    }
 
-
+    public List<RefundLine> getLiniesDevolucions() {
+        return devolucions;
+    }
 }
 

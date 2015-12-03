@@ -1,12 +1,11 @@
 package edu.upc.essi.gps.ecommerce;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
+import cucumber.api.java.ca.I;
 import cucumber.api.java.ca.Quan;
-import edu.upc.essi.gps.domain.Balance;
-import edu.upc.essi.gps.domain.Product;
-import edu.upc.essi.gps.domain.Sale;
-import edu.upc.essi.gps.domain.SaleLine;
+import edu.upc.essi.gps.domain.*;
 
 import java.util.List;
 
@@ -31,6 +30,7 @@ public class StepDefinitions {
     private List<Product> products;
     private List<Balance> balances;
     private List<Sale> sales;
+    private List<Refund> refunds;
 
     public void tryCatch(Runnable r){
         try {
@@ -82,7 +82,7 @@ public class StepDefinitions {
 
     @Donat("^que estem al panell de gestió del product manager$")
     public void initManagement() throws Throwable {
-        productManagerController = new ProductManagerController(balancesService, tpvService,salesService);
+        productManagerController = new ProductManagerController(balancesService, tpvService, salesService, refundsService);
     }
 
     @Donat("^un desquadrament del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de €([^\"]*)€")
@@ -135,6 +135,10 @@ public class StepDefinitions {
         salesService.insertSale(s);
     }
 
+    @I("^una devolució de (\\d+) unitats del producte amb codi de barres (\\d+) amb motiu \"([^\"]*)\"$")
+    public void una_devolució_de_unitats_del_producte_amb_codi_de_barres_amb_motiu(int unitats, int codiBarres, String motiu) throws Throwable {
+        refundsService.newRefund(productsService.findByBarCode(codiBarres), unitats, motiu);
+    }
 
     ////////////////////////////////////////////////////// @Quan //////////////////////////////////////////////////////
 
@@ -176,6 +180,11 @@ public class StepDefinitions {
     @Quan("^consulto els desquadraments$")
     public void consultaDesquadraments() {
         tryCatch(() -> balances = productManagerController.listBalances());
+    }
+
+    @Quan("^consulto les devolucions$")
+    public void consultaDevolucions() {
+        tryCatch(() -> refunds = productManagerController.listRefunds());
     }
 
     @Quan("^consulto els desquadraments de la botiga \"([^\"]*)\"$")
@@ -420,6 +429,17 @@ public class StepDefinitions {
         assertTrue(sales.get(0).hasProductByName(name));
     }
 
+    @Aleshores("^obtinc (\\d+) devolucions$")
+    public void obtinc_devolucions(int quantitat) throws Throwable {
+        assertEquals(quantitat, refunds.size());
+    }
 
-
+    @Aleshores("^obtinc una devolució número (\\d+)  amb (\\d+) linia de devolucio de (\\d+) unitats del producte amb nom \"([^\"]*)\" amb motiu \"([^\"]*)\"$")
+    public void obtinc_una_devolució_número_amb_linia_de_devolucio_de_unitats_del_producte_amb_nom_amb_motiu(int pos, int linia, int unitats, String name, String motiu) throws Throwable {
+        List<RefundLine> linies = refunds.get(pos - 1).getLiniesDevolucions();
+        assertEquals(linia, linies.size());
+        assertEquals(unitats, linies.get(linia - 1).getQuantitat());
+        assertEquals(name, productsService.findById(linies.get(linia - 1).getId()).getName());
+        assertEquals(motiu, refunds.get(pos - 1).getReason());
+    }
 }
