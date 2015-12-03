@@ -16,8 +16,6 @@ public class RefundsService {
 
     public List<Refund> list() {
         List<Refund> l = refundsRepository.list();
-        if (l.size() == 0)
-            throw new IllegalStateException("No hi ha cap devolució enregistrada al sistema");
         return l;
     }
 

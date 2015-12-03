@@ -5,7 +5,6 @@ import edu.upc.essi.gps.domain.Refund;
 import edu.upc.essi.gps.domain.Sale;
 import edu.upc.essi.gps.domain.SaleLine;
 
-import java.sql.Ref;
 import java.util.List;
 
 /**
@@ -43,7 +42,10 @@ public class ProductManagerController {
      * @return llista amb els desquadraments
      */
     public List<Refund> listRefunds() {
-        return refundsService.list();
+        List<Refund> refundList = refundsService.list();
+        if (refundList.size() == 0)
+            throw new IllegalStateException("No hi ha cap devolució enregistrada al sistema");
+        return refundList;
     }
 
     /**
@@ -53,10 +55,6 @@ public class ProductManagerController {
      */
     public List<Balance> listBalancesByShopName(String name) {
         return balancesService.listByShopName(name);
-    }
-
-    public List<Sale> listAll() {
-        return salesService.listAll();
     }
 
     public List<Sale> listSales() {
@@ -72,6 +70,7 @@ public class ProductManagerController {
         return salesService.listByTipus(tipus);
     }
 
+    //TODO: Acabar métode en cas de que sigui necessari
     public String getScreenSales(){
         StringBuilder sb = new StringBuilder();
         for(Sale sale:sales){
