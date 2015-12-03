@@ -55,4 +55,7 @@ public class ProductManagerController {
         tpvService.setMasterPass(password);
     }
 
+    public List<Sale> llistaVentesPerTipusPagament(String tipus) {
+        return salesService.listByTipus(tipus);
+    }
 }

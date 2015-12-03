@@ -3,6 +3,7 @@ package edu.upc.essi.gps.ecommerce;
 import cucumber.api.PendingException;
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
+import cucumber.api.java.ca.I;
 import cucumber.api.java.ca.Quan;
 import edu.upc.essi.gps.domain.Balance;
 import edu.upc.essi.gps.domain.Product;
@@ -13,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class StepDefinitions {
 
@@ -109,6 +111,27 @@ public class StepDefinitions {
     @Donat("^que he afegit el producte de codi de barres (\\d+) a la devolució$")
     public void addRefund(int barCode) throws Throwable {
         //TODO devolució
+    }
+
+    @Donat("^el producte amb codi de barres (\\d+) esta pagat en targeta$")
+    public void el_producte_amb_codi_de_barres_esta_pagat_en_targeta(int barCode) throws Throwable {
+        tpvController.startSale();
+        tpvController.addProductByBarCode(barCode);
+        tpvController.tarjetPayment();
+    }
+
+
+    @Donat("^el producte amb codi de barres (\\d+) esta pagat en metalic: €(\\d+)€$")
+    public void el_producte_amb_codi_de_barres_esta_pagat_en_metalic_€(int barCode, int pagat) throws Throwable {
+        tpvController.startSale();
+        tpvController.addProductByBarCode(barCode);
+        tpvController.cashPayment(pagat);
+    }
+
+
+    @Donat("^que hi ha hagut una venda del producte amb codi de barres (\\d+) pagat en metode \"([^\"]*)\"$")
+    public void createSaleProductManager(int barCode, String type) throws Throwable {
+        salesService.newSale(productsService.findByBarCode(barCode), type);
     }
 
     ////////////////////////////////////////////////////// @Quan //////////////////////////////////////////////////////
@@ -237,6 +260,16 @@ public class StepDefinitions {
         List<SaleLine> s = new LinkedList<>();
         s.add(new SaleLine(p, unitats));
         refundsService.newRefund(s, reason);
+    }
+
+    @Quan("^consulto les vendes$")
+    public void consulto_les_vendes() throws Throwable {
+        tryCatch(()-> salesService.listSales());
+    }
+
+    @Quan("^vull llistar les vendes pagades en \"([^\"]*)\"$")
+    public void getSalesType(String type) throws Throwable {
+        tryCatch(() -> productManagerController.llistaVentesPerTipusPagament(type));
     }
 
     //////////////////////////////////////////////////// @Aleshores ////////////////////////////////////////////////////
@@ -381,5 +414,15 @@ public class StepDefinitions {
     public void checkRefund(int price, int amount, int barCode) throws Throwable {
         int refund = (int)productsService.findByBarCode(barCode).getPrice() * amount;
         assertEquals(price, refund);
+    }
+
+    @Aleshores("^obtinc el producte amb nom \"([^\"]*)\" pagat en \"([^\"]*)\"$")
+    public void checkNameAndType(String nom, String tipus) throws Throwable {
+            assertEquals(productManagerController.llistaVentesPerTipusPagament(tipus).get(0).getLines().get(0).getName(), nom);
+    }
+
+    @Aleshores("^obtinc el producte amb nom \"([^\"]*)\"$")
+    public void checkName(String name) throws Throwable {
+        assertEquals(name, productManagerController.listSales().get(0).getLines().get(0).getName());
     }
 }

@@ -2,6 +2,8 @@ package edu.upc.essi.gps.ecommerce;
 
 import edu.upc.essi.gps.domain.Sale;
 import edu.upc.essi.gps.utils.Repository;
+
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -24,7 +26,11 @@ public class SalesRepository extends Repository<Sale> {
     @Override
     protected void checkInsert(final Sale sale) throws RuntimeException {
         if (findById(sale.getId()) != null) {
-            throw new IllegalArgumentException("Ja existeix una devolucio amb aquest identificador");
+            throw new IllegalArgumentException("Ja existeix una venda amb aquest identificador");
         }
+    }
+
+    public List<Sale> listByTipus(final String tipus) {
+        return list((s) -> s.getTipusPagament() == tipus);
     }
 }

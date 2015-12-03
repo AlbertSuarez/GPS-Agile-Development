@@ -1,8 +1,10 @@
 package edu.upc.essi.gps.ecommerce;
 
+import edu.upc.essi.gps.domain.Product;
 import edu.upc.essi.gps.domain.Sale;
 import edu.upc.essi.gps.domain.SaleLine;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -14,6 +16,20 @@ public class SalesService {
 
     public SalesService(SalesRepository salesRepository) {
         this.salesRepository = salesRepository;
+    }
+
+    public Sale newSale(){
+        Sale sale = new Sale();
+        return sale;
+    }
+
+    public void newSale(Product product, String type){
+        List<SaleLine> saleLineList = new LinkedList<>();
+        saleLineList.add(new SaleLine(product, 1));
+        int id = 0;
+        Sale sale = new Sale(id, saleLineList);
+        sale.setTipusPagament(type);
+        salesRepository.insert(sale);
     }
 
     public Sale newSale(long id, List<SaleLine> lines) {
@@ -32,5 +48,9 @@ public class SalesService {
 
     public List<Sale> listSales () {
         return salesRepository.listSales();
+    }
+
+    public List<Sale> listByTipus(String tipus) {
+        return salesRepository.listByTipus(tipus);
     }
 }

@@ -166,6 +166,7 @@ public class TPVController {
         if (total > delivered)
             throw new IllegalStateException("No es pot cobrar una venta amb un import inferior al total de la venta");
         tpv.addCash(total);
+        tpv.getCurrentSale().setTipusPagament("cash");
         tpv.endSale();
         return calculateChange(delivered, total);
     }
@@ -183,6 +184,7 @@ public class TPVController {
 
     public void tarjetPayment() {
         checkPaymentConditions();
+        tpv.getCurrentSale().setTipusPagament("card");
         tpv.endSale();
     }
 

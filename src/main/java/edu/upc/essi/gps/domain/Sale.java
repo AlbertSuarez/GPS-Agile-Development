@@ -29,11 +29,16 @@ public class Sale implements Entity {
      * */
     private List<SaleLine> descLines;
 
+    /**
+     * Tipus de pagament
+     */
+    private String tipusPagament;    //cash or card
 
     /**
      * Constructora sense parametres.
      */
     public Sale() {
+
     }
 
     /**
@@ -196,4 +201,12 @@ public class Sale implements Entity {
                 .anyMatch((l) -> l.getName().equals(nom));
     }
 
+    public String getTipusPagament() {
+        return tipusPagament;
+    }
+
+    public void setTipusPagament(String tipusPagament) {
+        if (tipusPagament.equals("card") || tipusPagament.equals("cash"))
+            this.tipusPagament = tipusPagament;
+    }
 }
