@@ -121,6 +121,20 @@ public class StepDefinitions {
         salesService.newSale(productsService.findByBarCode(barCode), type);
     }
 
+    @Donat("^que es fa una venda amb id (\\d+) del producte amb codi de barres (\\d+)$")
+    public void que_es_fa_una_venda_amb_id_del_producte_amb_codi_de_barres(long id, int barCode) throws Throwable {
+        Sale s = new Sale(id);
+        s.addProduct(productsService.findByBarCode(barCode), 1, null);
+        salesService.insertSale(s);
+    }
+
+    @Donat("^que es fa una venda amb id (\\d+) amb (\\d+) unitats del producte amb codi de barres (\\d+)$")
+    public void que_es_fa_una_venda_amb_id_amb_unitats_del_producte_amb_codi_de_barres(int id, int unitats, int barCode) throws Throwable {
+        Sale s = new Sale(id);
+        s.addProduct(productsService.findByBarCode(barCode), unitats, null);
+        salesService.insertSale(s);
+    }
+
     ////////////////////////////////////////////////////// @Quan //////////////////////////////////////////////////////
 
     @Quan("^inicio el torn al tpv amb identificador (\\d+) i password \"([^\"]*)\", amb un efectiu inicial de €([^\"]*)€$")
@@ -406,17 +420,5 @@ public class StepDefinitions {
     }
 
 
-    @Donat("^que es fa una venda amb id (\\d+) del producte amb codi de barres (\\d+)$")
-    public void que_es_fa_una_venda_amb_id_del_producte_amb_codi_de_barres(long id, int barCode) throws Throwable {
-        Sale s = new Sale(id);
-        s.addProduct(productsService.findByBarCode(barCode), 1, null);
-        salesService.insertSale(s);
-    }
 
-    @I("^que es fa una venda amb id (\\d+) amb (\\d+) unitats del producte amb codi de barres (\\d+)$")
-    public void que_es_fa_una_venda_amb_id_amb_unitats_del_producte_amb_codi_de_barres(int id, int unitats, int barCode) throws Throwable {
-        Sale s = new Sale(id);
-        s.addProduct(productsService.findByBarCode(barCode), unitats, null);
-        salesService.insertSale(s);
-    }
 }
