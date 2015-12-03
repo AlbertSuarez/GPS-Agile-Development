@@ -1,5 +1,6 @@
 package edu.upc.essi.gps.domain;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,26 +17,17 @@ public class Refund implements Entity {
     /**
      * Conjunt de línies de devolucions associades a la devolució
      */
-    private List<SaleLine> devolucions = new LinkedList<>();
+    private List<RefundLine> devolucions = new LinkedList<>();
 
     /**
      * Moitu de la devolució
      */
     private String reason;
 
-    /**
-     * Constructora sense paràmetres
-     */
-    public Refund() {}
 
-    /**
-     * Constructora amb identificador i línies de devolució com a paràmetres
-     * @param id
-     * @param devolucions
-     */
-    public Refund(long id, List<SaleLine> devolucions, String reason) {
+    public Refund(long id, Product p, int unitats, String reason) {
         this.id = id;
-        this.devolucions = devolucions;
+        this.devolucions = Collections.singletonList(new RefundLine(p,unitats));
         this.reason = reason;
     }
 
@@ -44,4 +36,7 @@ public class Refund implements Entity {
         return id;
     }
 
+
+
 }
+

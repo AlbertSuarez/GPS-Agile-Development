@@ -78,4 +78,5 @@ public class Product implements Entity, HasName, HasBarCode {
         return vatPct;
     }
 
+
 }

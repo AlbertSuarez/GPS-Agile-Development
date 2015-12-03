@@ -2,6 +2,7 @@ package edu.upc.essi.gps.ecommerce;
 
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
+import cucumber.api.java.ca.I;
 import cucumber.api.java.ca.Quan;
 import edu.upc.essi.gps.domain.Balance;
 import edu.upc.essi.gps.domain.Product;
@@ -48,7 +49,7 @@ public class StepDefinitions {
     @Donat("^que estem al tpv número (\\d+) de la botiga \"([^\"]*)\"$")
     public void setupPos(int posNumber, String shop) throws Throwable {
         tpvService.newTPV(shop, posNumber);
-        tpvController = new TPVController(salesService, productsService, saleAssistantService, tpvService, balancesService, discountService, shop, posNumber);
+        tpvController = new TPVController(refundsService, salesService, productsService, saleAssistantService, tpvService, balancesService, discountService, shop, posNumber);
     }
 
     @Donat("^que el \"([^\"]*)\" s'ha registrat al sistema amb password \"([^\"]*)\" i rep l'identificador (\\d+)$")
@@ -83,7 +84,7 @@ public class StepDefinitions {
 
     @Donat("^que estem al panell de gestió del product manager$")
     public void initManagement() throws Throwable {
-        productManagerController = new ProductManagerController(balancesService, tpvService,salesService, refundsService);
+        productManagerController = new ProductManagerController(balancesService, tpvService,salesService);
     }
 
     @Donat("^un desquadrament del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de €([^\"]*)€")
@@ -99,11 +100,6 @@ public class StepDefinitions {
     @Donat("^que ens desconectem del panell de gestio del product manager$")
     public void que_ens_desconectem_del_panell_de_gestio_del_product_manager() throws Throwable {
         productManagerController = null;
-    }
-
-    @Donat("^que he afegit el producte de codi de barres (\\d+) a la devolució$")
-    public void addRefund(int barCode) throws Throwable {
-        //TODO devolució
     }
 
     @Donat("^el producte amb codi de barres (\\d+) esta pagat en targeta$")
@@ -237,15 +233,15 @@ public class StepDefinitions {
         tryCatch(() -> change = tpvController.cashPayment(delivered));
     }
 
-    @Quan("^creo una devolució de (\\d+) unitat/s del producte amb codi de barres (\\d+) de la venta (\\d+) amb el motiu \"([^\"]*)\"")
+    @Quan("^faig una devolució de (\\d+) unitat/s del producte amb codi de barres (\\d+) de la venta (\\d+) amb el motiu \"([^\"]*)\"$")
     public void addDevolucio(int unitats, int barCode, long idVenda, String reason) throws Throwable {
-        //TODO add devolucio
+        tryCatch(()-> refund = tpvController.addRefund(unitats, barCode, idVenda, reason));
 
     }
 
     @Quan("^consulto les vendes$")
     public void consulto_les_vendes() throws Throwable {
-        tryCatch(()-> sales = productManagerController.listSales());
+        tryCatch(() -> sales = productManagerController.listSales());
     }
 
     @Quan("^vull llistar les vendes pagades en \"([^\"]*)\"$")
@@ -255,7 +251,7 @@ public class StepDefinitions {
 
     @Quan("^vull llistar totes les vendes$")
     public void vull_llistar_totes_les_vendes() throws Throwable {
-        tryCatch(()->sales = productManagerController.listSales());
+        tryCatch(() -> sales = productManagerController.listSales());
     }
 
     //////////////////////////////////////////////////// @Aleshores ////////////////////////////////////////////////////
@@ -391,10 +387,9 @@ public class StepDefinitions {
         assertEquals(Double.parseDouble(valor), discountService.findByName(name).getDiscount(), DELTA);
     }
 
-    @Aleshores("^el TPV m'indica que haig de retornar una quantitat de €(\\d+)€ per a (\\d+) unitat/s del producte amb codi de barres (\\d+)$")
-    public void checkRefund(int price, int amount, int barCode) throws Throwable {
-        int refund = (int)productsService.findByBarCode(barCode).getPrice() * amount;
-        assertEquals(price, refund);
+    @Aleshores("^el TPV m'indica que haig de retornar una quantitat de €([^\"]*)€$")
+    public void checkRefund(double expectedRefund) throws Throwable {
+        assertEquals(expectedRefund,refund,DELTA);
     }
 
     @Aleshores("^obtinc el producte amb nom \"([^\"]*)\" pagat en \"([^\"]*)\"$")
@@ -408,4 +403,10 @@ public class StepDefinitions {
     }
 
 
+    @Donat("^que es fa una venda amb id (\\d+) del producte amb codi de barres (\\d+)$")
+    public void que_es_fa_una_venda_amb_id_del_producte_amb_codi_de_barres(long id, int barCode) throws Throwable {
+        Sale s = new Sale(id);
+        s.addProduct(productsService.findByBarCode(barCode),1,null);
+        salesService.insertSale(s);
+    }
 }

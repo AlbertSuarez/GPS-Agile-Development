@@ -51,6 +51,10 @@ public class Sale implements Entity {
         this.lines = lines;
     }
 
+    public Sale(long id) {
+        this.id = id;
+    }
+
     @Override
     public long getId() {
         return id;

@@ -18,14 +18,12 @@ public class ProductManagerController {
     private final TPVService tpvService;
     private final SalesService salesService;
     private final BalancesService balancesService;
-    private final RefundsService refundsService;
     private List<Sale> sales;
 
-    public ProductManagerController(BalancesService balancesService, TPVService tpvService, SalesService salesService, RefundsService refundsService) {
+    public ProductManagerController(BalancesService balancesService, TPVService tpvService, SalesService salesService) {
         this.balancesService = balancesService;
         this.salesService = salesService;
         this.tpvService = tpvService;
-        this.refundsService = refundsService;
     }
 
     /**

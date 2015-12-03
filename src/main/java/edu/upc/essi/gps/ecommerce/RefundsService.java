@@ -1,6 +1,8 @@
 package edu.upc.essi.gps.ecommerce;
 
+import edu.upc.essi.gps.domain.Product;
 import edu.upc.essi.gps.domain.Refund;
+import edu.upc.essi.gps.domain.Sale;
 import edu.upc.essi.gps.domain.SaleLine;
 
 import java.util.List;
@@ -21,11 +23,8 @@ public class RefundsService {
         return l;
     }
 
-    public long newRefund(List<SaleLine> refunds, String reason) {
-        long id = refundsRepository.newId();
-        Refund refund = new Refund(id, refunds, reason);
-        refundsRepository.insert(refund);
-        return id;
+    public void insertRefund(Product p,int unitats, String reason) {
+        Refund r = new Refund(refundsRepository.newId(),p,unitats,reason);
+         refundsRepository.insert(r);
     }
-
 }

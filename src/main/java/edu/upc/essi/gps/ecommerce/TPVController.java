@@ -19,14 +19,16 @@ public class TPVController {
     private final DiscountService discountService;
     private final SalesService salesService;
     private final TPV tpv;
+    private final RefundsService refundsService;
 
-    public TPVController(SalesService salesService, ProductsService productsService, SaleAssistantService saleAssistantService, TPVService tpvService, BalancesService balancesService, DiscountService discountService, String shop, int pos) {
+    public TPVController(RefundsService refundsService, SalesService salesService, ProductsService productsService, SaleAssistantService saleAssistantService, TPVService tpvService, BalancesService balancesService, DiscountService discountService, String shop, int pos) {
         this.productsService = productsService;
         this.saleAssistantService = saleAssistantService;
         this.tpvService = tpvService;
         this.balancesService = balancesService;
         this.discountService = discountService;
         this.salesService = salesService;
+        this.refundsService = refundsService;
         tpv = tpvService.findByShopPos(shop, pos);
         tpv.endTurn();
     }
@@ -230,8 +232,21 @@ public class TPVController {
         return balancesService.getLastBalance();
     }
 
-    public void refund(){
 
+    public double addRefund(int unitats, int barCode, long idVenda, String reason) {
+        Sale sale = salesService.findById(idVenda);
+        if(sale==null) {
+            throw new IllegalStateException("La venda que es vol retornar no existeix");
+        }
+        Product p = sale.getProductByBarCode(barCode);
+        if (p == null)
+            throw new IllegalStateException("El producte que es vol retornar no s'ha venut amb anterioritat");
+        if (unitats > sale.getAmountByProduct(p))
+            throw new IllegalStateException("La quantitat de producte retornat es major a la que es va vendre");
+
+        double refundMoney = p.getPrice()*unitats;
+        tpv.addCash(-refundMoney);
+        refundsService.insertRefund(p,unitats, reason);
+        return refundMoney;
     }
-
 }
