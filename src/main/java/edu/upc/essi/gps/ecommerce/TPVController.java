@@ -248,4 +248,8 @@ public class TPVController {
         refundsService.newRefund(p, unitats, reason);
         return refundMoney;
     }
+
+    public Sale getLastSale(){
+        return salesService.listSales().get(salesService.listSales().size()-1);
+    }
 }

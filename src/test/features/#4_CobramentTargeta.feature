@@ -14,6 +14,7 @@ Característica: Cobrar una venta amb targeta
     I que he afegit el producte de codi de barres 1234567 a la venta
     Quan indico que el client paga el total de la venda amb targeta
     Aleshores la venta no esta iniciada
+    I queda registrat una venta d'una quantitat de €23€
 
   Escenari: Error si intentem cobrar una venta sense productes
     Donat que hi ha una venta iniciada

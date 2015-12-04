@@ -442,4 +442,9 @@ public class StepDefinitions {
         assertEquals(name, productsService.findById(linies.get(linia - 1).getId()).getName());
         assertEquals(motiu, refunds.get(pos - 1).getReason());
     }
+
+    @Aleshores("^queda registrat una venta d'una quantitat de €([^\"]*)€$")
+    public void checkLastSale(double price) throws Throwable {
+        assertEquals(price, tpvController.getLastSale().getTotal(), DELTA);
+    }
 }

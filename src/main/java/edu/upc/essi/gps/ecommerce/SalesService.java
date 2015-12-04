@@ -57,4 +57,5 @@ public class SalesService {
     public void insertSale(Sale currentSale) {
         salesRepository.insert(currentSale);
     }
+
 }

@@ -28,4 +28,5 @@ public class SalesRepository extends Repository<Sale> {
     public List<Sale> listByTipus(final String tipus) {
         return list((s) -> s.getTipusPagament() == tipus);
     }
+
 }
