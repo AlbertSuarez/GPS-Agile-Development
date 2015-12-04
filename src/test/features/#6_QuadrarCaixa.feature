@@ -33,7 +33,7 @@ Característica: Quadrar la caixa en finalitzar torn
     Aleshores obtinc un error que diu: "La caixa no quadra: hi ha un desquadrament de 4.0€"
     I el tpv es troba en estat "en quadrament"
 
-  Escenari: El caixer prova un nou intent de quadrar la caixa però hi ha un desquadrament negatiu
+  Escenari: El caixer prova dos intents de quadrar la caixa però hi ha un desquadrament negatiu
     Donat que he afegit el producte de codi de barres 1234567 a la venta
     I indico que el client ha entregat €30€ per a pagar en metàlic
     I que el TPV es troba en procés de quadrament
