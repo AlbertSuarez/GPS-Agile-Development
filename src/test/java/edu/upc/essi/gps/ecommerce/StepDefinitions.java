@@ -1,9 +1,7 @@
 package edu.upc.essi.gps.ecommerce;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
-import cucumber.api.java.ca.I;
 import cucumber.api.java.ca.Quan;
 import edu.upc.essi.gps.domain.*;
 
@@ -427,6 +425,15 @@ public class StepDefinitions {
     @Aleshores("^obtinc el producte amb nom \"([^\"]*)\"$")
     public void checkName(String name) throws Throwable {
         assertTrue(sales.get(0).hasProductByName(name));
+    }
+
+    @Aleshores("^el sistema enregistra una devolució amb (\\d+) linia/es de devolució de (\\d+) unitats del producte amb codi de barres (\\d+) amb motiu \"([^\"]*)\"$")
+    public void getLastRefund(int linia, int unitats, int barCode, String motiu) throws Throwable {
+        List<RefundLine> linies = refundsService.list().get(refundsService.list().size() - 1).getLiniesDevolucions();
+        assertEquals(linia, linies.size());
+        assertEquals(unitats, linies.get(linia - 1).getQuantitat());
+        assertEquals(barCode, productsService.findById(linies.get(linia - 1).getId()).getBarCode());
+        assertEquals(motiu, refundsService.list().get(refundsService.list().size() - 1).getReason());
     }
 
     @Aleshores("^obtinc (\\d+) devolucions$")

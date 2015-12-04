@@ -16,19 +16,23 @@ Característica: Retornar un producte
 
   Escenari: Un client retorna un producte d'una venda concreta
     Quan faig una devolució de 1 unitat/s del producte amb codi de barres 1234567 de la venta 123 amb el motiu "No funciona"
-    Aleshores el TPV m'indica que haig de retornar una quantitat de €20€
+    Aleshores el sistema enregistra una devolució amb 1 linia/es de devolució de 1 unitats del producte amb codi de barres 1234567 amb motiu "No funciona"
+    I el TPV m'indica que haig de retornar una quantitat de €20€
 
   Escenari: Retorn de més d'una unitat amb decimals
     Quan faig una devolució de 3 unitat/s del producte amb codi de barres 45 de la venta 45 amb el motiu "No funciona"
-    Aleshores el TPV m'indica que haig de retornar una quantitat de €301,5€
+    Aleshores el sistema enregistra una devolució amb 1 linia/es de devolució de 3 unitats del producte amb codi de barres 45 amb motiu "No funciona"
+    I el TPV m'indica que haig de retornar una quantitat de €301,5€
 
   Escenari: Retorn de més d'una unitat
     Quan faig una devolució de 2 unitat/s del producte amb codi de barres 7777777 de la venta 456 amb el motiu "No funciona"
-    Aleshores el TPV m'indica que haig de retornar una quantitat de €300€
+    Aleshores el sistema enregistra una devolució amb 1 linia/es de devolució de 2 unitats del producte amb codi de barres 7777777 amb motiu "No funciona"
+    I el TPV m'indica que haig de retornar una quantitat de €300€
 
   Escenari: Retorn de totes les unitats
     Quan faig una devolució de 5 unitat/s del producte amb codi de barres 7777777 de la venta 456 amb el motiu "No funciona"
-    Aleshores el TPV m'indica que haig de retornar una quantitat de €750€
+    Aleshores el sistema enregistra una devolució amb 1 linia/es de devolució de 5 unitats del producte amb codi de barres 7777777 amb motiu "No funciona"
+    I el TPV m'indica que haig de retornar una quantitat de €750€
 
   Escenari: Retorn de massa unitats
     Quan faig una devolució de 2 unitat/s del producte amb codi de barres 1234567 de la venta 123 amb el motiu "No funciona"
