@@ -246,6 +246,7 @@ public class TPVController {
         if (unitats > sale.getAmountByProduct(p))
             throw new IllegalStateException("La quantitat de producte retornat es major a la que es va vendre");
 
+
         double refundMoney = p.getPrice()*unitats;
         tpv.addCash(-refundMoney);
         refundsService.newRefund(p, unitats, reason);
