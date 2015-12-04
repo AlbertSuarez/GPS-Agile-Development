@@ -25,21 +25,38 @@ Característica: Quadrar la caixa en finalitzar torn
     Quan intento finalitzar el meu torn, indicant un efectiu final de €60€
     Aleshores el tpv es troba en estat "disponible"
 
-  Escenari: El caixer prova un nou intent de quadrar la caixa però hi ha un desquadrament negatiu
+  Escenari: El caixer prova un nou intent de quadrar la caixa però hi ha un desquadrament negatiu de més d'1€
     Donat que he afegit el producte de codi de barres 1234567 a la venta
     I indico que el client ha entregat €30€ per a pagar en metàlic
     I que el TPV es troba en procés de quadrament
     Quan intento finalitzar el meu torn, indicant un efectiu final de €56€
-    Aleshores obtinc un error que diu: "La caixa no quadra: hi ha un desquadrament de 4.0€"
+    Aleshores obtinc un error que diu: "La caixa no quadra: hi ha un desquadrament de més d'1€"
     I el tpv es troba en estat "en quadrament"
 
-  Escenari: El caixer prova dos intents de quadrar la caixa però hi ha un desquadrament negatiu
+  Escenari: El caixer prova dos intents de quadrar la caixa però hi ha un desquadrament negatiu de més d'1€
     Donat que he afegit el producte de codi de barres 1234567 a la venta
     I indico que el client ha entregat €30€ per a pagar en metàlic
     I que el TPV es troba en procés de quadrament
     Quan intento finalitzar el meu torn, indicant un efectiu final de €56€
     I intento finalitzar el meu torn, indicant un efectiu final de €56€
-    Aleshores obtinc un error que diu: "La caixa no quadra: hi ha un desquadrament de 4.0€"
+    Aleshores obtinc un error que diu: "La caixa no quadra: hi ha un desquadrament de més d'1€"
+    I el tpv es troba en estat "en quadrament"
+
+  Escenari: El caixer prova un nou intent de quadrar la caixa però hi ha un desquadrament negatiu de menys d'1€
+    Donat que he afegit el producte de codi de barres 1234567 a la venta
+    I indico que el client ha entregat €30€ per a pagar en metàlic
+    I que el TPV es troba en procés de quadrament
+    Quan intento finalitzar el meu torn, indicant un efectiu final de €59,5€
+    Aleshores obtinc un error que diu: "La caixa no quadra: hi ha un desquadrament de menys d'1€"
+    I el tpv es troba en estat "en quadrament"
+
+  Escenari: El caixer prova dos intents de quadrar la caixa però hi ha un desquadrament negatiu de menys d'1€
+    Donat que he afegit el producte de codi de barres 1234567 a la venta
+    I indico que el client ha entregat €30€ per a pagar en metàlic
+    I que el TPV es troba en procés de quadrament
+    Quan intento finalitzar el meu torn, indicant un efectiu final de €59,5€
+    I intento finalitzar el meu torn, indicant un efectiu final de €59,5€
+    Aleshores obtinc un error que diu: "La caixa no quadra: hi ha un desquadrament de menys d'1€"
     I el tpv es troba en estat "en quadrament"
 
   Escenari: El caixer prova de fer un quadrament 2 vegades amb exit

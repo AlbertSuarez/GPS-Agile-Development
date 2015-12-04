@@ -80,11 +80,14 @@ public class TPVController {
 
     public void quadra(double cash){
         if (!tpv.getState().equals(TPVState.BALANCE)) throw new IllegalStateException("La caixa no es troba actualment en procés de quadrament");
-        if (cash >= tpv.getCash()) {
-            tpv.endTurn();
+        if (Math.abs(tpv.getCash()-cash) > 1) {
+            throw new IllegalStateException("La caixa no quadra: hi ha un desquadrament de més d'1€");
+        }
+        else if (Math.abs(tpv.getCash()-cash) > 0){
+            throw new IllegalStateException("La caixa no quadra: hi ha un desquadrament de menys d'1€");
         }
         else {
-           throw new IllegalStateException("La caixa no quadra: hi ha un desquadrament de " + (tpv.getCash() - cash) + "€");
+            tpv.endTurn();
         }
 
     }
