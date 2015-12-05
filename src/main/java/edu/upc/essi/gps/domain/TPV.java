@@ -140,6 +140,11 @@ public class TPV implements Entity {
         this.cash += cash;
     }
 
+    public void removeCash(double cash) {
+        if (cash > this.cash)
+            throw new IllegalStateException("El tpv no disposa de prou efectiu per a realitzar la retirada");
+        this.cash -= cash;
+    }
     /**
      * Consulta l'efectiu inicial del que disposa el terminal.
      * @return efectiu inicial del que disposa el terminal.

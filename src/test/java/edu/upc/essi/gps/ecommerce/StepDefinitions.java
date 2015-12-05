@@ -155,9 +155,10 @@ public class StepDefinitions {
         tryCatch(() -> tpvController.getTpv().addCash(cash));
     }
 
+
     @Quan("^decremento l'efectiu de la caixa en €([^\"]*)€$")
     public void decreaseCash(double cash) throws Throwable {
-        tryCatch(() -> tpvController.getTpv().addCash(-cash));
+        tryCatch(() -> tpvController.getTpv().removeCash(cash));
     }
 
     @Quan("^intento finalitzar el meu torn, indicant un efectiu final de €([^\"]*)€$")
@@ -453,5 +454,10 @@ public class StepDefinitions {
     @Aleshores("^queda registrat una venta d'una quantitat de €([^\"]*)€$")
     public void checkLastSale(double price) throws Throwable {
         assertEquals(price, tpvController.getLastSale().getTotal(), DELTA);
+    }
+
+    @Aleshores("^el tpv té un efectiu total de €([^\"]*)€$")
+    public void checkCash(double cash) throws Throwable {
+        assertEquals(cash, tpvController.getTpv().getCash(), DELTA);
     }
 }
