@@ -280,6 +280,11 @@ public class StepDefinitions {
         tryCatch(tpvController::tarjetPayment);
     }
 
+    @Quan("^es realitza un traspàs a la botiga \"([^\"]*)\" de €([^\"]*)€ del terminal (\\d+) al terminal (\\d+)$")
+    public void traspasaCash(String name, double cash, int posSource, int posTarget) throws Throwable {
+        tryCatch(() -> tpvController.traspasaCash(name, posSource, posTarget, cash));
+    }
+
     //////////////////////////////////////////////////// @Aleshores ////////////////////////////////////////////////////
 
     @Aleshores("^obtinc un error que diu: \"([^\"]*)\"$")
@@ -459,5 +464,10 @@ public class StepDefinitions {
     @Aleshores("^el tpv té un efectiu total de €([^\"]*)€$")
     public void checkCash(double cash) throws Throwable {
         assertEquals(cash, tpvController.getTpv().getCash(), DELTA);
+    }
+
+    @Aleshores("^el tpv (\\d+) de la botiga \"([^\"]*)\" té un efectiu total de €([^\"]*)€$")
+    public void checkTPVCash(int pos, String shop, double cash) {
+        assertEquals(cash, tpvService.findByShopPos(shop, pos).getCash(), DELTA);
     }
 }

@@ -256,4 +256,12 @@ public class TPVController {
     public Sale getLastSale(){
         return salesService.listSales().get(salesService.listSales().size()-1);
     }
+
+    public void traspasaCash(String shop, int posSource, int posTarget, double cash) {
+        if (cash > tpvService.findByShopPos(shop, posSource).getCash())
+            throw new IllegalStateException("El tpv no disposa de prou efectiu per a realitzar la retirada");
+        tpvService.findByShopPos(shop, posSource).removeCash(cash);
+        tpvService.findByShopPos(shop, posTarget).addCash(cash);
+    }
+
 }
