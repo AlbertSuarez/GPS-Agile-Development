@@ -285,6 +285,26 @@ public class StepDefinitions {
         tryCatch(() -> tpvController.traspasaCash(name, posSource, posTarget, cash));
     }
 
+    @Quan("^indico que vull cancelar la venta actual$")
+    public void cancelCurrentSale() {
+        tryCatch(() -> tpvController.cancelCurrentSale());
+    }
+
+    @Quan("^afegeixo (\\d+) unitat/s de la línia de venda (\\d+)$")
+    public void addItemsSaleLine(int units, int line) {
+        tryCatch(() -> tpvController.addItemsSaleLine(units, line));
+    }
+
+    @Quan("^elimino (\\d+) unitat/s de la línia de venda (\\d+)$")
+    public void deleteItemsSaleLine(int units, int line) {
+        tryCatch(() -> tpvController.deleteItemsSaleLine(units, line));
+    }
+
+    @Quan("^elimino la línia de venda (\\d+)$")
+    public void deleteSaleLine(int line) {
+        tryCatch(() -> tpvController.deleteSaleLine(line));
+    }
+
     //////////////////////////////////////////////////// @Aleshores ////////////////////////////////////////////////////
 
     @Aleshores("^obtinc un error que diu: \"([^\"]*)\"$")

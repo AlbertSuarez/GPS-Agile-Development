@@ -116,4 +116,20 @@ public class SaleLine {
         return new Product(id, name, unitPrice, 0, barCode);
     }
 
+    /**
+     * Incrementa en n les unitats de la línia
+     * @param n
+     */
+    public void incrAmount(int n) {
+        amount += n;
+    }
+
+    /**
+     * Decrementa en n les unitats de la línia
+     * @param n
+     */
+    public void decrAmount(int n) {
+        amount -= n;
+    }
+
 }

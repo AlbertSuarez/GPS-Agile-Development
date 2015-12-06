@@ -264,4 +264,31 @@ public class TPVController {
         tpvService.findByShopPos(shop, posTarget).addCash(cash);
     }
 
+    public void cancelCurrentSale() {
+        tpv.cancelCurrentSale();
+    }
+
+    public void addItemsSaleLine(int units, int line) {
+        if (line > tpv.getCurrentSale().getLines().size())
+            throw new IllegalStateException("La línia de venta no existeix a la venta actual");
+        tpv.getCurrentSale().getLines().get(line-1).incrAmount(units);
+    }
+
+    public void deleteItemsSaleLine(int units, int line) {
+        if (line > tpv.getCurrentSale().getLines().size())
+            throw new IllegalStateException("La línia de venta no existeix a la venta actual");
+        if (units > tpv.getCurrentSale().getLines().get(line-1).getAmount())
+            throw new IllegalStateException("No es poden eliminar més unitats de les que hi ha a la línia de venda");
+        if (units == tpv.getCurrentSale().getLines().get(line - 1).getAmount()) {
+            tpv.getCurrentSale().removeSaleLine(line-1);
+        }
+        else tpv.getCurrentSale().getLines().get(line-1).decrAmount(units);
+    }
+
+    public void deleteSaleLine(int line) {
+        if (line > tpv.getCurrentSale().getLines().size())
+            throw new IllegalStateException("La línia de venta no existeix a la venta actual");
+        tpv.getCurrentSale().removeSaleLine(line-1);
+    }
+
 }

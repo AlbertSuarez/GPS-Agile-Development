@@ -213,4 +213,8 @@ public class Sale implements Entity {
         if (tipusPagament.equals("card") || tipusPagament.equals("cash"))
             this.tipusPagament = tipusPagament;
     }
+
+    public void removeSaleLine(int line) {
+        lines.remove(line);
+    }
 }

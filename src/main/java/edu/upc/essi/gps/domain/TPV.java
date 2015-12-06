@@ -219,4 +219,11 @@ public class TPV implements Entity {
         if (!hasSale()) newSale();
         currentSale.addProduct(p, unitats, discountList);
     }
+
+    public void cancelCurrentSale() {
+        if (currentSale == null)
+            throw new IllegalStateException("No hi ha cap venta iniciada");
+        endSale();
+        setState(TPVState.AVAILABLE);
+    }
 }
