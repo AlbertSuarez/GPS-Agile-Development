@@ -1,17 +1,17 @@
 # language: ca
 
 #noinspection SpellCheckingInspection
-Característica: Agrupar productes per categories
+CaracterÃ­stica: Agrupar productes per categories
 
   Rerefons:
-    Donat un producte amb nom "Optimus Prime", preu €23€, iva %21% i codi de barres 12345
-    I un producte amb nom "barbie programadora", preu €20€, iva %21% i codi de barres 23456
-    I un producte amb nom "Pilota", preu €10€, iva %21% i codi de barres 34567
+    Donat un producte amb nom "Optimus Prime", preu â‚¬23â‚¬, iva %21% i codi de barres 12345
+    I un producte amb nom "Barbie Programadora", preu â‚¬20â‚¬, iva %21% i codi de barres 23456
+    I un producte amb nom "Pilota", preu â‚¬10â‚¬, iva %21% i codi de barres 34567
 
-  Escenari: Creo una categoria inexistent
+#  Escenari: Creo una categoria inexistent
 
-  Escenari: Intento crear una categoria que ja existeix
+#  Escenari: Intento crear una categoria que ja existeix
 
-  Escenari: Afegeixo un producte a una categoria
+#  Escenari: Afegeixo un producte a una categoria
 
-  Escenari: LListo els productes d'una categoria
+#  Escenari: LListo els productes d'una categoria
