@@ -1,6 +1,6 @@
 # language: ca
 
-#noinspection SpellCheckingInspection
+  #noinspection SpellCheckingInspection
 Característica: Agrupar productes per categories
 
   Rerefons:
@@ -8,10 +8,10 @@ Característica: Agrupar productes per categories
     I un producte amb nom "Barbie Programadora", preu €20€, iva %21% i codi de barres 23456
     I un producte amb nom "Pilota", preu €10€, iva %21% i codi de barres 34567
 
-#  Escenari: Creo una categoria inexistent
+  Escenari: Creo una categoria inexistent
 
-#  Escenari: Intento crear una categoria que ja existeix
+  Escenari: Intento crear una categoria que ja existeix
 
-#  Escenari: Afegeixo un producte a una categoria
+  Escenari: Afegeixo un producte a una categoria
 
-#  Escenari: LListo els productes d'una categoria
+  Escenari: Llisto els productes d'una categoria
