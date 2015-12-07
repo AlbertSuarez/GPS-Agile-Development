@@ -1,7 +1,9 @@
 package edu.upc.essi.gps.ecommerce;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
+import cucumber.api.java.ca.I;
 import cucumber.api.java.ca.Quan;
 import edu.upc.essi.gps.domain.*;
 
@@ -19,6 +21,7 @@ public class StepDefinitions {
     private DiscountService discountService = new DiscountService(new DiscountRepository());
     private SalesService salesService = new SalesService(new SalesRepository());
     private RefundsService refundsService = new RefundsService(new RefundsRepository());
+    private CategoriesService categoriesService = new CategoriesService(new CategoriesRepository());
     private Exception exception;
     private TPVController tpvController;
     private ProductManagerController productManagerController;
@@ -29,6 +32,7 @@ public class StepDefinitions {
     private List<Balance> balances;
     private List<Sale> sales;
     private List<Refund> refunds;
+    private List<Category> categories;
 
     public void tryCatch(Runnable r){
         try {
@@ -45,7 +49,7 @@ public class StepDefinitions {
     @Donat("^que estem al tpv número (\\d+) de la botiga \"([^\"]*)\"$")
     public void setupPos(int posNumber, String shop) throws Throwable {
         tpvService.newTPV(shop, posNumber);
-        tpvController = new TPVController(refundsService, salesService, productsService, saleAssistantService, tpvService, balancesService, discountService, shop, posNumber);
+        tpvController = new TPVController(categoriesService, refundsService, salesService, productsService, saleAssistantService, tpvService, balancesService, discountService, shop, posNumber);
     }
 
     @Donat("^que el \"([^\"]*)\" s'ha registrat al sistema amb password \"([^\"]*)\" i rep l'identificador (\\d+)$")
@@ -305,6 +309,28 @@ public class StepDefinitions {
         tryCatch(() -> tpvController.deleteSaleLine(line));
     }
 
+    @Quan("^creo una nova categoria amb nom \"([^\"]*)\"$")
+    public void createCategory(String catNom) throws Throwable {
+        tryCatch(() -> tpvController.newCategory(catNom));
+    }
+
+    @Quan("^consulto les categories$")
+    public void getAllCategories() throws Throwable {
+        tryCatch(() -> categories = tpvController.listCategories());
+    }
+
+
+    @Quan("^afegeixo el producte amb codi de barres (\\d+) a la categoria \"([^\"]*)\"$")
+    public void addProductToCategory(int codiBarres, String catNom) throws Throwable {
+        Product p = productsService.findByBarCode(codiBarres);
+        tryCatch(() -> tpvController.addProductToCategory(p, catNom));
+    }
+
+    @Quan("^consulto els productes de la categoria \"([^\"]*)\"$")
+    public void checkProductByCategory(String catName) throws Throwable {
+        tryCatch(() -> products = tpvController.listProductsByCategory(catName));
+    }
+
     //////////////////////////////////////////////////// @Aleshores ////////////////////////////////////////////////////
 
     @Aleshores("^obtinc un error que diu: \"([^\"]*)\"$")
@@ -489,5 +515,15 @@ public class StepDefinitions {
     @Aleshores("^el tpv (\\d+) de la botiga \"([^\"]*)\" té un efectiu total de €([^\"]*)€$")
     public void checkTPVCash(int pos, String shop, double cash) {
         assertEquals(cash, tpvService.findByShopPos(shop, pos).getCash(), DELTA);
+    }
+
+    @Aleshores("^obtinc una categoria número (\\d+) amb nom \"([^\"]*)\"$")
+    public void getSpecificCategory(int pos, String catName) throws Throwable {
+        assertEquals(categories.get(pos - 1).getName(), catName);
+    }
+
+    @Aleshores("^obtinc un producte número (\\d+) amb nom \"([^\"]*)\"$")
+    public void checkProducts(int pos, String prodName) throws Throwable {
+        assertEquals(prodName, products.get(pos - 1).getName());
     }
 }

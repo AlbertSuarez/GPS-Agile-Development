@@ -19,8 +19,9 @@ public class TPVController {
     private final SalesService salesService;
     private final TPV tpv;
     private final RefundsService refundsService;
+    private final CategoriesService categoriesService;
 
-    public TPVController(RefundsService refundsService, SalesService salesService, ProductsService productsService, SaleAssistantService saleAssistantService, TPVService tpvService, BalancesService balancesService, DiscountService discountService, String shop, int pos) {
+    public TPVController(CategoriesService categoriesService, RefundsService refundsService, SalesService salesService, ProductsService productsService, SaleAssistantService saleAssistantService, TPVService tpvService, BalancesService balancesService, DiscountService discountService, String shop, int pos) {
         this.productsService = productsService;
         this.saleAssistantService = saleAssistantService;
         this.tpvService = tpvService;
@@ -28,6 +29,7 @@ public class TPVController {
         this.discountService = discountService;
         this.salesService = salesService;
         this.refundsService = refundsService;
+        this.categoriesService = categoriesService;
         tpv = tpvService.findByShopPos(shop, pos);
         tpv.endTurn();
     }
@@ -80,7 +82,7 @@ public class TPVController {
 
     public void quadra(double cash){
         if (!tpv.getState().equals(TPVState.BALANCE)) throw new IllegalStateException("La caixa no es troba actualment en procés de quadrament");
-        if (Math.abs(tpv.getCash()-cash) > 1) {
+        if (Math.abs(tpv.getCash() - cash) > 1) {
             throw new IllegalStateException("La caixa no quadra: hi ha un desquadrament de més d'1€");
         }
         else if (Math.abs(tpv.getCash()-cash) > 0){
@@ -139,6 +141,10 @@ public class TPVController {
         Product present = productsService.findByBarCode(barCodePresent);
         Product required = productsService.findByBarCode(barCodeRequired);
         discountService.newDiscount(Present.TYPE_NAME, present, name, required);
+    }
+
+    public void newCategory(String catName) {
+        categoriesService.newCategory(catName);
     }
 
     public String getCustomerScreenMessage() {
@@ -291,4 +297,16 @@ public class TPVController {
         tpv.getCurrentSale().removeSaleLine(line-1);
     }
 
+    public List<Category> listCategories() {
+        return categoriesService.list();
+    }
+
+    public void addProductToCategory(Product product, String catName) {
+        categoriesService.addProductToCategory(product, catName);
+
+    }
+
+    public List<Product> listProductsByCategory(String catName) {
+        return categoriesService.listProductsByCategory(catName);
+    }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Classe que representa una categoria que agrupa productes.
  */
-public class Category implements HasName {
+public class Category implements HasName, Entity {
 
     /**
      * Nom de la categoria.
@@ -14,18 +14,29 @@ public class Category implements HasName {
     private String nom;
 
     /**
-     * Conjunt de línies de devolucions associades a la devolució
+     * identificador de la categoria
+     */
+    private long id;
+
+    /**
+     * Conjunt de productes que pertanyen a la categoria
      */
     private List<Product> productes = new LinkedList<>();
 
 
-    public Category(String nom) {
+    public Category(String nom, long id) {
         this.nom = nom;
+        this.id = id;
     }
 
     @Override
     public String getName() {
         return nom;
+    }
+
+    @Override
+    public long getId() {
+        return id;
     }
 
     public void addProduct(Product p) {
@@ -35,4 +46,6 @@ public class Category implements HasName {
     public List<Product> getProductes() {
         return productes;
     }
+
+
 }
