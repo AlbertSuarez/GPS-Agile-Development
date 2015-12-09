@@ -26,7 +26,7 @@ public class CategoriesService {
         return categoriesRepository.list();
     }
 
-    private Category findByName(String categoryName) {
+    public Category findByName(String categoryName) {
         return categoriesRepository.findByName(categoryName);
     }
 

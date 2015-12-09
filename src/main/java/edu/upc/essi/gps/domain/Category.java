@@ -40,7 +40,7 @@ public class Category implements HasName, Entity {
         return id;
     }
 
-    public void addProduct(Product p) {
+    public void addProduct(Product p){
         productes.add(p);
     }
 
@@ -48,5 +48,8 @@ public class Category implements HasName, Entity {
         return productes;
     }
 
+    public boolean hasProduct(Product p){
+       return productes.contains(p);
+    }
 
 }

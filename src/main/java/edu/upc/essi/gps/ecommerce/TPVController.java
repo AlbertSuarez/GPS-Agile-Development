@@ -305,12 +305,15 @@ public class TPVController {
         return categoriesService.list();
     }
 
-    public void addProductToCategory(Product product, String catName) {
+    public void addProductToCategory(Product product, String catName){
+        if(categoriesService.findByName(catName).hasProduct(product)) throw new IllegalStateException("El producte ja pertany a la categoria");
         categoriesService.addProductToCategory(product, catName);
-
     }
 
     public List<Product> listProductsByCategory(String catName) {
-        return categoriesService.listProductsByCategory(catName);
+        List<Product> list = categoriesService.listProductsByCategory(catName);
+        if(list.size()==0) throw new IllegalStateException("La categoria no té productes");
+        return list;
     }
+
 }

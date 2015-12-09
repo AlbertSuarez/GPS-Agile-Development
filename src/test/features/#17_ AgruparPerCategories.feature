@@ -20,12 +20,22 @@ Característica: Agrupar productes per categoria
     Aleshores obtinc un error que diu: "Ja existeix una categoria amb aquest nom"
 
   Escenari: LListo els productes d'una categoria
-    Quan creo una nova categoria amb nom "jocs de taula"
-    Quan creo una nova categoria amb nom "Altres"
+    Donat creo una nova categoria amb nom "jocs de taula"
+    I creo una nova categoria amb nom "Altres"
     I afegeixo el producte amb codi de barres 12345 a la categoria "jocs de taula"
     I afegeixo el producte amb codi de barres 23456 a la categoria "jocs de taula"
     I afegeixo el producte amb codi de barres 34567 a la categoria "Altres"
-    I consulto els productes de la categoria "jocs de taula"
+    Quan consulto els productes de la categoria "jocs de taula"
     Aleshores obtinc un producte número 1 amb nom "monopopopoly"
     I obtinc un producte número 2 amb nom "parchischis"
 
+  Escenari: Afegeixo un producte que ja forma part de la categoria
+    Donat creo una nova categoria amb nom "jocs de taula"
+    I afegeixo el producte amb codi de barres 12345 a la categoria "jocs de taula"
+    Quan afegeixo el producte amb codi de barres 12345 a la categoria "jocs de taula"
+    Aleshores obtinc un error que diu: "El producte ja pertany a la categoria"
+
+  Escenari: llisto els productes d'una categoria buida
+    Donat creo una nova categoria amb nom "jocs de taula"
+    Quan consulto els productes de la categoria "jocs de taula"
+    Aleshores obtinc un error que diu: "La categoria no té productes"
