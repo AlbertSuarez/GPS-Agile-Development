@@ -110,14 +110,12 @@ public class StepDefinitions {
         tpvController.tarjetPayment();
     }
 
-
     @Donat("^el producte amb codi de barres (\\d+) esta pagat en metalic: €(\\d+)€$")
     public void productIsPaidWithCash(int barCode, int pagat) throws Throwable {
         tpvController.startSale();
         tpvController.addProductByBarCode(barCode);
         tpvController.cashPayment(pagat);
     }
-
 
     @Donat("^que hi ha hagut una venda del producte amb codi de barres (\\d+) pagat en metode \"([^\"]*)\"$")
     public void createSaleProductManager(int barCode, String type) throws Throwable {
@@ -159,7 +157,6 @@ public class StepDefinitions {
     public void increaseCash(double cash) throws Throwable {
         tryCatch(() -> tpvController.getTpv().addCash(cash));
     }
-
 
     @Quan("^decremento l'efectiu de la caixa en €([^\"]*)€$")
     public void decreaseCash(double cash) throws Throwable {
@@ -212,8 +209,6 @@ public class StepDefinitions {
         tryCatch(() -> tpvController.addProductByBarCode(barCode));
     }
 
-
-
     @Quan("^indico que vull consultar la linia de venda$")
     public void indicateToGetSale() throws Throwable {
         tryCatch(() -> lines = tpvController.getCurrentSale().getLines());
@@ -262,7 +257,6 @@ public class StepDefinitions {
     @Quan("^faig una devolució de (\\d+) unitat/s del producte amb codi de barres (\\d+) de la venta (\\d+) amb el motiu \"([^\"]*)\"$")
     public void addDevolucio(int unitats, int barCode, long idVenda, String reason) throws Throwable {
         tryCatch(()-> refund = tpvController.addRefund(unitats, barCode, idVenda, reason));
-
     }
 
     @Quan("^consulto les vendes$")

@@ -20,7 +20,7 @@ Característica: Flux de diners de caixes
     Quan decremento l'efectiu de la caixa en €80€
     Aleshores obtinc un error que diu: "El tpv no disposa de prou efectiu per a realitzar la retirada"
 
-  Escenari: Fluxe de diners entre caixes
+  Escenari: Flux de diners entre caixes
     Donat que estem al tpv número 2 de la botiga "Girona"
     I que el "Pere" s'ha registrat al sistema amb password "qwerty" i rep l'identificador 456
     I que s'inica el torn al tpv amb identificador 456 i password "qwerty", amb un efectiu inicial de €30€
@@ -28,7 +28,7 @@ Característica: Flux de diners de caixes
     Aleshores el tpv 1 de la botiga "Girona" té un efectiu total de €20€
     I el tpv 2 de la botiga "Girona" té un efectiu total de €60€
 
-  Escenari: Fluxe de diners entre caixes erroni per falta d'efectiu a la caixa origen
+  Escenari: Flux de diners entre caixes erroni per falta d'efectiu a la caixa origen
     Donat que estem al tpv número 2 de la botiga "Girona"
     I que el "Pere" s'ha registrat al sistema amb password "qwerty" i rep l'identificador 456
     I que s'inica el torn al tpv amb identificador 456 i password "qwerty", amb un efectiu inicial de €30€
