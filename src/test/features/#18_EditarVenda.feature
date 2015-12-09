@@ -61,6 +61,7 @@ Característica: Editar una venda
     I que he afegit el producte de codi de barres 7777777 a la venta
     Quan elimino la línia de venda 1
     Aleshores la venta té 1 línia
+    I el total de la venta actual és de €150€
     
   Escenari: intento eliminar una línia de venda no existent
     Donat que he afegit el producte de codi de barres 1234567 a la venta
