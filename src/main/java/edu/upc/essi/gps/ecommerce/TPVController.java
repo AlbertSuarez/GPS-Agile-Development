@@ -129,18 +129,18 @@ public class TPVController {
 
     public void newDiscountPercent(String name, long barCode, double percent) {
         Product product = productsService.findByBarCode(barCode);
-        discountService.newDiscount(Percent.TYPE_NAME, product, name, percent);
+        discountService.newDiscount(product, name, percent);
     }
 
     public void newDiscountPromotion(String name, long barCode, int A, int B) {
         Product product = productsService.findByBarCode(barCode);
-        discountService.newDiscount(Promotion.TYPE_NAME, product, name, A, B);
+        discountService.newDiscount(product, name, A, B);
     }
 
     public void newDiscountPresent(String name, long barCodeRequired, long barCodePresent) {
         Product present = productsService.findByBarCode(barCodePresent);
         Product required = productsService.findByBarCode(barCodeRequired);
-        discountService.newDiscount(Present.TYPE_NAME, present, name, required);
+        discountService.newDiscount(present, name, required);
     }
 
     public void newCategory(String catName) {

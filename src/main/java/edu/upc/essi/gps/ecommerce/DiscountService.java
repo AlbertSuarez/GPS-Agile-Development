@@ -12,57 +12,26 @@ public class DiscountService {
         this.discountRepository = discountRepository;
     }
 
-    public long newDiscount(String discountType, Product product, String name, Object... params){
-        Discount discount;
-        long id;
-        switch (discountType) {
-            case Promotion.TYPE_NAME:
-                int A;
-                int B;
-                try {
-                    A = (int) params[0];
-                    B = (int) params[1];
-                } catch (ClassCastException e) {
-                    throw new IllegalArgumentException("Paràmetres incorrectes: S'espera "
-                            + Integer.class.getSimpleName() + ", "
-                            + Integer.class.getSimpleName()
-                    );
-                }
-                id = discountRepository.newId();
-                discount = new Promotion(product, name, id, A, B);
-                break;
-            case Percent.TYPE_NAME:
-                double percent;
-                try {
-                    percent = (double) params[0];
-                } catch (ClassCastException e) {
-                    throw new IllegalArgumentException("Paràmetres incorrectes: S'espera "
-                            + Double.class.getSimpleName()
-                    );
-                }
-                id = discountRepository.newId();
-                discount = new Percent(product, name, id, percent);
-                break;
-            case Present.TYPE_NAME:
-                Product required;
-                try {
-                    required = (Product) params[0];
-                } catch (ClassCastException e) {
-                    throw new IllegalArgumentException("Paràmetres incorrectes: S'espera "
-                            + Product.class.getSimpleName()
-                    );
-                }
-                id = discountRepository.newId();
-                discount = new Present(product, name, id, required);
-                break;
-            default:
-                throw new IllegalArgumentException("El tipus de descompte indicat no existeix");
-        }
-
+    public long newDiscount(Product product, String name, int A, int B) {
+        long id = discountRepository.newId();
+        Discount discount = new Promotion(product, name, id, A, B);
         discountRepository.insert(discount);
         return id;
     }
 
+    public long newDiscount(Product product, String name, double percent) {
+        long id = discountRepository.newId();
+        Discount discount = new Percent(product, name, id, percent);
+        discountRepository.insert(discount);
+        return id;
+    }
+
+    public long newDiscount(Product product, String name, Product gift) {
+        long id = discountRepository.newId();
+        Discount discount = new Present(product, name, id, gift);
+        discountRepository.insert(discount);
+        return id;
+    }
     public List<Discount> list(){
         return discountRepository.list();
     }

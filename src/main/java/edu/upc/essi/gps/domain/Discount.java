@@ -19,7 +19,7 @@ public abstract class Discount implements Entity, HasName {
      * Identificador del descompte.
      * En cas que es tracti d'un descompte manual, aquest camp té valor <code>-1</code>.
      * */
-    private final long id;
+    private long id;
 
     /**
      * Crea una nova instància d'un descompte a partir d'un producte.
@@ -34,9 +34,19 @@ public abstract class Discount implements Entity, HasName {
         this.name = name;
     }
 
+    public Discount(Product product, String name) {
+        trigger = product;
+        this.name = name;
+        id = -1;
+    }
+
     @Override
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     @Override
