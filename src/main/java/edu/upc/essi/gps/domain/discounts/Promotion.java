@@ -1,4 +1,8 @@
-package edu.upc.essi.gps.domain;
+package edu.upc.essi.gps.domain.discounts;
+
+import edu.upc.essi.gps.domain.Product;
+import edu.upc.essi.gps.domain.Sale;
+import edu.upc.essi.gps.domain.lines.SaleLine;
 
 import java.util.List;
 import java.util.stream.Collectors;

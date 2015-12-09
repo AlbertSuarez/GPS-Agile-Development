@@ -1,10 +1,9 @@
-package edu.upc.essi.gps.ecommerce;
+package edu.upc.essi.gps.ecommerce.services;
 
 import edu.upc.essi.gps.domain.SaleAssistant;
+import edu.upc.essi.gps.ecommerce.repositories.SaleAssistantRepository;
 import edu.upc.essi.gps.utils.Comparators;
-import edu.upc.essi.gps.utils.Matchers;
 import edu.upc.essi.gps.utils.Validations;
-import sun.plugin.dom.exception.InvalidStateException;
 
 import java.util.List;
 

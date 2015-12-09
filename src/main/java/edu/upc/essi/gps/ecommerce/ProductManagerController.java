@@ -3,7 +3,11 @@ package edu.upc.essi.gps.ecommerce;
 import edu.upc.essi.gps.domain.Balance;
 import edu.upc.essi.gps.domain.Refund;
 import edu.upc.essi.gps.domain.Sale;
-import edu.upc.essi.gps.domain.SaleLine;
+import edu.upc.essi.gps.domain.lines.SaleLine;
+import edu.upc.essi.gps.ecommerce.services.BalancesService;
+import edu.upc.essi.gps.ecommerce.services.RefundsService;
+import edu.upc.essi.gps.ecommerce.services.SalesService;
+import edu.upc.essi.gps.ecommerce.services.TPVService;
 
 import java.util.List;
 

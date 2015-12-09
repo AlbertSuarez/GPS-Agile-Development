@@ -1,4 +1,8 @@
-package edu.upc.essi.gps.domain;
+package edu.upc.essi.gps.domain.discounts;
+
+import edu.upc.essi.gps.domain.Product;
+import edu.upc.essi.gps.domain.Sale;
+import edu.upc.essi.gps.domain.lines.SaleLine;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,14 +13,13 @@ import java.util.stream.Collectors;
 public class Percent extends Discount {
 
     /**
-     * Tant per cent de descompte que s'ha d'aplicar al producte.
-     * */
-    private final double percent;
-
-    /**
      * Nom que identifica aquesta classe com a un tipus concret de descompte.
      * */
     public static final String TYPE_NAME = "percent";
+    /**
+     * Tant per cent de descompte que s'ha d'aplicar al producte.
+     */
+    private final double percent;
 
     /**
      * Crea una nova instància d'un descompte per percentatge a partir d'un producte.

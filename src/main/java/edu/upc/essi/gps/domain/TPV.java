@@ -1,5 +1,7 @@
 package edu.upc.essi.gps.domain;
 
+import edu.upc.essi.gps.domain.discounts.Discount;
+
 import java.util.List;
 
 /**

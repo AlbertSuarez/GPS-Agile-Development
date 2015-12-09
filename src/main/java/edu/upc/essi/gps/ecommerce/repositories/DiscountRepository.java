@@ -1,6 +1,6 @@
-package edu.upc.essi.gps.ecommerce;
+package edu.upc.essi.gps.ecommerce.repositories;
 
-import edu.upc.essi.gps.domain.Discount;
+import edu.upc.essi.gps.domain.discounts.Discount;
 import edu.upc.essi.gps.utils.Matchers;
 import edu.upc.essi.gps.utils.Repository;
 

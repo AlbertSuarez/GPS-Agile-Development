@@ -1,7 +1,8 @@
-package edu.upc.essi.gps.ecommerce;
+package edu.upc.essi.gps.ecommerce.services;
 
 import edu.upc.essi.gps.domain.TPV;
 import edu.upc.essi.gps.domain.TPVState;
+import edu.upc.essi.gps.ecommerce.repositories.TPVRepository;
 import edu.upc.essi.gps.utils.Comparators;
 import edu.upc.essi.gps.utils.Validations;
 

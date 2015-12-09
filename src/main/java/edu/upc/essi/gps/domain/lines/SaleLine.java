@@ -1,7 +1,7 @@
-package edu.upc.essi.gps.domain;
+package edu.upc.essi.gps.domain.lines;
 
-import edu.upc.essi.gps.domain.Discount;
 import edu.upc.essi.gps.domain.Product;
+import edu.upc.essi.gps.domain.discounts.Discount;
 
 /**
  * Unitat mínima d'una venta, cadascun d'aquests elements s'associa a un producte o descompte

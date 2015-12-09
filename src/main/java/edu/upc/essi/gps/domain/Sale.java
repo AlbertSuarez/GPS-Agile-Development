@@ -1,8 +1,9 @@
 package edu.upc.essi.gps.domain;
 
+import edu.upc.essi.gps.domain.discounts.Discount;
+import edu.upc.essi.gps.domain.lines.SaleLine;
+
 import java.util.*;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 /**
  * Classe que representa una venta mitjançant un conjunt de línies de venta.

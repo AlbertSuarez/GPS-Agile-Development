@@ -1,8 +1,9 @@
-package edu.upc.essi.gps.ecommerce;
+package edu.upc.essi.gps.ecommerce.services;
 
 import edu.upc.essi.gps.domain.Product;
 import edu.upc.essi.gps.domain.Sale;
-import edu.upc.essi.gps.domain.SaleLine;
+import edu.upc.essi.gps.domain.lines.SaleLine;
+import edu.upc.essi.gps.ecommerce.repositories.SalesRepository;
 
 import java.util.LinkedList;
 import java.util.List;

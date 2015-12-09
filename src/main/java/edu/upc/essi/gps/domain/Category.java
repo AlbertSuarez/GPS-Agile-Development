@@ -21,12 +21,13 @@ public class Category implements HasName, Entity {
     /**
      * Conjunt de productes que pertanyen a la categoria
      */
-    private List<Product> productes = new LinkedList<>();
+    private List<Product> productes;
 
 
     public Category(String nom, long id) {
         this.nom = nom;
         this.id = id;
+        productes = new LinkedList<>();
     }
 
     @Override

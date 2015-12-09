@@ -1,19 +1,22 @@
-package edu.upc.essi.gps.domain;
+package edu.upc.essi.gps.domain.discounts;
+
+import edu.upc.essi.gps.domain.Product;
+import edu.upc.essi.gps.domain.Sale;
+import edu.upc.essi.gps.domain.lines.SaleLine;
 
 /**
  * Classe que representa un descompte del tipus amb el producte A et regalem B.
  * */
-public class Present extends Discount{
-
-    /**
-     * Producte que cal comprar per a que es regali el disparador.
-     * */
-    private final Product required;
+public class Present extends Discount {
 
     /**
      * Nom que identifica aquesta classe com a un tipus concret de descompte.
      * */
     public static final String TYPE_NAME = "present";
+    /**
+     * Producte que cal comprar per a que es regali el disparador.
+     * */
+    private final Product required;
 
     /**
      * Crea una nova instància d'un descompte per regal a partir d'un producte.

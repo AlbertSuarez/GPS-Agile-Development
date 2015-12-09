@@ -2,6 +2,10 @@ package edu.upc.essi.gps.ecommerce;
 
 import com.sun.istack.internal.NotNull;
 import edu.upc.essi.gps.domain.*;
+import edu.upc.essi.gps.domain.discounts.Discount;
+import edu.upc.essi.gps.domain.discounts.Percent;
+import edu.upc.essi.gps.domain.lines.SaleLine;
+import edu.upc.essi.gps.ecommerce.services.*;
 
 import java.util.List;
 

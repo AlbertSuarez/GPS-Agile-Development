@@ -1,4 +1,4 @@
-package edu.upc.essi.gps.ecommerce;
+package edu.upc.essi.gps.ecommerce.repositories;
 
 import edu.upc.essi.gps.domain.TPV;
 import edu.upc.essi.gps.utils.Repository;

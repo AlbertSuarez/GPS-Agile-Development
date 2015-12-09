@@ -1,4 +1,9 @@
-package edu.upc.essi.gps.domain;
+package edu.upc.essi.gps.domain.discounts;
+
+import edu.upc.essi.gps.domain.Entity;
+import edu.upc.essi.gps.domain.HasName;
+import edu.upc.essi.gps.domain.Product;
+import edu.upc.essi.gps.domain.Sale;
 
 /**
  * Classe abstracta que representa un tipus genèric de descompte.

@@ -1,11 +1,12 @@
 package edu.upc.essi.gps.ecommerce;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
-import cucumber.api.java.ca.I;
 import cucumber.api.java.ca.Quan;
 import edu.upc.essi.gps.domain.*;
+import edu.upc.essi.gps.domain.lines.SaleLine;
+import edu.upc.essi.gps.ecommerce.repositories.*;
+import edu.upc.essi.gps.ecommerce.services.*;
 
 import java.util.List;
 

@@ -1,6 +1,11 @@
-package edu.upc.essi.gps.ecommerce;
+package edu.upc.essi.gps.ecommerce.services;
 
-import edu.upc.essi.gps.domain.*;
+import edu.upc.essi.gps.domain.Product;
+import edu.upc.essi.gps.domain.discounts.Discount;
+import edu.upc.essi.gps.domain.discounts.Percent;
+import edu.upc.essi.gps.domain.discounts.Present;
+import edu.upc.essi.gps.domain.discounts.Promotion;
+import edu.upc.essi.gps.ecommerce.repositories.DiscountRepository;
 
 import java.util.List;
 
