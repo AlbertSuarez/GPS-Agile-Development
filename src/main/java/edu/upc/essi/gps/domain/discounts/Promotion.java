@@ -2,20 +2,22 @@ package edu.upc.essi.gps.domain.discounts;
 
 import edu.upc.essi.gps.domain.Product;
 import edu.upc.essi.gps.domain.Sale;
-import edu.upc.essi.gps.domain.lines.SaleLine;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Classe que representa un descompte del tipus AxB (3x2, 2x1...).
  * */
-public class Promotion extends Discount {
+public class Promotion implements Discount {
+
 
     /**
      * Nom que identifica aquesta classe com a un tipus concret de descompte.
-     * */
+     */
     public static final String TYPE_NAME = "promotion";
+    private final long id;
+    private final String name;
     /**
      * Quantitat de producte que reps si s'aplica la promoció.
      * */
@@ -24,6 +26,7 @@ public class Promotion extends Discount {
      * Quantitat de producte que has de comprar per a que s'apliqui la promoció.
      * */
     private final int requiredProducts;
+    private Product trigger;
 
     /**
      * Crea una nova instància d'una promoció a partir d'un producte.
@@ -34,30 +37,39 @@ public class Promotion extends Discount {
      * @param requiredProducts quantitat de producte que has de comprar per a que s'apliqui la promoció.
      * */
     public Promotion(Product product, String name, long id, int productsFree, int requiredProducts) {
-        super(product, name, id);
+        trigger = product;
+        this.name = name;
+        this.id = id;
         this.productsFree = productsFree;
         this.requiredProducts = requiredProducts;
     }
 
-    @Override
     public double getDiscount() {
         return -trigger.getPrice() * (productsFree - requiredProducts);
     }
 
     @Override
-    public int getAmount(Sale currentSale) {
-        List<Integer> list = currentSale
-                .getLines()
-                .stream()
-                .filter((l) -> l.getId() == trigger.getId())
-                .map(SaleLine::getAmount)
-                .collect(Collectors.toList());
-
-        int total = 0;
-        for (Integer i : list) {
-            total += i;
-        }
-        return total / productsFree;
+    public double calculate(Sale currentSale) {
+        return 0;
     }
 
+    @Override
+    public boolean contains(long productId) {
+        return trigger.getId() == productId;
+    }
+
+    @Override
+    public List<Product> appliedTo() {
+        return Collections.singletonList(trigger);
+    }
+
+    @Override
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
 }

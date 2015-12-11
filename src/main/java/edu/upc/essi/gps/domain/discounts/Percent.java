@@ -2,15 +2,14 @@ package edu.upc.essi.gps.domain.discounts;
 
 import edu.upc.essi.gps.domain.Product;
 import edu.upc.essi.gps.domain.Sale;
-import edu.upc.essi.gps.domain.lines.SaleLine;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Classe que representa un descompte del tipus x% (10% de descompte, 23% de descompte...).
  * */
-public class Percent extends Discount {
+public class Percent implements Discount {
 
     /**
      * Nom que identifica aquesta classe com a un tipus concret de descompte.
@@ -20,6 +19,9 @@ public class Percent extends Discount {
      * Tant per cent de descompte que s'ha d'aplicar al producte.
      */
     private final double percent;
+    private final Product trigger;
+    private final String name;
+    private final long id;
 
     /**
      * Crea una nova instància d'un descompte per percentatge a partir d'un producte.
@@ -29,29 +31,40 @@ public class Percent extends Discount {
      * @param percent tant per cent de descompte que s'ha d'aplicar al producte.
      * */
     public Percent(Product product, String name, long id, double percent) {
-        super(product, name, id);
+        trigger = product;
+        this.name = name;
+        this.id = id;
         this.percent = percent;
     }
 
-    @Override
     public double getDiscount() {
         return -trigger.getPrice()*percent/100;
     }
 
-    @Override
-    public int getAmount(Sale currentSale) {
-        List<Integer> list = currentSale
-                .getLines()
-                .stream()
-                .filter((l) -> l.getId() == trigger.getId())
-                .map(SaleLine::getAmount)
-                .collect(Collectors.toList());
 
-        int total = 0;
-        for (Integer i : list) {
-            total += i;
-        }
-        return total;
+    @Override
+    public double calculate(Sale currentSale) {
+        int amountByProduct = currentSale.getAmountByProduct(trigger);
+        return amountByProduct * trigger.getPrice() * percent;
     }
 
+    @Override
+    public boolean contains(long productId) {
+        return trigger.getId() == productId;
+    }
+
+    @Override
+    public List<Product> appliedTo() {
+        return Collections.singletonList(trigger);
+    }
+
+    @Override
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
 }

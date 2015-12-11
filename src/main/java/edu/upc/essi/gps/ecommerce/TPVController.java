@@ -50,6 +50,7 @@ public class TPVController {
         return tpv.getCurrentSale();
     }
 
+
     public void login(long saleAssistantId, @NotNull String password, double cash) {
         if (tpv.getState().equals(TPVState.IDLE))
             throw new IllegalStateException("Aquest tpv està en ús per " + tpv.getCurrentSaleAssistant().getName());
@@ -212,8 +213,7 @@ public class TPVController {
         if (p == null) {
             throw new IllegalStateException(ADD_NON_EXISTING_PRODUCT_ERROR);
         }
-        List<Discount> dList = discountService.listByTriggerId(p.getId());
-        tpv.addProduct(p, unitats, dList);
+        tpv.addProduct(p, unitats, null);
     }
 
     public List<Product> addProductByName(@NotNull String nom) {
@@ -234,8 +234,7 @@ public class TPVController {
         }
         if (products.size() == 1) {
             Product p = products.get(0);
-            List<Discount> dList= discountService.listByTriggerId(p.getId());
-            tpv.addProduct(p, unitatsProducte, dList);
+            tpv.addProduct(p, unitatsProducte, null);
         }
         return products;
     }

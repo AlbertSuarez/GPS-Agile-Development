@@ -454,11 +454,6 @@ public class StepDefinitions {
         assertFalse(tpvController.isSaleStarted());
     }
 
-    @Aleshores("^el descompte \"([^\"]*)\" té un valor de €([^\"]*)€$")
-    public void checkDescompte(String name, String valor) throws Throwable {
-        assertEquals(Double.parseDouble(valor), discountService.findByName(name).getDiscount(), DELTA);
-    }
-
     @Aleshores("^el TPV m'indica que haig de retornar una quantitat de €([^\"]*)€$")
     public void checkRefund(double expectedRefund) throws Throwable {
         assertEquals(expectedRefund, refund, DELTA);

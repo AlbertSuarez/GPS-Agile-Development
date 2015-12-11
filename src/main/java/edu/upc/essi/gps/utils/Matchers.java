@@ -1,7 +1,10 @@
 package edu.upc.essi.gps.utils;
 
 import edu.upc.essi.gps.domain.Entity;
+import edu.upc.essi.gps.domain.HasBarCode;
 import edu.upc.essi.gps.domain.HasName;
+
+import java.util.function.Predicate;
 
 /**
  * Classe que permet accedir a diverses implementacions de la classe <code>Matcher</code>.
@@ -38,6 +41,9 @@ public final class Matchers {
         return entity -> entity.getId() == id;
     }
 
+    public static Predicate<HasBarCode> barCode(long barCode) {
+        return e -> e.getBarCode() == barCode;
+    }
 }
 
 

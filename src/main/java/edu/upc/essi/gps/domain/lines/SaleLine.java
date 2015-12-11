@@ -1,12 +1,14 @@
 package edu.upc.essi.gps.domain.lines;
 
+import edu.upc.essi.gps.domain.Entity;
+import edu.upc.essi.gps.domain.HasName;
 import edu.upc.essi.gps.domain.Product;
 import edu.upc.essi.gps.domain.discounts.Discount;
 
 /**
  * Unitat mínima d'una venta, cadascun d'aquests elements s'associa a un producte o descompte
  * */
-public class SaleLine {
+public class SaleLine implements Entity, HasName {
 
     /**
      * Identificador associat al producte inicat a la línia
@@ -52,9 +54,9 @@ public class SaleLine {
      * @param amount quantitat d'aquest descompte.
      */
     public SaleLine(Discount discount, int amount) {
-        id = discount.getTrigger().getId();
+        id = -1;
         name = discount.getName();
-        unitPrice = discount.getDiscount();
+        unitPrice = -1;
         this.amount = amount;
         barCode = -1;
     }
