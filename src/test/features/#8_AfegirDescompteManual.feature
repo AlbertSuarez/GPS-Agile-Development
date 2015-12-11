@@ -14,7 +14,7 @@ Característica: Afegir un descompte manual
     Donat que hi ha una venta iniciada
     I que he afegit el producte de codi de barres 1234567 a la venta
     Quan Aplico un descompte manual que anomeno "opt-25%" al producte 1 de la venda amb valor 25%
-    Aleshores la venta té 1 línies
+    Aleshores la venta té 1 línia
     I el total de la venta actual és de €15€
 
   Escenari: Descomptem una línia que no existeix
