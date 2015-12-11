@@ -50,6 +50,10 @@ public class TPVController {
         return tpv.getCurrentSale();
     }
 
+    public double calculateTotal() {
+        return getCurrentSale().getTotal();
+    }
+
 
     public void login(long saleAssistantId, @NotNull String password, double cash) {
         if (tpv.getState().equals(TPVState.IDLE))

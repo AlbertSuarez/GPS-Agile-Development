@@ -1,7 +1,7 @@
 package edu.upc.essi.gps.domain.discounts;
 
 import edu.upc.essi.gps.domain.Product;
-import edu.upc.essi.gps.domain.Sale;
+import edu.upc.essi.gps.domain.lines.SaleLine;
 
 import java.util.Collections;
 import java.util.List;
@@ -49,7 +49,7 @@ public class Promotion implements Discount {
     }
 
     @Override
-    public double calculate(Sale currentSale) {
+    public double calculate(SaleLine saleLine) {
         return 0;
     }
 
@@ -59,7 +59,7 @@ public class Promotion implements Discount {
     }
 
     @Override
-    public List<Product> appliedTo() {
+    public List<Product> requires() {
         return Collections.singletonList(trigger);
     }
 

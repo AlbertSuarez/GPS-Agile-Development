@@ -68,11 +68,7 @@ public class Sale implements Entity {
         SaleLine saleLine = lines.get(pos-1);
         if (!d.contains(saleLine.getProduct().getId()))
             throw new IllegalArgumentException("Els productes del descompte i de la línia no coincideixen");
-        addDiscount(d);
-    }
-
-    private void addDiscount(Discount d) {
-        discountedPrice += d.calculate(this);
+        discountedPrice += d.calculate(saleLine);
     }
 
     /**
@@ -112,7 +108,7 @@ public class Sale implements Entity {
      */
     public int getAmountByProduct(Product product) {
         for (SaleLine s : lines) {
-            if (s.getBarCode() == product.getBarCode()) return s.getAmount();
+            if (s.getProduct().getBarCode() == product.getBarCode()) return s.getAmount();
         }
         return 0;
     }
@@ -126,7 +122,7 @@ public class Sale implements Entity {
         for (SaleLine l : lines) {
             res += l.getTotalPrice();
         }
-        res += discountedPrice;
+        res -= discountedPrice;
         return res;
     }
 

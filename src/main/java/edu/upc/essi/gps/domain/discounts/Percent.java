@@ -1,7 +1,7 @@
 package edu.upc.essi.gps.domain.discounts;
 
 import edu.upc.essi.gps.domain.Product;
-import edu.upc.essi.gps.domain.Sale;
+import edu.upc.essi.gps.domain.lines.SaleLine;
 
 import java.util.Collections;
 import java.util.List;
@@ -41,11 +41,9 @@ public class Percent implements Discount {
         return -trigger.getPrice()*percent/100;
     }
 
-
     @Override
-    public double calculate(Sale currentSale) {
-        int amountByProduct = currentSale.getAmountByProduct(trigger);
-        return amountByProduct * trigger.getPrice() * percent;
+    public double calculate(SaleLine saleLine) {
+        return saleLine.getProduct().getPrice() * saleLine.getAmount() * percent / 100;
     }
 
     @Override
@@ -54,7 +52,7 @@ public class Percent implements Discount {
     }
 
     @Override
-    public List<Product> appliedTo() {
+    public List<Product> requires() {
         return Collections.singletonList(trigger);
     }
 

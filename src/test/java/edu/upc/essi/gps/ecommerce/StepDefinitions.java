@@ -393,7 +393,7 @@ public class StepDefinitions {
 
     @Aleshores("^el total de la venta actual és de €([^\"]*)€$")
     public void checkTotalPrice(double saleTotal) throws Throwable {
-        assertEquals(saleTotal, tpvController.getCurrentSale().getTotal(), DELTA);
+        assertEquals(saleTotal, tpvController.calculateTotal(), DELTA);
     }
 
     @Aleshores("^la pantalla del client del tpv mostra$")
