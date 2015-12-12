@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Classe que representa un descompte del tipus AxB (3x2, 2x1...).
  * */
-public class Promotion implements Discount {
+public class ProductPromotion implements Discount {
 
 
     /**
@@ -36,16 +36,12 @@ public class Promotion implements Discount {
      * @param productsFree quantitat de producte que reps si s'aplica la promoció.
      * @param requiredProducts quantitat de producte que has de comprar per a que s'apliqui la promoció.
      * */
-    public Promotion(Product product, String name, long id, int productsFree, int requiredProducts) {
+    public ProductPromotion(Product product, String name, long id, int productsFree, int requiredProducts) {
         trigger = product;
         this.name = name;
         this.id = id;
         this.productsObtained = productsFree;
         this.requiredProducts = requiredProducts;
-    }
-
-    public double getDiscount() {
-        return -trigger.getPrice() * (productsObtained - requiredProducts);
     }
 
     @Override

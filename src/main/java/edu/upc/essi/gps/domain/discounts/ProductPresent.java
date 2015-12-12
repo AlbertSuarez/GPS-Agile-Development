@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Classe que representa un descompte del tipus amb el producte A et regalem B.
  * */
-public class Present implements Discount {
+public class ProductPresent implements Discount {
 
     /**
      * Nom que identifica aquesta classe com a un tipus concret de descompte.
@@ -30,15 +30,11 @@ public class Present implements Discount {
      * @param id identificador del descompte al sistema.
      * @param required producte que cal comprar per a que es regali el disparador.
      * */
-    public Present(Product product, String name, long id, Product required) {
+    public ProductPresent(Product product, String name, long id, Product required) {
         trigger = product;
         this.name = name;
         this.id = id;
         this.required = required;
-    }
-
-    public double getDiscount() {
-        return -trigger.getPrice();
     }
 
     @Override

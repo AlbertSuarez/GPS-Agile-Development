@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Classe que representa un descompte del tipus x% (10% de descompte, 23% de descompte...).
  * */
-public class Percent implements Discount {
+public class ProductPercent implements Discount {
 
     /**
      * Nom que identifica aquesta classe com a un tipus concret de descompte.
@@ -30,15 +30,11 @@ public class Percent implements Discount {
      * @param id identificador del descompte al sistema.
      * @param percent tant per cent de descompte que s'ha d'aplicar al producte.
      * */
-    public Percent(Product product, String name, long id, double percent) {
+    public ProductPercent(Product product, String name, long id, double percent) {
         trigger = product;
         this.name = name;
         this.id = id;
         this.percent = percent;
-    }
-
-    public double getDiscount() {
-        return -trigger.getPrice()*percent/100;
     }
 
     @Override

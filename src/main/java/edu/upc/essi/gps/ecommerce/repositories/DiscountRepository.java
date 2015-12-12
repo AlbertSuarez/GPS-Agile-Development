@@ -12,7 +12,7 @@ public class DiscountRepository extends Repository<Discount> {
         return find(Matchers.nameMatcher(name));
     }
 
-    public List<Discount> findByProductId(final long productId) {
+    public List<Discount> listByProductId(final long productId) {
         return list((d) -> d.isTriggeredBy(productId));
     }
 
