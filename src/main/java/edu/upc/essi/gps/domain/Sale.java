@@ -66,7 +66,7 @@ public class Sale implements Entity {
             throw new IndexOutOfBoundsException("No es pot accedir a la línia " + pos +
                     " de la venta, aquesta només té " + lines.size() + " línies");
         SaleLine saleLine = lines.get(pos-1);
-        if (!d.contains(saleLine.getProduct().getId()))
+        if (!d.isTriggeredBy(saleLine.getProduct().getId()))
             throw new IllegalArgumentException("Els productes del descompte i de la línia no coincideixen");
         discountedPrice += d.calculate(saleLine);
     }
@@ -187,5 +187,9 @@ public class Sale implements Entity {
 
     public void removeSaleLine(int line) {
         lines.remove(line);
+    }
+
+    public void addDiscount(double discount) {
+        discountedPrice += discount;
     }
 }

@@ -6,6 +6,7 @@ import edu.upc.essi.gps.domain.discounts.Discount;
 import edu.upc.essi.gps.domain.discounts.Percent;
 import edu.upc.essi.gps.domain.lines.SaleLine;
 import edu.upc.essi.gps.ecommerce.services.*;
+import edu.upc.essi.gps.utils.DiscountCalculator;
 
 import java.util.List;
 
@@ -51,6 +52,8 @@ public class TPVController {
     }
 
     public double calculateTotal() {
+        double discount = DiscountCalculator.calculate(getCurrentSale(), discountService);
+        getCurrentSale().addDiscount(discount);
         return getCurrentSale().getTotal();
     }
 
@@ -149,7 +152,7 @@ public class TPVController {
     public void newDiscountPresent(String name, long barCodeRequired, long barCodePresent) {
         Product present = productsService.findByBarCode(barCodePresent);
         Product required = productsService.findByBarCode(barCodeRequired);
-        discountService.newDiscount(present, name, required);
+        discountService.newDiscount(required, name, present);
     }
 
     public void newCategory(String catName) {

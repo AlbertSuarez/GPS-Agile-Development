@@ -13,7 +13,7 @@ public class DiscountRepository extends Repository<Discount> {
     }
 
     public List<Discount> findByProductId(final long productId) {
-        return list((d) -> d.contains(productId));
+        return list((d) -> d.isTriggeredBy(productId));
     }
 
     @Override

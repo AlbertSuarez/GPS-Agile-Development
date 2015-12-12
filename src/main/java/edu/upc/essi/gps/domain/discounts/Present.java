@@ -3,7 +3,7 @@ package edu.upc.essi.gps.domain.discounts;
 import edu.upc.essi.gps.domain.Product;
 import edu.upc.essi.gps.domain.lines.SaleLine;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -43,17 +43,17 @@ public class Present implements Discount {
 
     @Override
     public double calculate(SaleLine saleLine) {
-        return 0;
+        return required.getPrice();
     }
 
     @Override
-    public boolean contains(long productId) {
-        return trigger.getId() == productId || required.getId() == productId;
+    public boolean isTriggeredBy(long productId) {
+        return trigger.getId() == productId;
     }
 
     @Override
-    public List<Product> requires() {
-        return Arrays.asList(trigger, required);
+    public List<Product> requiresProducts() {
+        return Collections.singletonList(required);
     }
 
     @Override

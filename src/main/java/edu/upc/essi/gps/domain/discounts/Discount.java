@@ -12,9 +12,26 @@ import java.util.List;
  * */
 public interface Discount extends Entity, HasName {
 
+    /**
+     * Calculate money to discount
+     *
+     * @param saleLine
+     * @return
+     */
     double calculate(SaleLine saleLine);
 
-    boolean contains(long productId);
+    /**
+     * Is product contained?
+     *
+     * @param productId
+     * @return
+     */
+    boolean isTriggeredBy(long productId);
 
-    List<Product> requires();
+    /**
+     * Gets all products required for the Discount to apply (Present)
+     *
+     * @return
+     */
+    List<Product> requiresProducts();
 }

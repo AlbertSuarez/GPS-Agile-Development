@@ -43,17 +43,17 @@ public class Percent implements Discount {
 
     @Override
     public double calculate(SaleLine saleLine) {
-        return saleLine.getProduct().getPrice() * saleLine.getAmount() * percent / 100;
+        return saleLine.getProduct().getPrice() * saleLine.getAmount() * (percent / 100.);
     }
 
     @Override
-    public boolean contains(long productId) {
+    public boolean isTriggeredBy(long productId) {
         return trigger.getId() == productId;
     }
 
     @Override
-    public List<Product> requires() {
-        return Collections.singletonList(trigger);
+    public List<Product> requiresProducts() {
+        return Collections.emptyList();
     }
 
     @Override

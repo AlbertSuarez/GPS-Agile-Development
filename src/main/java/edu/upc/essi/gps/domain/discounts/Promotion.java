@@ -21,7 +21,7 @@ public class Promotion implements Discount {
     /**
      * Quantitat de producte que reps si s'aplica la promoció.
      * */
-    private final int productsFree;
+    private final int productsObtained;
     /**
      * Quantitat de producte que has de comprar per a que s'apliqui la promoció.
      * */
@@ -40,27 +40,32 @@ public class Promotion implements Discount {
         trigger = product;
         this.name = name;
         this.id = id;
-        this.productsFree = productsFree;
+        this.productsObtained = productsFree;
         this.requiredProducts = requiredProducts;
     }
 
     public double getDiscount() {
-        return -trigger.getPrice() * (productsFree - requiredProducts);
+        return -trigger.getPrice() * (productsObtained - requiredProducts);
     }
 
     @Override
     public double calculate(SaleLine saleLine) {
-        return 0;
+        int amount = saleLine.getAmount();
+        if (amount < requiredProducts)
+            return 0;
+        int freeProducts = Math.min(productsObtained - requiredProducts, (amount - requiredProducts));
+        int times = amount / productsObtained;
+        return times * freeProducts * saleLine.getProduct().getPrice();
     }
 
     @Override
-    public boolean contains(long productId) {
+    public boolean isTriggeredBy(long productId) {
         return trigger.getId() == productId;
     }
 
     @Override
-    public List<Product> requires() {
-        return Collections.singletonList(trigger);
+    public List<Product> requiresProducts() {
+        return Collections.emptyList();
     }
 
     @Override
