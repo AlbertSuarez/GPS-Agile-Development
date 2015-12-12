@@ -393,7 +393,7 @@ public class StepDefinitions {
 
     @Aleshores("^el total de la venta actual és de €([^\"]*)€$")
     public void checkTotalPrice(double saleTotal) throws Throwable {
-        assertEquals(saleTotal, tpvController.getCurrentSale().getTotal(), DELTA);
+        assertEquals(saleTotal, tpvController.calculateTotal(), DELTA);
     }
 
     @Aleshores("^la pantalla del client del tpv mostra$")
@@ -452,11 +452,6 @@ public class StepDefinitions {
     @Aleshores("^la venta esta tancada$")
     public void checkClosedSale() throws Throwable {
         assertFalse(tpvController.isSaleStarted());
-    }
-
-    @Aleshores("^el descompte \"([^\"]*)\" té un valor de €([^\"]*)€$")
-    public void checkDescompte(String name, String valor) throws Throwable {
-        assertEquals(Double.parseDouble(valor), discountService.findByName(name).getDiscount(), DELTA);
     }
 
     @Aleshores("^el TPV m'indica que haig de retornar una quantitat de €([^\"]*)€$")

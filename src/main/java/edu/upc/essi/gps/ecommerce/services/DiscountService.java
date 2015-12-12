@@ -50,7 +50,7 @@ public class DiscountService {
     }
 
     public List<Discount> listByTriggerId(long id) {
-        return discountRepository.findByTriggerId(id);
+        return discountRepository.findByProductId(id);
     }
 
 }

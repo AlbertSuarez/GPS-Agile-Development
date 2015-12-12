@@ -3,13 +3,17 @@ package edu.upc.essi.gps.domain;
 import edu.upc.essi.gps.domain.discounts.Discount;
 import edu.upc.essi.gps.domain.lines.SaleLine;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Classe que representa una venta mitjançant un conjunt de línies de venta.
  * */
 public class Sale implements Entity {
 
+    public static final String CARD_PAYMENT = "card";
+    public static final String CASH_PAYMENT = "cash";
     /**
      * Identificador únic d'aquesta venda al sistema.
      * */
@@ -21,19 +25,10 @@ public class Sale implements Entity {
     private List<SaleLine> lines = new LinkedList<>();
 
     /**
-     * Conjunt de descomptes aplicables a cada producte.
-     * */
-    private Map<Product, List<Discount>> desc = new HashMap<>();
-
-    /**
-     * Conjunt de descomptes aplicats a la venta.
-     * */
-    private List<SaleLine> descLines;
-
-    /**
      * Tipus de pagament
      */
     private String tipusPagament;    //cash or card
+    private double discountedPrice = 0;
 
     /**
      * Constructora sense parametres.
@@ -71,9 +66,9 @@ public class Sale implements Entity {
             throw new IndexOutOfBoundsException("No es pot accedir a la línia " + pos +
                     " de la venta, aquesta només té " + lines.size() + " línies");
         SaleLine saleLine = lines.get(pos-1);
-        if (saleLine.getId() != d.getTrigger().getId() || saleLine.getBarCode() != d.getTrigger().getBarCode())
+        if (!d.isTriggeredBy(saleLine.getProduct().getId()))
             throw new IllegalArgumentException("Els productes del descompte i de la línia no coincideixen");
-        lines.add(pos, new SaleLine(d, saleLine.getAmount()));
+        discountedPrice += d.calculate(saleLine);
     }
 
     /**
@@ -91,11 +86,7 @@ public class Sale implements Entity {
      * */
     public List<SaleLine> getLines() {
         if (lines.isEmpty()) throw new IllegalStateException("No hi ha cap venda");
-        if (descLines == null) testDiscounts();
-        List<SaleLine> finalLines = new LinkedList<>();
-        finalLines.addAll(lines);
-        finalLines.addAll(descLines);
-        return Collections.unmodifiableList(finalLines);
+        return Collections.unmodifiableList(lines);
     }
 
     /**
@@ -117,7 +108,7 @@ public class Sale implements Entity {
      */
     public int getAmountByProduct(Product product) {
         for (SaleLine s : lines) {
-            if (s.getBarCode() == product.getBarCode()) return s.getAmount();
+            if (s.getProduct().getBarCode() == product.getBarCode()) return s.getAmount();
         }
         return 0;
     }
@@ -128,43 +119,11 @@ public class Sale implements Entity {
      * */
     public double getTotal() {
         double res = 0;
-        for (SaleLine l : lines){
+        for (SaleLine l : lines) {
             res += l.getTotalPrice();
         }
-        if (descLines == null) testDiscounts();
-        for (SaleLine l : descLines) {
-            res += l.getTotalPrice();
-        }
+        res -= discountedPrice;
         return res;
-    }
-
-    /**
-     * Calcula la millor combinació de descomptes tals que:<br>
-     *     a) Cap producte té dos descomptes aplicats alhora.<br>
-     *     b) De totes les combinacions de descomptes, és la que aplica una major rebaixa del preu final.
-     * */
-    private void testDiscounts() {
-        Discount best;
-        double min;
-        double value;
-        int bestAmount;
-        int valueAmount;
-        descLines = new LinkedList<>();
-        for (Product p : desc.keySet()) {
-            min = 0.0;
-            bestAmount = 0;
-            best = null;
-            for(Discount d : desc.get(p)) {
-                valueAmount = d.getAmount(this);
-                value = d.getDiscount()*valueAmount;
-                if (value < min) {
-                    best = d;
-                    min = value;
-                    bestAmount = valueAmount;
-                }
-            }
-            if (best != null) descLines.add(new SaleLine(best, bestAmount));
-        }
     }
 
     /**
@@ -172,14 +131,14 @@ public class Sale implements Entity {
      * @return <code>true</code> si la venta és buida, <code>false</code> altrment.
      * */
     public boolean isEmpty() {
-        return lines.isEmpty() && desc.isEmpty();
+        return lines.isEmpty();
     }
 
     /**
      * Consulta si la venta té algun producte amb el codi de barres indicat.
      * @return <code>true</code> si la té algun producte amb el codi de barres indicat, <code>false</code> altrment.
-     * */
-    public boolean hasProductByBarCode(int barCode) {
+     * @param barCode this is the barCode*/
+    public boolean hasProductByBarCode(long barCode) {
         return lines
                 .stream()
                 .anyMatch((l) -> l.getBarCode() == barCode);
@@ -191,10 +150,21 @@ public class Sale implements Entity {
      * @param unitats nombre d'unitats del producte a afegir
      * */
     public void addProduct(Product product, int unitats, List<Discount> discountList) {
-        lines.add(new SaleLine(product, unitats));
-        desc.put(product, discountList);
-        descLines = null;
+        if (hasProductByBarCode(product.getBarCode())) {
+            SaleLine line = getLineProduct(product);
+            line.incrAmount(unitats);
+        } else {
+            lines.add(new SaleLine(product, unitats));
+        }
     }
+
+    private SaleLine getLineProduct(Product product) {
+        return lines.stream()
+                .filter((e) -> e.getProduct().getBarCode() == product.getBarCode())
+                .findFirst()
+                .get();
+    }
+
 
     /**
      * Consulta si la venta té algun producte amb el nom indicat.
@@ -211,11 +181,15 @@ public class Sale implements Entity {
     }
 
     public void setTipusPagament(String tipusPagament) {
-        if (tipusPagament.equals("card") || tipusPagament.equals("cash"))
+        if (tipusPagament.equals(CARD_PAYMENT) || tipusPagament.equals(CASH_PAYMENT))
             this.tipusPagament = tipusPagament;
     }
 
     public void removeSaleLine(int line) {
         lines.remove(line);
+    }
+
+    public void addDiscount(double discount) {
+        discountedPrice += discount;
     }
 }
