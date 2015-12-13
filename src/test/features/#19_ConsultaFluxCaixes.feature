@@ -13,6 +13,10 @@ Característica: Consulta flux de diners entre caixes
     Quan consulto els fluxos de diners entre caixes
     Aleshores obtinc un error que diu: "No hi ha cap flux de diners enregistrat al sistema"
 
+  Escenari: no hi ha flux de diners d'un tipus determinat
+    Quan consulto els fluxos de diners entre caixes del tipus "TPVFlow"
+    Aleshores obtinc un error que diu: "No hi ha cap flux de diners de tipus TPVFlow enregistrat al sistema"
+
   Escenari: consulta increments de caixa
     Donat un increment de caixa de €30€
     Quan consulto els fluxos de diners entre caixes

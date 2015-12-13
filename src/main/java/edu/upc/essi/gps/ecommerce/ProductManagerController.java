@@ -70,6 +70,10 @@ public class ProductManagerController {
         return moneyFlowService.list();
     }
 
+    public List<MoneyFlow> listMoneyFlowsByKind(String flowKind) {
+        return moneyFlowService.listByKind(flowKind);
+    }
+
     public void setMasterPassword(String password) {
         tpvService.setMasterPass(password);
     }
@@ -108,6 +112,4 @@ public class ProductManagerController {
         return sb.toString();
 
     }
-
-
 }

@@ -349,6 +349,11 @@ public class StepDefinitions {
         tryCatch(() -> moneyFlows = productManagerController.listMoneyFlows());
     }
 
+    @Quan("^consulto els fluxos de diners entre caixes del tipus \"([^\"]*)\"$")
+    public void getMoneyFlowByKind(String flowKind) throws Throwable {
+        tryCatch(() -> moneyFlows = productManagerController.listMoneyFlowsByKind(flowKind));
+    }
+
     //////////////////////////////////////////////////// @Aleshores ////////////////////////////////////////////////////
 
     @Aleshores("^obtinc un error que diu: \"([^\"]*)\"$")
