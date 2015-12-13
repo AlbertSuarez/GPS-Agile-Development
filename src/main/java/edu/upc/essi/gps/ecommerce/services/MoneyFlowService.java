@@ -31,6 +31,13 @@ public class MoneyFlowService {
         return l;
     }
 
+    public List<MoneyFlow> listByKind(String kind) {
+        List<MoneyFlow> l = moneyFlowRepository.listByKind(kind);
+        if (l.size() == 0)
+            throw new IllegalStateException("No hi ha cap flux de diners de tipus " + kind + " enregistrat al sistema");
+        return l;
+    }
+
     public void newMoneyFlow(String flowKind, double amount, TPV origin, TPV destiny) {
         if (flowKind.equals("InFlow"))  moneyFlowRepository.insert(new InFlow(moneyFlowRepository.newId(), amount, destiny));
         else if (flowKind.equals("OutFlow"))  moneyFlowRepository.insert(new OutFlow(moneyFlowRepository.newId(), amount, origin));

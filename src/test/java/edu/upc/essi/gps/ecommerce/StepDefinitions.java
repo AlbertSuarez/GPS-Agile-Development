@@ -540,12 +540,14 @@ public class StepDefinitions {
         assertEquals(prodName, products.get(pos - 1).getName());
     }
 
-    @Aleshores("^obtinc (\\d+) flux de tipus \"([^\"]*)\" de €(\\d+)€$")
+    @Aleshores("^obtinc (\\d+) flux de tipus \"([^\"]*)\" de total €(\\d+)€$")
     public void checkFlux(int amount, String fluxKind, double cash) throws Throwable {
-        assertEquals(amount, moneyFlows.size());
+        assertEquals(amount, moneyFlowService.listByKind(fluxKind).size());
+        double total = 0.0;
         for (int i = 0; i < amount; i++) {
-            assertEquals(fluxKind, moneyFlows.get(i).getKind());
-            assertEquals(cash, moneyFlows.get(i).getAmount(), DELTA);
+            assertEquals(fluxKind, moneyFlowService.listByKind(fluxKind).get(i).getKind());
+            total += moneyFlowService.listByKind(fluxKind).get(i).getAmount();
         }
+        assertEquals(cash, total, DELTA);
     }
 }
