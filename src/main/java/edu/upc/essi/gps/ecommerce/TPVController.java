@@ -281,6 +281,17 @@ public class TPVController {
             throw new IllegalStateException("El tpv no disposa de prou efectiu per a realitzar la retirada");
         tpvService.findByShopPos(shop, posSource).removeCash(cash);
         tpvService.findByShopPos(shop, posTarget).addCash(cash);
+        moneyFlowService.newMoneyFlow("TPVFlow", cash, tpvService.findByShopPos(shop, posSource), tpvService.findByShopPos(shop, posTarget));
+    }
+
+    public void addFlow(double amount) {
+        tpv.addCash(amount);
+        moneyFlowService.newMoneyFlow("InFlow", amount, null, tpv);
+    }
+
+    public void removeFlow(double amount) {
+        tpv.removeCash(amount);
+        moneyFlowService.newMoneyFlow("OutFlow", amount, tpv, null);
     }
 
     public void cancelCurrentSale() {

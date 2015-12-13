@@ -1,6 +1,7 @@
 package edu.upc.essi.gps.ecommerce.repositories;
 
 import com.sun.istack.internal.NotNull;
+import edu.upc.essi.gps.domain.TPV;
 import edu.upc.essi.gps.domain.flow.MoneyFlow;
 import edu.upc.essi.gps.utils.Repository;
 

@@ -159,12 +159,12 @@ public class StepDefinitions {
 
     @Quan("^incremento l'efectiu de la caixa en €([^\"]*)€$")
     public void increaseCash(double cash) throws Throwable {
-        tryCatch(() -> tpvController.getTpv().addCash(cash));
+        tryCatch(() -> tpvController.addFlow(cash));
     }
 
     @Quan("^decremento l'efectiu de la caixa en €([^\"]*)€$")
     public void decreaseCash(double cash) throws Throwable {
-        tryCatch(() -> tpvController.getTpv().removeCash(cash));
+        tryCatch(() -> tpvController.removeFlow(cash));
     }
 
     @Quan("^intento finalitzar el meu torn, indicant un efectiu final de €([^\"]*)€$")

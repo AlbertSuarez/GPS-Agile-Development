@@ -9,3 +9,5 @@ Característica: Consulta flux de diners entre caixes
   Escenari: no hi ha flux de diners entre caixes
     Quan consulto els fluxos de diners entre caixes
     Aleshores obtinc un error que diu: "No hi ha cap flux de diners enregistrat al sistema"
+
+  Escenari: consulta tots els fluxos de diners entre caixes
