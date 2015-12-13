@@ -1,9 +1,11 @@
 package edu.upc.essi.gps.ecommerce;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
 import cucumber.api.java.ca.Quan;
 import edu.upc.essi.gps.domain.*;
+import edu.upc.essi.gps.domain.flow.MoneyFlow;
 import edu.upc.essi.gps.domain.lines.SaleLine;
 import edu.upc.essi.gps.ecommerce.repositories.*;
 import edu.upc.essi.gps.ecommerce.services.*;
@@ -23,6 +25,7 @@ public class StepDefinitions {
     private SalesService salesService = new SalesService(new SalesRepository());
     private RefundsService refundsService = new RefundsService(new RefundsRepository());
     private CategoriesService categoriesService = new CategoriesService(new CategoriesRepository());
+    private MoneyFlowService moneyFlowService = new MoneyFlowService(new MoneyFlowRepository());
     private Exception exception;
     private TPVController tpvController;
     private ProductManagerController productManagerController;
@@ -34,6 +37,7 @@ public class StepDefinitions {
     private List<Sale> sales;
     private List<Refund> refunds;
     private List<Category> categories;
+    private List<MoneyFlow> moneyFlows;
 
     public void tryCatch(Runnable r){
         try {
@@ -50,7 +54,7 @@ public class StepDefinitions {
     @Donat("^que estem al tpv número (\\d+) de la botiga \"([^\"]*)\"$")
     public void setupPos(int posNumber, String shop) throws Throwable {
         tpvService.newTPV(shop, posNumber);
-        tpvController = new TPVController(categoriesService, refundsService, salesService, productsService, saleAssistantService, tpvService, balancesService, discountService, shop, posNumber);
+        tpvController = new TPVController(moneyFlowService, categoriesService, refundsService, salesService, productsService, saleAssistantService, tpvService, balancesService, discountService, shop, posNumber);
     }
 
     @Donat("^que el \"([^\"]*)\" s'ha registrat al sistema amb password \"([^\"]*)\" i rep l'identificador (\\d+)$")
@@ -85,7 +89,7 @@ public class StepDefinitions {
 
     @Donat("^que estem al panell de gestió del product manager$")
     public void initManagement() throws Throwable {
-        productManagerController = new ProductManagerController(balancesService, tpvService, salesService, refundsService);
+        productManagerController = new ProductManagerController(moneyFlowService, balancesService, tpvService, salesService, refundsService);
     }
 
     @Donat("^un desquadrament del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de €([^\"]*)€")
@@ -314,7 +318,6 @@ public class StepDefinitions {
         tryCatch(() -> categories = tpvController.listCategories());
     }
 
-
     @Quan("^afegeixo el producte amb codi de barres (\\d+) a la categoria \"([^\"]*)\"$")
     public void addProductToCategory(int codiBarres, String catNom) throws Throwable {
         Product p = productsService.findByBarCode(codiBarres);
@@ -324,6 +327,11 @@ public class StepDefinitions {
     @Quan("^consulto els productes de la categoria \"([^\"]*)\"$")
     public void checkProductByCategory(String catName) throws Throwable {
         tryCatch(() -> products = tpvController.listProductsByCategory(catName));
+    }
+
+    @Quan("^consulto els fluxos de diners entre caixes$")
+    public void getMonewFlow() throws Throwable {
+        tryCatch(() -> moneyFlows = productManagerController.listMoneyFlows());
     }
 
     //////////////////////////////////////////////////// @Aleshores ////////////////////////////////////////////////////

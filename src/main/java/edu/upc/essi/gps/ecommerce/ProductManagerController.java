@@ -3,11 +3,9 @@ package edu.upc.essi.gps.ecommerce;
 import edu.upc.essi.gps.domain.Balance;
 import edu.upc.essi.gps.domain.Refund;
 import edu.upc.essi.gps.domain.Sale;
+import edu.upc.essi.gps.domain.flow.MoneyFlow;
 import edu.upc.essi.gps.domain.lines.SaleLine;
-import edu.upc.essi.gps.ecommerce.services.BalancesService;
-import edu.upc.essi.gps.ecommerce.services.RefundsService;
-import edu.upc.essi.gps.ecommerce.services.SalesService;
-import edu.upc.essi.gps.ecommerce.services.TPVService;
+import edu.upc.essi.gps.ecommerce.services.*;
 
 import java.util.List;
 
@@ -23,13 +21,15 @@ public class ProductManagerController {
     private final SalesService salesService;
     private final RefundsService refundsService;
     private final BalancesService balancesService;
+    private final MoneyFlowService moneyFlowService;
     private List<Sale> sales;
 
-    public ProductManagerController(BalancesService balancesService, TPVService tpvService, SalesService salesService, RefundsService refundsService) {
+    public ProductManagerController(MoneyFlowService moneyFlowService, BalancesService balancesService, TPVService tpvService, SalesService salesService, RefundsService refundsService) {
         this.balancesService = balancesService;
         this.salesService = salesService;
         this.tpvService = tpvService;
         this.refundsService = refundsService;
+        this.moneyFlowService = moneyFlowService;
     }
 
     /**
@@ -103,5 +103,9 @@ public class ProductManagerController {
         }
         return sb.toString();
 
+    }
+
+    public List<MoneyFlow> listMoneyFlows() {
+        return moneyFlowService.list();
     }
 }

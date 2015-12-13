@@ -4,6 +4,7 @@ import com.sun.istack.internal.NotNull;
 import edu.upc.essi.gps.domain.*;
 import edu.upc.essi.gps.domain.discounts.Discount;
 import edu.upc.essi.gps.domain.discounts.ProductPercent;
+import edu.upc.essi.gps.domain.flow.MoneyFlow;
 import edu.upc.essi.gps.domain.lines.SaleLine;
 import edu.upc.essi.gps.ecommerce.services.*;
 import edu.upc.essi.gps.utils.DiscountCalculator;
@@ -25,8 +26,9 @@ public class TPVController {
     private final TPV tpv;
     private final RefundsService refundsService;
     private final CategoriesService categoriesService;
+    private final MoneyFlowService moneyFlowService;
 
-    public TPVController(CategoriesService categoriesService, RefundsService refundsService, SalesService salesService, ProductsService productsService, SaleAssistantService saleAssistantService, TPVService tpvService, BalancesService balancesService, DiscountService discountService, String shop, int pos) {
+    public TPVController(MoneyFlowService moneyFlowService, CategoriesService categoriesService, RefundsService refundsService, SalesService salesService, ProductsService productsService, SaleAssistantService saleAssistantService, TPVService tpvService, BalancesService balancesService, DiscountService discountService, String shop, int pos) {
         this.productsService = productsService;
         this.saleAssistantService = saleAssistantService;
         this.tpvService = tpvService;
@@ -35,6 +37,7 @@ public class TPVController {
         this.salesService = salesService;
         this.refundsService = refundsService;
         this.categoriesService = categoriesService;
+        this.moneyFlowService = moneyFlowService;
         tpv = tpvService.findByShopPos(shop, pos);
         tpv.endTurn();
     }
