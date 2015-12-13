@@ -66,6 +66,10 @@ public class ProductManagerController {
         return sales;
     }
 
+    public List<MoneyFlow> listMoneyFlows() {
+        return moneyFlowService.list();
+    }
+
     public void setMasterPassword(String password) {
         tpvService.setMasterPass(password);
     }
@@ -105,7 +109,5 @@ public class ProductManagerController {
 
     }
 
-    public List<MoneyFlow> listMoneyFlows() {
-        return moneyFlowService.list();
-    }
+
 }

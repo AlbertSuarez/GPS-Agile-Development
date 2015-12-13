@@ -17,4 +17,9 @@ public class InFlow extends MoneyFlow {
         super(id, amount);
         destinyId = destiny.getId();
     }
+
+    @Override
+    public String getKind() {
+        return "InFlow";
+    }
 }

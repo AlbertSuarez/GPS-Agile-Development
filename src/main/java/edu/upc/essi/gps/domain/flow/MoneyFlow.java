@@ -24,4 +24,10 @@ public abstract class MoneyFlow implements Entity {
     public long getId() {
         return id;
     }
+
+    public abstract String getKind();
+
+    public double getAmount() {
+        return amount;
+    }
 }

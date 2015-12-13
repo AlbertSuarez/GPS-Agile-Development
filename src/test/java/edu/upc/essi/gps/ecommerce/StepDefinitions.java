@@ -145,6 +145,21 @@ public class StepDefinitions {
         refundsService.newRefund(productsService.findByBarCode(codiBarres), unitats, motiu);
     }
 
+    @Donat("^un increment de caixa de €(\\d+)€")
+    public void thereIsAInFlow(double amount) throws Throwable {
+        tryCatch(() -> tpvController.addFlow(amount));
+    }
+
+    @Donat("^un decrement de caixa de €(\\d+)€")
+    public void thereIsAOutFlow(double amount) throws Throwable {
+        tryCatch(() -> tpvController.removeFlow(amount));
+    }
+
+    @Donat("^un traspàs €(\\d+)€ de la botiga \"([^\"]*)\" del tpv número (\\d+) al tpv número (\\d+)$")
+    public void thereIsATPVFlow(double amount, String shopName, int tpvNumber1, int tpvNumber2) throws Throwable {
+        tryCatch(() -> tpvController.traspasaCash(shopName, tpvNumber1, tpvNumber2, amount));
+    }
+
     ////////////////////////////////////////////////////// @Quan //////////////////////////////////////////////////////
 
     @Quan("^inicio el torn al tpv amb identificador (\\d+) i password \"([^\"]*)\", amb un efectiu inicial de €([^\"]*)€$")
@@ -330,7 +345,7 @@ public class StepDefinitions {
     }
 
     @Quan("^consulto els fluxos de diners entre caixes$")
-    public void getMonewFlow() throws Throwable {
+    public void getMoneyFlow() throws Throwable {
         tryCatch(() -> moneyFlows = productManagerController.listMoneyFlows());
     }
 
@@ -523,5 +538,14 @@ public class StepDefinitions {
     @Aleshores("^obtinc un producte número (\\d+) amb nom \"([^\"]*)\"$")
     public void checkProducts(int pos, String prodName) throws Throwable {
         assertEquals(prodName, products.get(pos - 1).getName());
+    }
+
+    @Aleshores("^obtinc (\\d+) flux de tipus \"([^\"]*)\" de €(\\d+)€$")
+    public void checkFlux(int amount, String fluxKind, double cash) throws Throwable {
+        assertEquals(amount, moneyFlows.size());
+        for (int i = 0; i < amount; i++) {
+            assertEquals(fluxKind, moneyFlows.get(i).getKind());
+            assertEquals(cash, moneyFlows.get(i).getAmount(), DELTA);
+        }
     }
 }

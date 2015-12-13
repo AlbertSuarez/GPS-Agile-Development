@@ -19,4 +19,9 @@ public class TPVFlow extends MoneyFlow {
         originId = origin.getId();
         destinyId = destiny.getId();
     }
+
+    @Override
+    public String getKind() {
+        return "TPVFlow";
+    }
 }

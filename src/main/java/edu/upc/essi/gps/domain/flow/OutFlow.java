@@ -20,4 +20,8 @@ public class OutFlow extends MoneyFlow {
     }
 
 
+    @Override
+    public String getKind() {
+        return "OutFlow";
+    }
 }
