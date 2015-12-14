@@ -17,6 +17,20 @@ public class DiscountService {
         this.discountRepository = discountRepository;
     }
 
+    public long newProductPercentDiscount(Product product, String name, double percent) {
+        long id = discountRepository.newId();
+        Discount discount = new ProductPercent(product, name, id, percent);
+        discountRepository.insert(discount);
+        return id;
+    }
+
+    public long newProductPercentDiscount(List<Product> products, String name, double percent) {
+        long id = discountRepository.newId();
+        Discount discount = new ProductPercent(products, name, id, percent);
+        discountRepository.insert(discount);
+        return id;
+    }
+
     public long newProductPromotionDiscount(Product product, String name, int A, int B) {
         long id = discountRepository.newId();
         Discount discount = new ProductPromotion(product, name, id, A, B);
@@ -24,9 +38,9 @@ public class DiscountService {
         return id;
     }
 
-    public long newProductPercentDiscount(Product product, String name, double percent) {
+    public long newProductPromotionDiscount(List<Product> products, String name, int A, int B) {
         long id = discountRepository.newId();
-        Discount discount = new ProductPercent(product, name, id, percent);
+        Discount discount = new ProductPromotion(products, name, id, A, B);
         discountRepository.insert(discount);
         return id;
     }
@@ -37,6 +51,14 @@ public class DiscountService {
         discountRepository.insert(discount);
         return id;
     }
+
+    public long newProductPresentDiscount(List<Product> product, String name, List<Product> gift) {
+        long id = discountRepository.newId();
+        Discount discount = new ProductPresent(product, name, id, gift);
+        discountRepository.insert(discount);
+        return id;
+    }
+
 
     public List<Discount> list(){
         return discountRepository.list();

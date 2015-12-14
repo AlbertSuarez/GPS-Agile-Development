@@ -4,12 +4,13 @@ import com.sun.istack.internal.NotNull;
 import edu.upc.essi.gps.domain.*;
 import edu.upc.essi.gps.domain.discounts.Discount;
 import edu.upc.essi.gps.domain.discounts.ProductPercent;
-import edu.upc.essi.gps.domain.flow.MoneyFlow;
 import edu.upc.essi.gps.domain.lines.SaleLine;
 import edu.upc.essi.gps.ecommerce.services.*;
 import edu.upc.essi.gps.utils.DiscountCalculator;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static edu.upc.essi.gps.utils.Validations.checkNotNull;
 
@@ -130,6 +131,8 @@ public class TPVController {
         addProductByBarCode(barCode, 1);
     }
 
+
+
     public void addNewDiscountToCurrentSale(int prodLine, @NotNull String name, double percent) {
         if (!isSaleStarted())
             throw new IllegalStateException("No hi ha cap venda iniciada");
@@ -141,6 +144,7 @@ public class TPVController {
         Discount discount = new ProductPercent(product, name, -1, percent);
         getCurrentSale().addManualDiscount(discount, prodLine);
     }
+
 
     public void newDiscountPercent(String name, long barCode, double percent) {
         Product product = productsService.findByBarCode(barCode);
@@ -157,6 +161,41 @@ public class TPVController {
         Product required = productsService.findByBarCode(barCodeRequired);
         discountService.newProductPresentDiscount(required, name, present);
     }
+
+    public void newDiscountPercent(String name, List<Long> barCodes, double percent) {
+        List<Product> list = barCodes
+                .stream()
+                .map(productsService::findByBarCode)
+                .collect(Collectors.toList());
+
+        discountService.newProductPercentDiscount(list, name, percent);
+    }
+
+    public void newDiscountPromotion(String name, List<Long> barCodes, int A, int B) {
+        List<Product> list = barCodes
+                .stream()
+                .map(productsService::findByBarCode)
+                .collect(Collectors.toList());
+
+        discountService.newProductPromotionDiscount(list, name, A, B);
+    }
+
+    public void newDiscountPresent(String name, List<Long> barCodeRequired, List<Long> barCodePresent) {
+        List<Product> present = barCodePresent
+                .stream()
+                .map(productsService::findByBarCode)
+                .collect(Collectors.toList());
+
+        List<Product> required = barCodeRequired
+                .stream()
+                .map(productsService::findByBarCode)
+                .collect(Collectors.toList());
+
+
+        discountService.newProductPresentDiscount(required, name, present);
+    }
+
+
 
     public void newCategory(String catName) {
         categoriesService.newCategory(catName);
@@ -209,6 +248,7 @@ public class TPVController {
             throw new IllegalStateException("No es pot cobrar una venta si no està iniciada");
         if (tpv.getCurrentSale().isEmpty())
             throw new IllegalStateException("No es pot cobrar una venta sense cap producte");
+        //TODO: cercar descomptes aqui.
     }
 
     public void tarjetPayment() {
@@ -252,7 +292,6 @@ public class TPVController {
     public Balance getLastBalance() {
         return balancesService.getLastBalance();
     }
-
 
     public double addRefund(int unitats, int barCode, long idVenda, String reason) {
         Sale sale = salesService.findById(idVenda);

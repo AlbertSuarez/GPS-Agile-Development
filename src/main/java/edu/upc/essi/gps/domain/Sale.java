@@ -68,7 +68,7 @@ public class Sale implements Entity {
         SaleLine saleLine = lines.get(pos-1);
         if (!d.isTriggeredBy(saleLine.getProduct().getId()))
             throw new IllegalArgumentException("Els productes del descompte i de la línia no coincideixen");
-        discountedPrice += d.calculate(saleLine);
+        discountedPrice += d.calculate(this, pos-1);
     }
 
     /**

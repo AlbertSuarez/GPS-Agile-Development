@@ -49,19 +49,6 @@ public class SaleLine implements Entity, HasName {
     }
 
     /**
-     * Crea una nova instància de <code>SaleLine</code> a partir de les dades d'un descompte.
-     * @param discount descompte a partir del qual es crea la línia de venta.
-     * @param amount quantitat d'aquest descompte.
-     */
-    public SaleLine(Discount discount, int amount) {
-        id = -1;
-        name = discount.getName();
-        unitPrice = -1;
-        this.amount = amount;
-        barCode = -1;
-    }
-
-    /**
      * Consulta l'identificador del producte indicat a la línia.
      * @return identificador del producte indicat a la línia.
      */

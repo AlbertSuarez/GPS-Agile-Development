@@ -4,6 +4,7 @@ package edu.upc.essi.gps.utils;
  * Classe encarregada de realitzar totes les validacions del sistema.
  * */
 public final class Validations {
+
     private Validations(){}
 
     /**
@@ -32,7 +33,7 @@ public final class Validations {
      * @return el resultat d'encriptar el password introduit.
      * */
     public static String crypt(String password) {
-        return password;
+        return password; // #noFaRes
     }
 
 }
