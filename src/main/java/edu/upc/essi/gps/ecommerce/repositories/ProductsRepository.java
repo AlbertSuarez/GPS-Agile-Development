@@ -29,4 +29,8 @@ public class ProductsRepository extends Repository<Product> {
         if(findByBarCode(product.getBarCode()) != null)
             throw new IllegalArgumentException("Ja existeix un producte amb aquest codi de barres");
     }
+
+    public void deleteProduct(int barCode) {
+
+    }
 }

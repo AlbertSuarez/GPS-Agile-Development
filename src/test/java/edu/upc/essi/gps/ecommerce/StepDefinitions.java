@@ -89,7 +89,7 @@ public class StepDefinitions {
 
     @Donat("^que estem al panell de gestió del product manager$")
     public void initManagement() throws Throwable {
-        productManagerController = new ProductManagerController(moneyFlowService, balancesService, tpvService, salesService, refundsService);
+        productManagerController = new ProductManagerController(moneyFlowService, balancesService, tpvService, salesService, refundsService, productsService);
     }
 
     @Donat("^un desquadrament del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de €([^\"]*)€")
@@ -364,12 +364,37 @@ public class StepDefinitions {
         tryCatch(() -> moneyFlows = productManagerController.listMoneyFlowsByKind(flowKind));
     }
 
+    @Quan("^consulto els productes del sistema$")
+    public void getProducts() throws Throwable {
+        tryCatch(() -> products = productManagerController.getProducts());
+    }
+
+    @Quan("afegeixo un producte amb nom \"([^\"]*)\", preu €([^\"]*)€, iva %([^\"]*)% i codi de barres (\\d+)$")
+    public void addNewProduct(String name, double price, double vatPct, int barCode) throws Throwable {
+        tryCatch(() -> products = productManagerController.addNewProduct(name, price, vatPct, barCode));
+
+    }
+
     //////////////////////////////////////////////////// @Aleshores ////////////////////////////////////////////////////
 
     @Aleshores("^obtinc un error que diu: \"([^\"]*)\"$")
     public void checkErrorMessage(String msg) throws Throwable {
         assertNotNull(exception);
         assertEquals(msg, exception.getMessage());
+    }
+
+    @Aleshores("^hi ha (\\d+) productes al sistema")
+    public void checkQttProducts(int n) throws Throwable {
+        assertEquals(n, products.size());
+    }
+
+    @Aleshores("^el producte número (\\d+) té per nom \"([^\"]*)\", preu €([^\"]*)€, IVA %([^\"]*)% i codi de barres (\\d+)$")
+    public void checkProduct(int n, String name, double price, double pct, int barCode) throws Throwable {
+        Product p = products.get(n-1);
+        assertEquals(name, p.getName());
+        assertEquals(barCode, p.getBarCode());
+        assertEquals(pct, p.getVatPct(), DELTA);
+        assertEquals(price, p.getPrice(), DELTA);
     }
 
     @Aleshores("^el tpv està en ús per en \"([^\"]*)\"$")

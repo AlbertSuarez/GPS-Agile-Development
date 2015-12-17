@@ -1,6 +1,7 @@
 package edu.upc.essi.gps.ecommerce;
 
 import edu.upc.essi.gps.domain.Balance;
+import edu.upc.essi.gps.domain.Product;
 import edu.upc.essi.gps.domain.Refund;
 import edu.upc.essi.gps.domain.Sale;
 import edu.upc.essi.gps.domain.flow.MoneyFlow;
@@ -22,14 +23,16 @@ public class ProductManagerController {
     private final RefundsService refundsService;
     private final BalancesService balancesService;
     private final MoneyFlowService moneyFlowService;
+    private final ProductsService productsService;
     private List<Sale> sales;
 
-    public ProductManagerController(MoneyFlowService moneyFlowService, BalancesService balancesService, TPVService tpvService, SalesService salesService, RefundsService refundsService) {
+    public ProductManagerController(MoneyFlowService moneyFlowService, BalancesService balancesService, TPVService tpvService, SalesService salesService, RefundsService refundsService, ProductsService productsService) {
         this.balancesService = balancesService;
         this.salesService = salesService;
         this.tpvService = tpvService;
         this.refundsService = refundsService;
         this.moneyFlowService = moneyFlowService;
+        this.productsService = productsService;
     }
 
     /**
@@ -112,4 +115,19 @@ public class ProductManagerController {
         return sb.toString();
 
     }
+
+    public List<Product> addNewProduct(String name, double price, double vatPct, int barCode) {
+        if (productsService.findByBarCode(barCode) != null)
+            throw new IllegalStateException("Ja existeix un producte amb aquest codi de barres");
+        productsService.newProduct(name, price, vatPct, barCode);
+        return productsService.list();
+    }
+
+    public List<Product> getProducts() {
+        List<Product> l =  productsService.list();
+        if (l.size() == 0)
+            throw new IllegalStateException("No hi ha productes donats d'alta al sistema");
+        return l;
+    }
+
 }
