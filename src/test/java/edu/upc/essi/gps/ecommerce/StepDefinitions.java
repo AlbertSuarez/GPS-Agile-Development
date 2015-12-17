@@ -2,7 +2,6 @@ package edu.upc.essi.gps.ecommerce;
 
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
-import cucumber.api.java.ca.I;
 import cucumber.api.java.ca.Quan;
 import edu.upc.essi.gps.domain.*;
 import edu.upc.essi.gps.domain.flow.MoneyFlow;
@@ -313,15 +312,24 @@ public class StepDefinitions {
 
     @Quan("^creo un nou descompte del tipus percentatge anomenat \"([^\"]*)\" del %([^\"]*)% sobre els productes amb codi de barres \"([^\"]*)\"$")
     public void newPercentatgeCjt(String name, double percent, String products) throws Throwable {
-        String l[] = products.split(",");
-        List<Integer> barCodes = new ArrayList<>();
-        for (String s : l) barCodes.add(Integer.parseInt(s));
-        //TODO new discount percentatge cjt
+        String llistaBarcodes[] = products.split(",");
+        List<Product> productList = getProductsFromBarCodes(llistaBarcodes);
+        discountService.newProductPercentDiscount(productList, name, percent);
+    }
+
+    private List<Product> getProductsFromBarCodes(String[] l) {
+        List<Product> productList = new ArrayList<>();
+        for (String s : l) {
+            Product product = productsService.findByBarCode(Integer.valueOf(s));
+            productList.add(product);
+        }
+        return productList;
     }
 
     @Quan("^creo un nou descompte del tipus percentatge anomenat \"([^\"]*)\" del %([^\"]*)% sobre els productes de la categoria \"([^\"]*)\"$")
     public void newPercentatgeCat(String name, double percent, String cat) throws Throwable {
-        //TODO new discount percentatge cat
+        Category category = categoriesService.findByName(cat);
+        discountService.newProductPercentDiscount(category, name, percent);
     }
 
     @Quan("^creo un nou descompte del tipus promoció anomenat \"([^\"]*)\" de (\\d+)x(\\d+) sobre el producte amb codi de barres (\\d+)$")
@@ -331,15 +339,14 @@ public class StepDefinitions {
 
     @Quan("^creo un nou descompte del tipus promoció anomenat \"([^\"]*)\" de (\\d+)x(\\d+) sobre els productes amb codi de barres \"([^\"]*)\"$")
     public void newPromocioCjt(String name, int A, int B, String codiBarres) throws Throwable {
-        String l[] = codiBarres.split(",");
-        List<Integer> barCodes = new ArrayList<>();
-        for (String s : l) barCodes.add(Integer.parseInt(s));
-        //TODO new discount promocio cjt
+        String llistaBarcodes[] = codiBarres.split(",");
+        discountService.newProductPromotionDiscount(getProductsFromBarCodes(llistaBarcodes), name, A, B);
     }
 
     @Quan("^creo un nou descompte del tipus promoció anomenat \"([^\"]*)\" de (\\d+)x(\\d+) sobre els productes de la categoria \"([^\"]*)\"$")
     public void newPromocioCat(String name, int A, int B, String cat) throws Throwable {
-        //TODO new discount promocio cat
+        Category category = categoriesService.findByName(cat);
+        discountService.newProductPromotionDiscount(category, name, A, B);
     }
 
     @Quan("^creo un nou descompte del tipus regal anomenat \"([^\"]*)\", on amb la compra del producte amb codi de barres (\\d+) es regala una unitat del producte amb codi de barres (\\d+)$")
@@ -350,17 +357,15 @@ public class StepDefinitions {
     @Quan("^creo un nou descompte del tipus regal anomenat \"([^\"]*)\", on amb la compra del producte d'algun dels productes amb codi de barres \"([^\"]*)\" es regala una unitat d'algun dels poductes amb codi de barres \"([^\"]*)\"$")
     public void newRegalCjt(String name, String codiBarresRequerits, String codiBarresRegal) throws Throwable {
         String l[] = codiBarresRequerits.split(",");
-        List<Integer> barCodesRequerits = new ArrayList<>();
-        for (String s : l) barCodesRequerits.add(Integer.parseInt(s));
         String l2[] = codiBarresRegal.split(",");
-        List<Integer> barCodesRegal = new ArrayList<>();
-        for (String s : l) barCodesRegal.add(Integer.parseInt(s));
-        //TODO new discount regal cjt
+        discountService.newProductPresentDiscount(getProductsFromBarCodes(l2), name, getProductsFromBarCodes(l));
     }
 
     @Quan("^creo un nou descompte del tipus regal anomenat \"([^\"]*)\", on amb la compra del producte d'algun dels productes de la categoria \"([^\"]*)\" es regala una unitat d'algun dels poductes de la categoria \"([^\"]*)\"$")
     public void newRegalCat(String name, String catRequerida, String catRegal) throws Throwable {
-        //TODO new discount regal cat
+        Category requiredCat = categoriesService.findByName(catRequerida);
+        Category regalCat = categoriesService.findByName(catRegal);
+        discountService.newProductPresentDiscount(regalCat, name, requiredCat);
     }
 
     @Quan("^indico que el client ha entregat €([^\"]*)€ per a pagar en metàlic$")
