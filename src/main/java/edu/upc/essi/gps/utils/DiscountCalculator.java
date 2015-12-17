@@ -6,7 +6,10 @@ import edu.upc.essi.gps.domain.discounts.Discount;
 import edu.upc.essi.gps.domain.lines.SaleLine;
 import edu.upc.essi.gps.ecommerce.services.DiscountService;
 
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -27,7 +30,7 @@ public final class DiscountCalculator {
         // 2 -> Ordenar la llista segons el valor del descompte aplicat
         // 3 -> Aplicar cada descompte, eliminant de la llista els productes utilitzats.
 
-        Set<Discount> applicableDiscounts = new HashSet<>();
+        Set<Discount> applicableDiscounts = new LinkedHashSet<>();
 
         List<SaleLine> lines = currentSale.getLines();
 
@@ -91,31 +94,8 @@ public final class DiscountCalculator {
         Double A = computateBestDiscountRecursive(discounts, new LinkedList<>(products), i+1, acumulated);
         DiscountHolder holder = discounts.get(i).calculate(products);
         products.removeAll(holder.getRequired());
-        Double B = computateBestDiscountRecursive(discounts, products, i+1, acumulated + holder.getPrice());
+        Double B = computateBestDiscountRecursive(discounts, new LinkedList<>(products), i + 1, acumulated + holder.getPrice());
         return Math.max(A, B);
-    }
-
-    public static class DiscountHolder {
-
-        private final Double price;
-
-        private final List<Product> required;
-
-
-        public DiscountHolder(Double price, List<Product> required) {
-            this.price = price;
-            this.required = required;
-        }
-
-
-        public Double getPrice() {
-            return price;
-        }
-
-        public List<Product> getRequired() {
-            return required;
-        }
-
     }
 
 }
