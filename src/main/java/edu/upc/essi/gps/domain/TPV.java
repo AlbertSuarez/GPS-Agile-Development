@@ -216,10 +216,10 @@ public class TPV implements Entity {
     }
 
 
-    public void addProduct(Product p, int unitats, List<Discount> discountList) {
+    public void addProduct(Product p, int unitats) {
         if (state.equals(TPVState.BALANCE)) throw new IllegalStateException("La caixa es troba en procés de quadrament");
         if (!hasSale()) newSale();
-        currentSale.addProduct(p, unitats, discountList);
+        currentSale.addProduct(p, unitats);
     }
 
     public void cancelCurrentSale() {

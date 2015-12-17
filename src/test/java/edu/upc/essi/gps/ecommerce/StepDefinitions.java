@@ -1,12 +1,9 @@
 package edu.upc.essi.gps.ecommerce;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
 import cucumber.api.java.ca.I;
 import cucumber.api.java.ca.Quan;
-
-
 import edu.upc.essi.gps.domain.*;
 import edu.upc.essi.gps.domain.flow.MoneyFlow;
 import edu.upc.essi.gps.domain.lines.SaleLine;
@@ -20,7 +17,6 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 public class StepDefinitions {
 
@@ -139,14 +135,14 @@ public class StepDefinitions {
     @Donat("^que es fa una venda amb id (\\d+) del producte amb codi de barres (\\d+)$")
     public void thereIsASaleWithIdAndBarCode(long id, int barCode) throws Throwable {
         Sale s = new Sale(id);
-        s.addProduct(productsService.findByBarCode(barCode), 1, null);
+        s.addProduct(productsService.findByBarCode(barCode), 1);
         salesService.insertSale(s);
     }
 
     @Donat("^que es fa una venda amb id (\\d+) amb (\\d+) unitats del producte amb codi de barres (\\d+)$")
     public void thereIsASaleWithIdAmountAndBarCode(int id, int unitats, int barCode) throws Throwable {
         Sale s = new Sale(id);
-        s.addProduct(productsService.findByBarCode(barCode), unitats, null);
+        s.addProduct(productsService.findByBarCode(barCode), unitats);
         salesService.insertSale(s);
     }
 
@@ -173,6 +169,43 @@ public class StepDefinitions {
     @Donat("^que el TPV està bloquejat$")
     public void setBlocked() {
         tryCatch(() -> tpvController.getTpv().setState(TPVState.BLOCKED));
+    }
+
+    @Donat("^un caixer amb nom \"([^\"]*)\" i contrasenya \"([^\"]*)\"$")
+    public void newCashier(String name, String pass) throws Throwable {
+        saleAssistantService.newAssistant(name, pass);
+    }
+
+    @Donat("^que hi ha hagut una venda amb id (\\d+) del producte amb codi de barres (\\d+) pagat metode \"([^\"]*)\" el dia \"([^\"]*)\" a les (\\d+) hores, (\\d+) minuts i (\\d+) segons$")
+    public void newSaleDate(long id, int barCode, String pagament, String data, int hora, int minut, int segon) throws Throwable {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date d = dateFormat.parse(data);
+        Calendar c = Calendar.getInstance();
+        c.setTime(d);
+        c.set(Calendar.HOUR_OF_DAY, hora);
+        c.set(Calendar.MINUTE, minut);
+        c.set(Calendar.SECOND, segon);
+        d = c.getTime();
+        salesService.newSale(id, productsService.findByBarCode(barCode), d, pagament);
+    }
+
+    @Donat("^que hi ha hagut una venda amb id (\\d+) paga en \"([^\"]*)\" el dia \"([^\"]*)\" a les (\\d+) hores (\\d+) minuts i (\\d+) segons$")
+    public void saveSale(int id, String pagament, String data, int hora, int minut, int segon) throws Throwable {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date d = dateFormat.parse(data);
+        Calendar c = Calendar.getInstance();
+        c.setTime(d);
+        c.set(Calendar.HOUR_OF_DAY, hora);
+        c.set(Calendar.MINUTE, minut);
+        c.set(Calendar.SECOND, segon);
+        d = c.getTime();
+        s = salesService.newSale(id, d, pagament);
+    }
+
+    @Donat("^la venta conté el producte amb codi de barres (\\d+)$")
+    public void addProductByBarcode(int barCode) throws Throwable {
+        s.addProduct(productsService.findByBarCode(barCode), 1);
+
     }
 
     ////////////////////////////////////////////////////// @Quan //////////////////////////////////////////////////////
@@ -253,9 +286,9 @@ public class StepDefinitions {
         tryCatch(() -> lines = tpvController.getCurrentSale().getLines());
     }
 
-    @Quan("^Aplico un descompte manual que anomeno \"([^\"]*)\" al producte (\\d+) de la venda amb valor (\\d+)%$")
-    public void applyDiscount(String name, int prodLine, int percent) throws Throwable {
-        tryCatch(() -> tpvController.addNewDiscountToCurrentSale(prodLine, name, (double) percent));
+    @Quan("^Aplico un descompte manual al producte (\\d+) de la venda amb valor (\\d+)%$")
+    public void applyDiscount(int prodLine, int percent) throws Throwable {
+        tryCatch(() -> tpvController.addNewDiscountToCurrentSale(prodLine, (double) percent));
     }
 
     @Quan("^afegeixo (\\d+) unitats del producte amb codi de barres (\\d+) a la venta$")
@@ -425,6 +458,32 @@ public class StepDefinitions {
     public void addNewProduct(String name, double price, double vatPct, int barCode) throws Throwable {
         tryCatch(() -> products = productManagerController.addNewProduct(name, price, vatPct, barCode));
 
+    }
+
+    @Quan("^consulto els caixers del sistema$")
+    public void getSaleAssistants() throws Throwable {
+        tryCatch(() -> caixers = productManagerController.getSaleAssistants());
+    }
+
+    @Quan("^afegeixo un caixer amb nom \"([^\"]*)\" i contrasenya \"([^\"]*)\"$")
+    public void newAssistant(String name, String pass) throws Throwable {
+        tryCatch(() -> caixers = productManagerController.newSaleAssistant(name, pass));
+    }
+
+    @Quan("^vull llistar les vendes del dia \"([^\"]*)\"$")
+    public void listByDay(String data) throws Throwable {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date d = dateFormat.parse(data);
+
+        sales = productManagerController.listSalesByDate(d);
+    }
+
+    @Quan("^vui llistar les vendes entre el dia \"([^\"]*)\" i el dia \"([^\"]*)\"$")
+    public void listSalePeriod(String data1, String data2) throws Throwable {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date d1 = dateFormat.parse(data1);
+        Date d2 = dateFormat.parse(data2);
+        sales = productManagerController.listSalesPeriod(d1, d2);
     }
 
     //////////////////////////////////////////////////// @Aleshores ////////////////////////////////////////////////////
@@ -643,52 +702,16 @@ public class StepDefinitions {
         assertEquals(cash, total, DELTA);
     }
 
-    @Quan("^consulto els caixers del sistema$")
-    public void getSaleAssistants() throws Throwable {
-        tryCatch(() -> caixers = productManagerController.getSaleAssistants());
-    }
-
-    @Quan("^afegeixo un caixer amb nom \"([^\"]*)\" i contrasenya \"([^\"]*)\"$")
-    public void newAssistant(String name, String pass) throws Throwable {
-        tryCatch(() -> caixers = productManagerController.newSaleAssistant(name, pass));
-    }
-
     @Aleshores("^hi ha (\\d+) caixer al sistema$")
-    public void hi_ha_caixer_al_sistema(int n) throws Throwable {
+    public void checkCashiersSize(int n) throws Throwable {
         assertEquals(n, caixers.size());
     }
 
-    @I("^el caixer té per nom \"([^\"]*)\" i la seva contrasenya és \"([^\"]*)\"$")
-    public void el_caixer_té_per_nom_i_la_seva_contrasenya_és(String name, String pass) throws Throwable {
+    @Aleshores("^el caixer té per nom \"([^\"]*)\" i la seva contrasenya és \"([^\"]*)\"$")
+    public void checkCashier(String name, String pass) throws Throwable {
         SaleAssistant a = caixers.get(caixers.size() - 1);
         assertEquals(name, a.getName());
         assertEquals(pass, a.getEncryptedPass());
-    }
-
-    @Donat("^un caixer amb nom \"([^\"]*)\" i contrasenya \"([^\"]*)\"$")
-    public void un_caixer_amb_nom_i_contrasenya(String name, String pass) throws Throwable {
-        saleAssistantService.newAssistant(name, pass);
-    }
-
-    @Donat("^que hi ha hagut una venda amb id (\\d+) del producte amb codi de barres (\\d+) pagat metode \"([^\"]*)\" el dia \"([^\"]*)\" a les (\\d+) hores, (\\d+) minuts i (\\d+) segons$")
-    public void newSaleDate(long id, int barCode, String pagament, String data, int hora, int minut, int segon) throws Throwable {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date d = dateFormat.parse(data);
-        Calendar c = Calendar.getInstance();
-        c.setTime(d);
-        c.set(Calendar.HOUR_OF_DAY, hora);
-        c.set(Calendar.MINUTE, minut);
-        c.set(Calendar.SECOND, segon);
-        d = c.getTime();
-        salesService.newSale(id, productsService.findByBarCode(barCode), d, pagament);
-    }
-
-    @Quan("^vull llistar les vendes del dia \"([^\"]*)\"$")
-    public void listByDay(String data) throws Throwable {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date d = dateFormat.parse(data);
-
-        sales = productManagerController.listSalesByDate(d);
     }
 
     @Aleshores("^obtinc (\\d+) venda$")
@@ -696,50 +719,25 @@ public class StepDefinitions {
         assertEquals(size, sales.size());
     }
 
-    @I("^la venda (\\d+) conté el producte amb nom \"([^\"]*)\" venut el dia \"([^\"]*)\" amb import total €(\\d+)€$")
-    public void checkSaleDate(int number, String name, String date, double price) throws Throwable {
+    @Aleshores("^la venda (\\d+) conté el producte amb nom \"([^\"]*)\" venut el dia \"([^\"]*)\" a les (\\d+) hores (\\d+) minuts i (\\d+) segons amb import total €(\\d+)€$")
+    public void checkSaleDate(int number, String name, String date,int hora,int minuts,int segons, double price) throws Throwable {
         assertEquals(name, sales.get(number-1).getLines().get(0).getName());
         assertEquals(price, sales.get(number-1).getTotal(), DELTA);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date d = dateFormat.parse(date);
         Calendar c = Calendar.getInstance();
         c.setTime(d);
-        assertEquals(c.get(Calendar.DATE), sales.get(number-1).getDay());
+        assertEquals(c.get(Calendar.DATE), sales.get(number - 1).getDay());
         assertEquals(c.get(Calendar.MONTH), sales.get(number-1).getMonth());
         assertEquals(c.get(Calendar.YEAR), sales.get(number-1).getYear());
+        assertEquals(hora, sales.get(number-1).getHour());
+        assertEquals(minuts, sales.get(number-1).getMinutes());
+        assertEquals(segons, sales.get(number-1).getSeconds());
 
     }
 
-    @Quan("^vui llistar les vendes entre el dia \"([^\"]*)\" i el dia \"([^\"]*)\"$")
-    public void listSalePeriod(String data1, String data2) throws Throwable {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date d1 = dateFormat.parse(data1);
-        Date d2 = dateFormat.parse(data2);
-        sales = productManagerController.listSalesPeriod(d1,d2);
-    }
-
-    @Donat("^que hi ha hagut una venda amb id (\\d+) paga en \"([^\"]*)\" el dia \"([^\"]*)\" a les (\\d+) hores (\\d+) minuts i (\\d+) segons$")
-    public void que_hi_ha_hagut_una_venda_amb_id_paga_en_el_dia_a_les_hores_minuts_i_segons(int id, String pagament, String data, int hora, int minut, int segon) throws Throwable {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date d = dateFormat.parse(data);
-        Calendar c = Calendar.getInstance();
-        c.setTime(d);
-        c.set(Calendar.HOUR_OF_DAY, hora);
-        c.set(Calendar.MINUTE, minut);
-        c.set(Calendar.SECOND, segon);
-        d = c.getTime();
-        s = salesService.newSale(id, d, pagament);
-    }
-
-
-    @I("^la venta conté el producte amb codi de barres (\\d+)$")
-    public void la_venta_conté_el_producte_amb_codi_de_barres(int barCode) throws Throwable {
-        s.addProduct(productsService.findByBarCode(barCode), 1, null);
-
-    }
-
-    @I("^la venda (\\d+) esta feta el dia \"([^\"]*)\" amb import total €(\\d+)€$")
-    public void la_venda_esta_feta_el_dia_amb_import_total_€_€(int number, String data, int preu) throws Throwable {
+    @Aleshores("^la venda (\\d+) esta feta el dia \"([^\"]*)\" a les (\\d+) hores (\\d+) minuts i (\\d+) segons amb import total €(\\d+)€$")
+    public void checkSale(int number, String data, int hora, int minuts, int segons, int preu) throws Throwable {
         assertEquals(preu, sales.get(number-1).getTotal(), DELTA);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date d = dateFormat.parse(data);
@@ -747,11 +745,14 @@ public class StepDefinitions {
         c.setTime(d);
         assertEquals(c.get(Calendar.DATE), sales.get(number-1).getDay());
         assertEquals(c.get(Calendar.MONTH), sales.get(number-1).getMonth());
-        assertEquals(c.get(Calendar.YEAR), sales.get(number-1).getYear());
+        assertEquals(c.get(Calendar.YEAR), sales.get(number - 1).getYear());
+        assertEquals(hora, sales.get(number-1).getHour());
+        assertEquals(minuts, sales.get(number-1).getMinutes());
+        assertEquals(segons, sales.get(number-1).getSeconds());
     }
 
-    @I("^la venda (\\d+) conté el producte (\\d+) amb nom \"([^\"]*)\"$")
-    public void la_venda_conté_el_producte_amb_nom(int number,int line, String name) throws Throwable {
+    @Aleshores("^la venda (\\d+) conté el producte (\\d+) amb nom \"([^\"]*)\"$")
+    public void checkProductByNameOnSale(int number,int line, String name) throws Throwable {
         assertEquals(name, sales.get(number-1).getLines().get(line-1).getName());
     }
 }

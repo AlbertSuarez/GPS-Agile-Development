@@ -13,7 +13,7 @@ Característica: Afegir un descompte manual
   Escenari: Afegir un descompte manual (percentatge)
     Donat que hi ha una venta iniciada
     I que he afegit el producte de codi de barres 1234567 a la venta
-    Quan Aplico un descompte manual que anomeno "opt-25%" al producte 1 de la venda amb valor 25%
+    Quan Aplico un descompte manual al producte 1 de la venda amb valor 25%
     Aleshores la venta té 1 línia
     I el total de la venta actual és de €15€
 
@@ -21,9 +21,9 @@ Característica: Afegir un descompte manual
     Donat que hi ha una venta iniciada
     I que he afegit el producte de codi de barres 1234567 a la venta
     I que he afegit el producte de codi de barres 7777777 a la venta
-    Quan Aplico un descompte manual que anomeno "foo-99%" al producte 3 de la venda amb valor 99%
+    Quan Aplico un descompte manual al producte 3 de la venda amb valor 99%
     Aleshores obtinc un error que diu: "No es pot accedir a la línia 3 de la venta, aquesta només té 2 línies"
 
   Escenari: No hi ha cap venda
-    Quan Aplico un descompte manual que anomeno "no-se-que-descompto-si-no-tinc-res-a-descomptar" al producte 1 de la venda amb valor 150%
+    Quan Aplico un descompte manual al producte 1 de la venda amb valor 150%
     Aleshores obtinc un error que diu: "No hi ha cap venda iniciada"

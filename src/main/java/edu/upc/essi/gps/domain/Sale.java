@@ -2,8 +2,11 @@ package edu.upc.essi.gps.domain;
 
 import edu.upc.essi.gps.domain.discounts.Discount;
 import edu.upc.essi.gps.domain.lines.SaleLine;
+import edu.upc.essi.gps.utils.DiscountCalculator;
 
 import java.util.*;
+
+import static edu.upc.essi.gps.utils.DiscountCalculator.*;
 
 /**
  * Classe que representa una venta mitjançant un conjunt de línies de venta.
@@ -66,6 +69,24 @@ public class Sale implements Entity {
         return data;
     }
 
+    public int getSeconds(){
+        Calendar c = Calendar.getInstance();
+        c.setTime(data);
+        return c.get(Calendar.SECOND);
+    }
+
+    public int getMinutes(){
+        Calendar c = Calendar.getInstance();
+        c.setTime(data);
+        return c.get(Calendar.MINUTE);
+    }
+
+    public int getHour(){
+        Calendar c = Calendar.getInstance();
+        c.setTime(data);
+        return c.get(Calendar.HOUR_OF_DAY);
+    }
+
     public int getDay(){
         Calendar c = Calendar.getInstance();
         c.setTime(data);
@@ -90,17 +111,12 @@ public class Sale implements Entity {
 
     /**
      * Afegeix un nou descompte a la venta.
-     * @param d producte a afegir a la venta.
-     * @param pos índex dels articles als que es vol aplicar el descompte.
+     * @param product producte a afegir a la venta.
+     * @param percent percentatge de descompte que es vol aplicar.
      * */
-    public void addManualDiscount(Discount d, int pos) {
-        if (pos > lines.size())
-            throw new IndexOutOfBoundsException("No es pot accedir a la línia " + pos +
-                    " de la venta, aquesta només té " + lines.size() + " línies");
-        SaleLine saleLine = lines.get(pos-1);
-        if (!d.isTriggeredBy(saleLine.getProduct().getId()))
-            throw new IllegalArgumentException("Els productes del descompte i de la línia no coincideixen");
-        discountedPrice += d.calculate(this, pos-1);
+    public void addManualDiscount(Product product, Double percent) {
+        Double discount = product.getPrice()*percent/100;
+        discountedPrice += discount;
     }
 
     /**
@@ -181,7 +197,7 @@ public class Sale implements Entity {
      * @param product producte a afegir a la venta.
      * @param unitats nombre d'unitats del producte a afegir
      * */
-    public void addProduct(Product product, int unitats, List<Discount> discountList) {
+    public void addProduct(Product product, int unitats) {
         if (hasProductByBarCode(product.getBarCode())) {
             SaleLine line = getLineProduct(product);
             line.incrAmount(unitats);
