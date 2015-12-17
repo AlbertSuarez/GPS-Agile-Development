@@ -21,7 +21,7 @@ Característica: Crear nous descomptes del tipus percentatge per a conjunts
     Quan afegeixo 1 unitats del producte amb codi de barres 1234567 a la venta
     I afegeixo 1 unitats del producte amb codi de barres 7777777 a la venta
     I afegeixo 1 unitats del producte amb codi de barres 7654321 a la venta
-    Aleshores la venta té 5 línies
+    Aleshores la venta té 3 línies
     I el total de la venta actual és de €440€
     
   Escenari: aplicar un descompte de percentatges per a una categoria
@@ -29,6 +29,6 @@ Característica: Crear nous descomptes del tipus percentatge per a conjunts
     Quan afegeixo 1 unitats del producte amb codi de barres 1234567 a la venta
     I afegeixo 1 unitats del producte amb codi de barres 7777777 a la venta
     I afegeixo 1 unitats del producte amb codi de barres 7654321 a la venta
-    Aleshores la venta té 5 línies
+    Aleshores la venta té 3 línies
     I el total de la venta actual és de €440€
 
