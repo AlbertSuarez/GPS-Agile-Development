@@ -1,7 +1,7 @@
 # language: ca
 
   #noinspection SpellCheckingInspection
-Característica: Crear nous descomptes del tipus promocio per a conjunts
+Característica: Crear nous descomptes del tipus regal per a conjunts
 
   Rerefons:
     Donat que estem al tpv número 1 de la botiga "Girona 1"
