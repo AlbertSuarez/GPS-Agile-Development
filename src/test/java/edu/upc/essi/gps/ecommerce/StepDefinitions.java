@@ -138,14 +138,14 @@ public class StepDefinitions {
     @Donat("^que es fa una venda amb id (\\d+) del producte amb codi de barres (\\d+)$")
     public void thereIsASaleWithIdAndBarCode(long id, int barCode) throws Throwable {
         Sale s = new Sale(id);
-        s.addProduct(productsService.findByBarCode(barCode), 1, null);
+        s.addProduct(productsService.findByBarCode(barCode), 1);
         salesService.insertSale(s);
     }
 
     @Donat("^que es fa una venda amb id (\\d+) amb (\\d+) unitats del producte amb codi de barres (\\d+)$")
     public void thereIsASaleWithIdAmountAndBarCode(int id, int unitats, int barCode) throws Throwable {
         Sale s = new Sale(id);
-        s.addProduct(productsService.findByBarCode(barCode), unitats, null);
+        s.addProduct(productsService.findByBarCode(barCode), unitats);
         salesService.insertSale(s);
     }
 
@@ -252,9 +252,9 @@ public class StepDefinitions {
         tryCatch(() -> lines = tpvController.getCurrentSale().getLines());
     }
 
-    @Quan("^Aplico un descompte manual que anomeno \"([^\"]*)\" al producte (\\d+) de la venda amb valor (\\d+)%$")
-    public void applyDiscount(String name, int prodLine, int percent) throws Throwable {
-        tryCatch(() -> tpvController.addNewDiscountToCurrentSale(prodLine, name, (double) percent));
+    @Quan("^Aplico un descompte manual al producte (\\d+) de la venda amb valor (\\d+)%$")
+    public void applyDiscount(int prodLine, int percent) throws Throwable {
+        tryCatch(() -> tpvController.addNewDiscountToCurrentSale(prodLine, (double) percent));
     }
 
     @Quan("^afegeixo (\\d+) unitats del producte amb codi de barres (\\d+) a la venta$")

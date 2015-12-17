@@ -3,10 +3,17 @@ package edu.upc.essi.gps.domain.discounts;
 import edu.upc.essi.gps.domain.Product;
 import edu.upc.essi.gps.domain.Sale;
 import edu.upc.essi.gps.domain.lines.SaleLine;
+import edu.upc.essi.gps.utils.DiscountCalculator;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.DoubleAccumulator;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static edu.upc.essi.gps.utils.DiscountCalculator.*;
 
 /**
  * Classe que representa un descompte del tipus x% (10% de descompte, 23% de descompte...).
@@ -50,16 +57,29 @@ public class ProductPercent implements Discount {
     }
 
     @Override
-    public double calculate(Sale sale, int line) {
-        SaleLine saleLine = sale.getLines().get(line);
-        return saleLine.getProduct().getPrice() * saleLine.getAmount() * (percent / 100d);
+    public DiscountHolder calculate(List<Product> productes) {
+
+        final DoubleAccumulator desc = new DoubleAccumulator((a, b) -> a+b, 0d);
+
+        productes
+                .stream()
+                .filter(product -> isTriggeredBy(product.getId()))
+                .map(product -> product.getPrice() * (percent / 100d))
+                .forEach(desc::accumulate);
+
+        List<Product> utilitzats = productes
+                .stream()
+                .filter(product -> isTriggeredBy(product.getId()))
+                .collect(Collectors.toList());
+
+        return new DiscountHolder(desc.doubleValue(), utilitzats);
     }
 
     @Override
     public boolean isTriggeredBy(long productId) {
-        return triggers
-                .stream()
-                .anyMatch((p) -> p.getId() == productId);
+        return triggers.stream()
+                .map(Product::getId)
+                .anyMatch(id -> id == productId);
     }
 
     @Override
