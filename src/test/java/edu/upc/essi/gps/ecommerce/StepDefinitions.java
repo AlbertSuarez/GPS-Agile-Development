@@ -14,6 +14,7 @@ import edu.upc.essi.gps.ecommerce.repositories.*;
 import edu.upc.essi.gps.ecommerce.services.*;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -277,14 +278,56 @@ public class StepDefinitions {
         tryCatch(() -> tpvController.newDiscountPercent(name, codiBarres, percent));
     }
 
+    @Quan("^creo un nou descompte del tipus percentatge anomenat \"([^\"]*)\" del %([^\"]*)% sobre els productes amb codi de barres \"([^\"]*)\"$")
+    public void newPercentatgeCjt(String name, double percent, String products) throws Throwable {
+        String l[] = products.split(",");
+        List<Integer> barCodes = new ArrayList<>();
+        for (String s : l) barCodes.add(Integer.parseInt(s));
+        //TODO new discount percentatge cjt
+    }
+
+    @Quan("^creo un nou descompte del tipus percentatge anomenat \"([^\"]*)\" del %([^\"]*)% sobre els productes de la categoria \"([^\"]*)\"$")
+    public void newPercentatgeCat(String name, double percent, String cat) throws Throwable {
+        //TODO new discount percentatge cat
+    }
+
     @Quan("^creo un nou descompte del tipus promoció anomenat \"([^\"]*)\" de (\\d+)x(\\d+) sobre el producte amb codi de barres (\\d+)$")
     public void newPromocio(String name, int A, int B, int codiBarres) throws Throwable {
         tryCatch(() -> tpvController.newDiscountPromotion(name, codiBarres, A, B));
     }
 
+    @Quan("^creo un nou descompte del tipus promoció anomenat \"([^\"]*)\" de (\\d+)x(\\d+) sobre els productes amb codi de barres \"([^\"]*)\"$")
+    public void newPromocioCjt(String name, int A, int B, String codiBarres) throws Throwable {
+        String l[] = codiBarres.split(",");
+        List<Integer> barCodes = new ArrayList<>();
+        for (String s : l) barCodes.add(Integer.parseInt(s));
+        //TODO new discount promocio cjt
+    }
+
+    @Quan("^creo un nou descompte del tipus promoció anomenat \"([^\"]*)\" de (\\d+)x(\\d+) sobre els productes de la categoria \"([^\"]*)\"$")
+    public void newPromocioCat(String name, int A, int B, String cat) throws Throwable {
+        //TODO new discount promocio cat
+    }
+
     @Quan("^creo un nou descompte del tipus regal anomenat \"([^\"]*)\", on amb la compra del producte amb codi de barres (\\d+) es regala una unitat del producte amb codi de barres (\\d+)$")
     public void newRegal(String name, int codiBarresRequerit, int codiBarresRegal) throws Throwable {
         tryCatch(() -> tpvController.newDiscountPresent(name, codiBarresRequerit, codiBarresRegal));
+    }
+
+    @Quan("^creo un nou descompte del tipus regal anomenat \"([^\"]*)\", on amb la compra del producte d'algun dels productes amb codi de barres \"([^\"]*)\" es regala una unitat d'algun dels poductes amb codi de barres \"([^\"]*)\"$")
+    public void newRegalCjt(String name, String codiBarresRequerits, String codiBarresRegal) throws Throwable {
+        String l[] = codiBarresRequerits.split(",");
+        List<Integer> barCodesRequerits = new ArrayList<>();
+        for (String s : l) barCodesRequerits.add(Integer.parseInt(s));
+        String l2[] = codiBarresRegal.split(",");
+        List<Integer> barCodesRegal = new ArrayList<>();
+        for (String s : l) barCodesRegal.add(Integer.parseInt(s));
+        //TODO new discount regal cjt
+    }
+
+    @Quan("^creo un nou descompte del tipus regal anomenat \"([^\"]*)\", on amb la compra del producte d'algun dels productes de la categoria \"([^\"]*)\" es regala una unitat d'algun dels poductes de la categoria \"([^\"]*)\"$")
+    public void newRegalCat(String name, String catRequerida, String catRegal) throws Throwable {
+        //TODO new discount regal cat
     }
 
     @Quan("^indico que el client ha entregat €([^\"]*)€ per a pagar en metàlic$")

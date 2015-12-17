@@ -12,7 +12,8 @@ Característica: Consultar vendes
   Escenari: llista totes les vendes
     Donat que hi ha hagut una venda amb id 1 del producte amb codi de barres 1234567 pagat metode "card" el dia "12/02/2013" a les 11 hores, 20 minuts i 30 segons
     Quan vull llistar totes les vendes
-    Aleshores la venda 1 conté el producte amb nom "Optimus Prime" venut el dia "12/02/2013" amb import total €23€
+    Aleshores obtinc 1 venda
+    I la venda 1 conté el producte amb nom "Optimus Prime" venut el dia "12/02/2013" amb import total €23€
 
   Escenari: no hi ha vendes
     Quan consulto les vendes
@@ -22,7 +23,8 @@ Característica: Consultar vendes
     Donat que hi ha hagut una venda amb id 1 del producte amb codi de barres 1234567 pagat metode "card" el dia "12/02/2013" a les 11 hores, 20 minuts i 30 segons
     I que hi ha hagut una venda amb id 2 del producte amb codi de barres 12121212 pagat metode "cash" el dia "13/02/2013" a les 11 hores, 20 minuts i 30 segons
     Quan vull llistar les vendes pagades en "card"
-    Aleshores la venda 1 conté el producte amb nom "Optimus Prime" venut el dia "12/02/2013" amb import total €23€
+    Aleshores obtinc 1 venda
+    I la venda 1 conté el producte amb nom "Optimus Prime" venut el dia "12/02/2013" amb import total €23€
 
   Escenari: llistar vendes d'un dia determinat
     Donat que hi ha hagut una venda amb id 1 del producte amb codi de barres 1234567 pagat metode "card" el dia "12/02/2013" a les 11 hores, 20 minuts i 30 segons
