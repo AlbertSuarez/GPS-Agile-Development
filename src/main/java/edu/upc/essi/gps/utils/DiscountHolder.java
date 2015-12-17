@@ -22,8 +22,7 @@ public class DiscountHolder {
         this.price = price;
         this.required = required;
     }
-
-
+    
     public Double getPrice() {
         return price;
     }

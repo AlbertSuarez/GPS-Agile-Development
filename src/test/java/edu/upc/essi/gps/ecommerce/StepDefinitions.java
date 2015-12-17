@@ -405,7 +405,7 @@ public class StepDefinitions {
 
     @Quan("^indico que vull cancelar la venta actual$")
     public void cancelCurrentSale() {
-        tryCatch(() -> tpvController.cancelCurrentSale());
+        tryCatch(tpvController::cancelCurrentSale);
     }
 
     @Quan("^afegeixo (\\d+) unitat/s de la línia de venda (\\d+)$")

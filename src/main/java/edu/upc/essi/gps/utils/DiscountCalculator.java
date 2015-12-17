@@ -56,8 +56,11 @@ public final class DiscountCalculator {
                     }
                 });
 
+        productesDisponibles.sort(((o1, o2) -> o1.getName().compareTo(o2.getName())));
+
         List<Discount> descomptesDisponibles = applicableDiscounts
                 .stream()
+                .sorted(((o1, o2) -> o1.getName().compareTo(o2.getName())))
                 .collect(Collectors.toList());
 
         return computateBestDiscountCombination(descomptesDisponibles, productesDisponibles);
@@ -94,7 +97,7 @@ public final class DiscountCalculator {
         Double A = computateBestDiscountRecursive(discounts, new LinkedList<>(products), i+1, acumulated);
         DiscountHolder holder = discounts.get(i).calculate(products);
         products.removeAll(holder.getRequired());
-        Double B = computateBestDiscountRecursive(discounts, new LinkedList<>(products), i + 1, acumulated + holder.getPrice());
+        Double B = computateBestDiscountRecursive(discounts, new LinkedList<>(products), i+1, acumulated + holder.getPrice());
         return Math.max(A, B);
     }
 
