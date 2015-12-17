@@ -1,12 +1,9 @@
 package edu.upc.essi.gps.ecommerce;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
 import cucumber.api.java.ca.I;
 import cucumber.api.java.ca.Quan;
-
-
 import edu.upc.essi.gps.domain.*;
 import edu.upc.essi.gps.domain.flow.MoneyFlow;
 import edu.upc.essi.gps.domain.lines.SaleLine;
@@ -19,7 +16,6 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 public class StepDefinitions {
 
@@ -694,7 +690,7 @@ public class StepDefinitions {
 
     @I("^la venta conté el producte amb codi de barres (\\d+)$")
     public void la_venta_conté_el_producte_amb_codi_de_barres(int barCode) throws Throwable {
-        s.addProduct(productsService.findByBarCode(barCode), 1, null);
+        s.addProduct(productsService.findByBarCode(barCode), 1);
 
     }
 
