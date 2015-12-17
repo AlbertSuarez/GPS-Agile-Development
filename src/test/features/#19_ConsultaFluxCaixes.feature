@@ -40,10 +40,16 @@ Característica: Consulta flux de diners entre caixes
     I el tpv 2 de la botiga "Girona" té un efectiu total de €70€
 
   Escenari: consulta de fluxos de diferents tipus
-    Donat un increment de caixa de €10€
+    Donat que estem al tpv número 2 de la botiga "Girona"
+    I que el "Pere" s'ha registrat al sistema amb password "qwerty" i rep l'identificador 456
+    I que s'inica el torn al tpv amb identificador 456 i password "qwerty", amb un efectiu inicial de €30€
+    I un increment de caixa de €10€
     I un increment de caixa de €25€
     I un decrement de caixa de €40€
+    I un traspàs €20€ de la botiga "Girona" del tpv número 1 al tpv número 2
     Quan consulto els fluxos de diners entre caixes
     Aleshores obtinc 2 flux de tipus "InFlow" de total €35€
     I obtinc 1 flux de tipus "OutFlow" de total €40€
-    I el tpv 1 de la botiga "Girona" té un efectiu total de €45€
+    I obtinc 1 flux de tipus "TPVFlow" de total €20€
+    I el tpv 1 de la botiga "Girona" té un efectiu total de €30€
+    I el tpv 2 de la botiga "Girona" té un efectiu total de €45€
