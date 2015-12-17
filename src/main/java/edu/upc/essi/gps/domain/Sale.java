@@ -3,9 +3,7 @@ package edu.upc.essi.gps.domain;
 import edu.upc.essi.gps.domain.discounts.Discount;
 import edu.upc.essi.gps.domain.lines.SaleLine;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Classe que representa una venta mitjançant un conjunt de línies de venta.
@@ -30,6 +28,8 @@ public class Sale implements Entity {
     private String tipusPagament;    //cash or card
     private double discountedPrice = 0;
 
+    private Date data;
+
     /**
      * Constructora sense parametres.
      */
@@ -47,6 +47,12 @@ public class Sale implements Entity {
         this.lines = lines;
     }
 
+    public Sale(long id,List<SaleLine> lines ,Date data){
+        this.id = id;
+        this.lines = lines;
+        this.data = data;
+    }
+
     public Sale(long id) {
         this.id = id;
     }
@@ -54,6 +60,32 @@ public class Sale implements Entity {
     @Override
     public long getId() {
         return id;
+    }
+
+    public Date getData(){
+        return data;
+    }
+
+    public int getDay(){
+        Calendar c = Calendar.getInstance();
+        c.setTime(data);
+        return c.get(Calendar.DATE);
+    }
+
+    public int getMonth(){
+        Calendar c = Calendar.getInstance();
+        c.setTime(data);
+        return c.get(Calendar.MONTH);
+    }
+
+    public int getYear(){
+        Calendar c = Calendar.getInstance();
+        c.setTime(data);
+        return c.get(Calendar.YEAR);
+    }
+
+    public void setData(Date data){
+        this.data = data;
     }
 
     /**

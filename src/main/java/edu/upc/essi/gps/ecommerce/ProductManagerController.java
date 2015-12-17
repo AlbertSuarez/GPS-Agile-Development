@@ -5,6 +5,7 @@ import edu.upc.essi.gps.domain.flow.MoneyFlow;
 import edu.upc.essi.gps.domain.lines.SaleLine;
 import edu.upc.essi.gps.ecommerce.services.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -114,6 +115,14 @@ public class ProductManagerController {
         }
         return sb.toString();
 
+    }
+
+    public List<Sale> listSalesByDate(Date d) {
+        return salesService.listSalesByDate(d);
+    }
+
+    public List<Sale> listSalesPeriod(Date d1, Date d2) {
+        return salesService.listSalesPeriod(d1,d2);
     }
 
     public List<Product> addNewProduct(String name, double price, double vatPct, int barCode) {
