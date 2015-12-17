@@ -81,6 +81,15 @@ public class TPVController {
         tpv.newTurn(saleAssistantService.findById(saleAssistantId), cash);
     }
 
+    public void block(@NotNull String password) {
+        if (tpv.getState().equals(TPVState.BLOCKED)) throw new IllegalStateException("Aquest TPV ja està bloquejat");
+        if (tpv.getCurrentSale() != null) throw new IllegalStateException("Hi ha una venta activa");
+        checkNotNull(password, "password");
+        if (!tpvService.validateAdmin(tpv.getId(), password))
+            throw new IllegalStateException("Password d'administrador incorrecte");
+        tpv.setState(TPVState.BLOCKED);
+    }
+
     public void unblock(@NotNull String password) {
         if (!tpv.getState().equals(TPVState.BLOCKED)) throw new IllegalStateException("Aquest tpv no està bloquejat");
 
@@ -91,6 +100,7 @@ public class TPVController {
     }
 
     public void iniciaQuadrament() {
+        if (tpv.getState().equals(TPVState.BLOCKED)) throw new IllegalStateException("Aquest tpv està bloquejat");
         if (!tpv.getState().equals(TPVState.IDLE)) throw new IllegalStateException("Aquest tpv no està en un torn actualment");
         if (tpv.getCurrentSale() != null) throw new IllegalStateException("Actualment hi ha una venta iniciada");
         tpv.setState(TPVState.BALANCE);
@@ -120,6 +130,8 @@ public class TPVController {
     public void startSale() {
         if (tpv.hasSale())
             throw new IllegalStateException("Aquest tpv ja té una venta iniciada");
+        if (tpv.getState().equals(TPVState.BLOCKED))
+            throw new IllegalStateException("Aquest tpv està bloquejat");
         tpv.newSale();
     }
 
@@ -259,6 +271,8 @@ public class TPVController {
     }
 
     public void addProductByBarCode(int barCode, int unitats) {
+        if (tpv.getState().equals(TPVState.BLOCKED))
+            throw new IllegalStateException("Aquest tpv està bloquejat");
         Product p = productsService.findByBarCode(barCode);
         if (p == null) {
             throw new IllegalStateException(ADD_NON_EXISTING_PRODUCT_ERROR);
@@ -329,6 +343,8 @@ public class TPVController {
     }
 
     public void removeFlow(double amount) {
+        if (tpv.getState().equals(TPVState.BLOCKED))
+            throw new IllegalStateException("Aquest tpv està bloquejat");
         tpv.removeCash(amount);
         moneyFlowService.newMoneyFlow("OutFlow", amount, tpv, null);
     }

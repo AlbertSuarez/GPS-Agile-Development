@@ -160,11 +160,21 @@ public class StepDefinitions {
         tryCatch(() -> tpvController.traspasaCash(shopName, tpvNumber1, tpvNumber2, amount));
     }
 
+    @Donat("^que el TPV està bloquejat$")
+    public void setBlocked() {
+        tryCatch(() -> tpvController.getTpv().setState(TPVState.BLOCKED));
+    }
+
     ////////////////////////////////////////////////////// @Quan //////////////////////////////////////////////////////
 
     @Quan("^inicio el torn al tpv amb identificador (\\d+) i password \"([^\"]*)\", amb un efectiu inicial de €([^\"]*)€$")
     public void login(long saleAssistantID, String password, double cash) throws Throwable {
         tryCatch(() -> tpvController.login(saleAssistantID, password, cash));
+    }
+
+    @Quan("^bloquejo el tpv amb el password \"([^\"]*)\"$")
+    public void block(String password) throws Throwable {
+        tryCatch(() -> tpvController.block(password));
     }
 
     @Quan("^desbloquejo el tpv amb el password \"([^\"]*)\"$")
