@@ -52,9 +52,9 @@ public class DiscountService {
         return id;
     }
 
-    public long newProductPresentDiscount(List<Product> product, String name, List<Product> gift) {
+    public long newProductPresentDiscount(List<Product> presents, String name, List<Product> required) {
         long id = discountRepository.newId();
-        Discount discount = new ProductPresent(product, name, id, gift);
+        Discount discount = new ProductPresent(presents, name, id, required);
         discountRepository.insert(discount);
         return id;
     }

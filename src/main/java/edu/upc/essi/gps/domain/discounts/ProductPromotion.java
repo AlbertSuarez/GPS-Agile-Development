@@ -1,12 +1,13 @@
 package edu.upc.essi.gps.domain.discounts;
 
 import edu.upc.essi.gps.domain.Product;
-import edu.upc.essi.gps.domain.Sale;
-import edu.upc.essi.gps.domain.lines.SaleLine;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.atomic.DoubleAccumulator;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static edu.upc.essi.gps.utils.DiscountCalculator.*;
 
 /**
  * Classe que representa un descompte del tipus AxB (3x2, 2x1...).
@@ -19,14 +20,17 @@ public class ProductPromotion implements Discount {
      */
     private final long id;
     private final String name;
+
     /**
      * Quantitat de producte que reps si s'aplica la promoció.
      * */
     private final int productsObtained;
+
     /**
      * Quantitat de producte que has de comprar per a que s'apliqui la promoció.
      * */
     private final int requiredProducts;
+
     private List<Product> triggers;
 
     /**
@@ -63,25 +67,48 @@ public class ProductPromotion implements Discount {
     }
 
     @Override
-    public double calculate(Sale sale, int line) {
-        List<SaleLine> saleLines = sale.getLines();
-        SaleLine saleLine = saleLines.get(line);
+    public DiscountHolder calculate(List<Product> productes) {
 
-        int amount = saleLine.getAmount();
-        if (amount < requiredProducts)
-            return 0;
+        final DoubleAccumulator desc = new DoubleAccumulator((a, b) -> a+b, 0d);
 
-        int freeProducts = Math.min(productsObtained - requiredProducts, (amount - requiredProducts));
+        final List<Product> seleccionats = new LinkedList<>();
 
-        int times = amount / productsObtained;
-        return times * freeProducts * saleLine.getProduct().getPrice();
+        productes.stream()
+                .filter(product -> isTriggeredBy(product.getId()))
+                .forEach(seleccionats::add);
+
+
+        int amount = seleccionats.size();
+
+        if (amount < requiredProducts) return new DiscountHolder(0d, new LinkedList<>());
+
+        int times =  amount / productsObtained;
+
+        int freeProducts = (productsObtained - requiredProducts) * times;
+
+        int selectedProducts = productsObtained * times;
+
+        List<Product> utilitzats = seleccionats
+                .stream()
+                .sorted((o1, o2) -> ((Double) o1.getPrice()).compareTo(o2.getPrice()))
+                .limit(selectedProducts)
+                .collect(Collectors.toList());
+
+        seleccionats
+                .stream()
+                .sorted((o1, o2) -> ((Double) o1.getPrice()).compareTo(o2.getPrice()))
+                .limit(freeProducts)
+                .map(Product::getPrice)
+                .forEach(desc::accumulate);
+
+        return new DiscountHolder(desc.doubleValue(), utilitzats);
     }
 
     @Override
     public boolean isTriggeredBy(long productId) {
-        return triggers
-                .stream()
-                .anyMatch((p) -> p.getId() == productId);
+        return triggers.stream()
+                .map(Product::getId)
+                .anyMatch(id -> id == productId);
     }
 
     @Override

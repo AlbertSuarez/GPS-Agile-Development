@@ -8,9 +8,6 @@ import edu.upc.essi.gps.domain.lines.SaleLine;
 import edu.upc.essi.gps.ecommerce.services.*;
 import edu.upc.essi.gps.utils.DiscountCalculator;
 
-import javax.xml.crypto.Data;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -148,16 +145,15 @@ public class TPVController {
 
 
 
-    public void addNewDiscountToCurrentSale(int prodLine, @NotNull String name, double percent) {
+    public void addNewDiscountToCurrentSale(int prodLine, double percent) {
         if (!isSaleStarted())
             throw new IllegalStateException("No hi ha cap venda iniciada");
         int max = getCurrentSale().getLines().size();
         if (prodLine-1 < 0 || prodLine-1 >= max)
             throw new IndexOutOfBoundsException("No es pot accedir a la línia " + prodLine +
                     " de la venta, aquesta només té " + max + " línies");
-        Product product = productsService.findById(tpv.getCurrentSale().getId(prodLine - 1));
-        Discount discount = new ProductPercent(product, name, -1, percent);
-        getCurrentSale().addManualDiscount(discount, prodLine);
+        Product product = productsService.findById(tpv.getCurrentSale().getId(prodLine-1));
+        getCurrentSale().addManualDiscount(product, percent);
     }
 
 
@@ -174,7 +170,7 @@ public class TPVController {
     public void newDiscountPresent(String name, long barCodeRequired, long barCodePresent) {
         Product present = productsService.findByBarCode(barCodePresent);
         Product required = productsService.findByBarCode(barCodeRequired);
-        discountService.newProductPresentDiscount(required, name, present);
+        discountService.newProductPresentDiscount(present, name, required);
     }
 
     public void newDiscountPercent(String name, List<Long> barCodes, double percent) {
@@ -207,7 +203,7 @@ public class TPVController {
                 .collect(Collectors.toList());
 
 
-        discountService.newProductPresentDiscount(required, name, present);
+        discountService.newProductPresentDiscount(present, name, required);
     }
 
 
@@ -249,8 +245,6 @@ public class TPVController {
             throw new IllegalStateException("No es pot cobrar una venta amb un import inferior al total de la venta");
         tpv.addCash(total);
         tpv.getCurrentSale().setTipusPagament("cash");
-        Date d = new Date();
-        tpv.getCurrentSale().setData(d);
         salesService.insertSale(tpv.getCurrentSale());
         tpv.endSale();
         return calculateChange(delivered, total);
@@ -271,9 +265,6 @@ public class TPVController {
     public void tarjetPayment() {
         checkPaymentConditions();
         tpv.getCurrentSale().setTipusPagament("card");
-        //Calendar calendar = Calendar.getInstance();
-        Date d = new Date();
-        tpv.getCurrentSale().setData(d);
         salesService.insertSale(tpv.getCurrentSale());
         tpv.endSale();
     }
@@ -285,7 +276,7 @@ public class TPVController {
         if (p == null) {
             throw new IllegalStateException(ADD_NON_EXISTING_PRODUCT_ERROR);
         }
-        tpv.addProduct(p, unitats, null);
+        tpv.addProduct(p, unitats);
     }
 
     public List<Product> addProductByName(@NotNull String nom) {
@@ -306,7 +297,7 @@ public class TPVController {
         }
         if (products.size() == 1) {
             Product p = products.get(0);
-            tpv.addProduct(p, unitatsProducte, null);
+            tpv.addProduct(p, unitatsProducte);
         }
         return products;
     }
@@ -399,9 +390,4 @@ public class TPVController {
         return list;
     }
 
-
-    public Sale newSale(int id, Date d, String pagament) {
-        return salesService.newSale(id, d, pagament);
-
-    }
 }
