@@ -16,14 +16,14 @@ Característica: Crear nous descomptes del tipus promocio per a conjunts
     I afegeixo el producte amb codi de barres 7777777 a la categoria "Consola"
     I afegeixo el producte amb codi de barres 7654321 a la categoria "Consola"
 
-  Escenari: aplicar un descompte de percentatges per a un conjunt d'elements
+  Escenari: aplicar un descompte de promocio per a un conjunt d'elements
     Donat creo un nou descompte del tipus promoció anomenat "3x2" de 3x2 sobre els productes amb codi de barres "7777777,7654321"
     Quan afegeixo 4 unitats del producte amb codi de barres 7654321 a la venta
     I afegeixo 2 unitats del producte amb codi de barres 7777777 a la venta
     Aleshores la venta té 2 línies
     I el total de la venta actual és de €1600€
     
-  Escenari: aplicar un descompte de percentatges per a una categoria
+  Escenari: aplicar un descompte de promocio per a una categoria
     Donat creo un nou descompte del tipus promoció anomenat "3x2" de 3x2 sobre els productes de la categoria "Consola"
     Quan afegeixo 4 unitats del producte amb codi de barres 7654321 a la venta
     I afegeixo 2 unitats del producte amb codi de barres 7777777 a la venta
