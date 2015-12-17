@@ -1,17 +1,12 @@
 package edu.upc.essi.gps.domain.discounts;
 
+import edu.upc.essi.gps.domain.Category;
 import edu.upc.essi.gps.domain.Product;
-import edu.upc.essi.gps.domain.Sale;
-import edu.upc.essi.gps.domain.lines.SaleLine;
-import edu.upc.essi.gps.utils.DiscountCalculator;
 
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.DoubleAccumulator;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static edu.upc.essi.gps.utils.DiscountCalculator.*;
 
@@ -36,10 +31,18 @@ public class ProductPercent implements Discount {
      * @param percent tant per cent de descompte que s'ha d'aplicar al producte.
      * */
     public ProductPercent(Product product, String name, long id, double percent) {
-        triggers = Collections.singletonList(product);
-        this.name = name;
-        this.id = id;
-        this.percent = percent;
+        this(Collections.singletonList(product), name, id, percent);
+    }
+
+    /**
+     * Crea una nova instància d'un descompte per percentatge a partir d'un producte.
+     * @param category categoria de producte a la que es vol aplicar el descompte.
+     * @param name nom del descompte.
+     * @param id identificador del descompte al sistema.
+     * @param percent tant per cent de descompte que s'ha d'aplicar al producte.
+     * */
+    public ProductPercent(Category category, String name, long id, double percent) {
+        this(category.getProductes(), name, id, percent);
     }
 
     /**

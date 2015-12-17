@@ -1,5 +1,6 @@
 package edu.upc.essi.gps.ecommerce.services;
 
+import edu.upc.essi.gps.domain.Category;
 import edu.upc.essi.gps.domain.Product;
 import edu.upc.essi.gps.domain.discounts.Discount;
 import edu.upc.essi.gps.domain.discounts.ProductPercent;
@@ -24,6 +25,13 @@ public class DiscountService {
         return id;
     }
 
+    public long newProductPercentDiscount(Category category, String name, double percent) {
+        long id = discountRepository.newId();
+        Discount discount = new ProductPercent(category, name, id, percent);
+        discountRepository.insert(discount);
+        return id;
+    }
+
     public long newProductPercentDiscount(List<Product> products, String name, double percent) {
         long id = discountRepository.newId();
         Discount discount = new ProductPercent(products, name, id, percent);
@@ -38,6 +46,13 @@ public class DiscountService {
         return id;
     }
 
+    public long newProductPromotionDiscount(Category category, String name, int A, int B) {
+        long id = discountRepository.newId();
+        Discount discount = new ProductPromotion(category, name, id, A, B);
+        discountRepository.insert(discount);
+        return id;
+    }
+
     public long newProductPromotionDiscount(List<Product> products, String name, int A, int B) {
         long id = discountRepository.newId();
         Discount discount = new ProductPromotion(products, name, id, A, B);
@@ -45,9 +60,16 @@ public class DiscountService {
         return id;
     }
 
-    public long newProductPresentDiscount(Product product, String name, Product gift) {
+    public long newProductPresentDiscount(Product present, String name, Product required) {
         long id = discountRepository.newId();
-        Discount discount = new ProductPresent(product, name, id, gift);
+        Discount discount = new ProductPresent(present, name, id, required);
+        discountRepository.insert(discount);
+        return id;
+    }
+
+    public long newProductPresentDiscount(Category presentsCategory, String name, Category requiredCategory) {
+        long id = discountRepository.newId();
+        Discount discount = new ProductPresent(presentsCategory, name, id, requiredCategory);
         discountRepository.insert(discount);
         return id;
     }

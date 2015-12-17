@@ -144,7 +144,6 @@ public class TPVController {
     }
 
 
-
     public void addNewDiscountToCurrentSale(int prodLine, double percent) {
         if (!isSaleStarted())
             throw new IllegalStateException("No hi ha cap venda iniciada");
@@ -204,6 +203,18 @@ public class TPVController {
 
 
         discountService.newProductPresentDiscount(present, name, required);
+    }
+
+    public void newDiscountPercent(String name, Category category, double percent) {
+        discountService.newProductPercentDiscount(category, name, percent);
+    }
+
+    public void newDiscountPromotion(String name, Category category, int A, int B) {
+        discountService.newProductPromotionDiscount(category, name, A, B);
+    }
+
+    public void newDiscountPresent(String name, Category presentsCategory, Category requiredCategory) {
+        discountService.newProductPresentDiscount(presentsCategory, name, requiredCategory);
     }
 
 

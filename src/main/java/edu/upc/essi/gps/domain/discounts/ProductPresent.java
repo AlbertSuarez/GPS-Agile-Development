@@ -1,5 +1,6 @@
 package edu.upc.essi.gps.domain.discounts;
 
+import edu.upc.essi.gps.domain.Category;
 import edu.upc.essi.gps.domain.Product;
 
 import java.util.Collections;
@@ -30,10 +31,18 @@ public class ProductPresent implements Discount {
      * @param required producte que cal comprar per a que es regali el disparador.
      * */
     public ProductPresent(Product product, String name, long id, Product required) {
-        presents = Collections.singletonList(product);
-        this.name = name;
-        this.id = id;
-        this.required = Collections.singletonList(required);
+        this(Collections.singletonList(product), name, id, Collections.singletonList(required));
+    }
+
+    /**
+     * Crea una nova instància d'un descompte per regal a partir d'un producte.
+     * @param categoryPresent categoria de producte que es vol regalar amb el descompte.
+     * @param name nom del descompte.
+     * @param id identificador del descompte al sistema.
+     * @param categoryRequired categoria de producte a la que es vol aplicar el descompte.
+     * */
+    public ProductPresent(Category categoryPresent, String name, long id, Category categoryRequired) {
+        this(categoryPresent.getProductes(), name, id, categoryRequired.getProductes());
     }
 
     /**
