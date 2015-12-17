@@ -607,19 +607,19 @@ public class StepDefinitions {
     }
 
     @Aleshores("^hi ha (\\d+) caixer al sistema$")
-    public void hi_ha_caixer_al_sistema(int n) throws Throwable {
+    public void checkCashiersSize(int n) throws Throwable {
         assertEquals(n, caixers.size());
     }
 
     @I("^el caixer té per nom \"([^\"]*)\" i la seva contrasenya és \"([^\"]*)\"$")
-    public void el_caixer_té_per_nom_i_la_seva_contrasenya_és(String name, String pass) throws Throwable {
+    public void checkCashier(String name, String pass) throws Throwable {
         SaleAssistant a = caixers.get(caixers.size() - 1);
         assertEquals(name, a.getName());
         assertEquals(pass, a.getEncryptedPass());
     }
 
     @Donat("^un caixer amb nom \"([^\"]*)\" i contrasenya \"([^\"]*)\"$")
-    public void un_caixer_amb_nom_i_contrasenya(String name, String pass) throws Throwable {
+    public void newCashier(String name, String pass) throws Throwable {
         saleAssistantService.newAssistant(name, pass);
     }
 
@@ -675,7 +675,7 @@ public class StepDefinitions {
     }
 
     @Donat("^que hi ha hagut una venda amb id (\\d+) paga en \"([^\"]*)\" el dia \"([^\"]*)\" a les (\\d+) hores (\\d+) minuts i (\\d+) segons$")
-    public void que_hi_ha_hagut_una_venda_amb_id_paga_en_el_dia_a_les_hores_minuts_i_segons(int id, String pagament, String data, int hora, int minut, int segon) throws Throwable {
+    public void saveSale(int id, String pagament, String data, int hora, int minut, int segon) throws Throwable {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date d = dateFormat.parse(data);
         Calendar c = Calendar.getInstance();
@@ -689,13 +689,13 @@ public class StepDefinitions {
 
 
     @I("^la venta conté el producte amb codi de barres (\\d+)$")
-    public void la_venta_conté_el_producte_amb_codi_de_barres(int barCode) throws Throwable {
+    public void addProductByBarcode(int barCode) throws Throwable {
         s.addProduct(productsService.findByBarCode(barCode), 1);
 
     }
 
     @I("^la venda (\\d+) esta feta el dia \"([^\"]*)\" a les (\\d+) hores (\\d+) minuts i (\\d+) segons amb import total €(\\d+)€$")
-    public void la_venda_esta_feta_el_dia_amb_import_total_€_€(int number, String data, int hora, int minuts, int segons, int preu) throws Throwable {
+    public void checkSale(int number, String data, int hora, int minuts, int segons, int preu) throws Throwable {
         assertEquals(preu, sales.get(number-1).getTotal(), DELTA);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date d = dateFormat.parse(data);
@@ -710,7 +710,7 @@ public class StepDefinitions {
     }
 
     @I("^la venda (\\d+) conté el producte (\\d+) amb nom \"([^\"]*)\"$")
-    public void la_venda_conté_el_producte_amb_nom(int number,int line, String name) throws Throwable {
+    public void checkProductByNameOnSale(int number,int line, String name) throws Throwable {
         assertEquals(name, sales.get(number-1).getLines().get(line-1).getName());
     }
 }
