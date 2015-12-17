@@ -3,6 +3,7 @@ package edu.upc.essi.gps.ecommerce;
 import cucumber.api.PendingException;
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
+import cucumber.api.java.ca.I;
 import cucumber.api.java.ca.Quan;
 import edu.upc.essi.gps.domain.*;
 import edu.upc.essi.gps.domain.flow.MoneyFlow;
@@ -38,12 +39,13 @@ public class StepDefinitions {
     private List<Refund> refunds;
     private List<Category> categories;
     private List<MoneyFlow> moneyFlows;
+    private List<SaleAssistant> caixers;
 
-    public void tryCatch(Runnable r){
+    public void tryCatch(Runnable r) {
         try {
             r.run();
             exception = null;
-        } catch (Exception e){
+        } catch (Exception e) {
             exception = e;
         }
     }
@@ -89,7 +91,7 @@ public class StepDefinitions {
 
     @Donat("^que estem al panell de gestió del product manager$")
     public void initManagement() throws Throwable {
-        productManagerController = new ProductManagerController(moneyFlowService, balancesService, tpvService, salesService, refundsService, productsService);
+        productManagerController = new ProductManagerController(moneyFlowService, balancesService, tpvService, salesService, refundsService, productsService, saleAssistantService);
     }
 
     @Donat("^un desquadrament del caixer amb nom \"([^\"]*)\" a la botiga \"([^\"]*)\" d'una quantitat de €([^\"]*)€")
@@ -285,7 +287,7 @@ public class StepDefinitions {
 
     @Quan("^faig una devolució de (\\d+) unitat/s del producte amb codi de barres (\\d+) de la venta (\\d+) amb el motiu \"([^\"]*)\"$")
     public void addDevolucio(int unitats, int barCode, long idVenda, String reason) throws Throwable {
-        tryCatch(()-> refund = tpvController.addRefund(unitats, barCode, idVenda, reason));
+        tryCatch(() -> refund = tpvController.addRefund(unitats, barCode, idVenda, reason));
     }
 
     @Quan("^consulto les vendes$")
@@ -390,7 +392,7 @@ public class StepDefinitions {
 
     @Aleshores("^el producte número (\\d+) té per nom \"([^\"]*)\", preu €([^\"]*)€, IVA %([^\"]*)% i codi de barres (\\d+)$")
     public void checkProduct(int n, String name, double price, double pct, int barCode) throws Throwable {
-        Product p = products.get(n-1);
+        Product p = products.get(n - 1);
         assertEquals(name, p.getName());
         assertEquals(barCode, p.getBarCode());
         assertEquals(pct, p.getVatPct(), DELTA);
@@ -448,8 +450,8 @@ public class StepDefinitions {
     @Aleshores("^línia de venta (\\d+) és de (\\d+) unitats de \"([^\"]*)\" a €([^\"]*)€ cada una per un total de €([^\"]*)€$")
     public void checkSaleLine(int lineNumber, int units, String productName, double unitPrice, double totalPrice) throws Throwable {
         SaleLine sl = tpvController.getCurrentSale().getLines().get(lineNumber - 1);
-        assertEquals(units,sl.getAmount());
-        assertEquals(unitPrice,sl.getUnitPrice(), DELTA);
+        assertEquals(units, sl.getAmount());
+        assertEquals(unitPrice, sl.getUnitPrice(), DELTA);
         assertEquals(totalPrice, sl.getTotalPrice(), DELTA);
         assertEquals(productName, sl.getName());
     }
@@ -507,8 +509,8 @@ public class StepDefinitions {
     @Aleshores("^obtinc una linia de venda amb el (\\d+)er producte amb nom \"([^\"]*)\", preu €([^\"]*)€ i codi de barres (\\d+)$")
     public void getSaleLineWithProductByBarCode(int ind, String productName, double price, int barCode) throws Throwable {
         assertTrue(tpvController.getCurrentSale().hasProductByBarCode(barCode));
-        SaleLine line = tpvController.getCurrentSale().getLines().get(ind-1);
-        assertEquals(line.getName(),productName);
+        SaleLine line = tpvController.getCurrentSale().getLines().get(ind - 1);
+        assertEquals(line.getName(), productName);
         assertEquals(line.getUnitPrice(), price, DELTA);
     }
 
@@ -524,7 +526,7 @@ public class StepDefinitions {
 
     @Aleshores("^obtinc el producte amb nom \"([^\"]*)\" pagat en \"([^\"]*)\"$")
     public void checkNameAndType(String nom, String tipus) throws Throwable {
-            assertEquals(productManagerController.llistaVentesPerTipusPagament(tipus).get(0).getLines().get(0).getName(), nom);
+        assertEquals(productManagerController.llistaVentesPerTipusPagament(tipus).get(0).getLines().get(0).getName(), nom);
     }
 
     @Aleshores("^obtinc el producte amb nom \"([^\"]*)\"$")
@@ -589,5 +591,32 @@ public class StepDefinitions {
             total += moneyFlowService.listByKind(fluxKind).get(i).getAmount();
         }
         assertEquals(cash, total, DELTA);
+    }
+
+    @Quan("^consulto els caixers del sistema$")
+    public void getSaleAssistants() throws Throwable {
+        tryCatch(() -> caixers = productManagerController.getSaleAssistants());
+    }
+
+    @Quan("^afegeixo un caixer amb nom \"([^\"]*)\" i contrasenya \"([^\"]*)\"$")
+    public void newAssistant(String name, String pass) throws Throwable {
+        tryCatch(() -> caixers = productManagerController.newSaleAssistant(name, pass));
+    }
+
+    @Aleshores("^hi ha (\\d+) caixer al sistema$")
+    public void hi_ha_caixer_al_sistema(int n) throws Throwable {
+        assertEquals(n, caixers.size());
+    }
+
+    @I("^el caixer té per nom \"([^\"]*)\" i la seva contrasenya és \"([^\"]*)\"$")
+    public void el_caixer_té_per_nom_i_la_seva_contrasenya_és(String name, String pass) throws Throwable {
+        SaleAssistant a = caixers.get(caixers.size() - 1);
+        assertEquals(name, a.getName());
+        assertEquals(pass, a.getEncryptedPass());
+    }
+
+    @Donat("^un caixer amb nom \"([^\"]*)\" i contrasenya \"([^\"]*)\"$")
+    public void un_caixer_amb_nom_i_contrasenya(String name, String pass) throws Throwable {
+        saleAssistantService.newAssistant(name, pass);
     }
 }

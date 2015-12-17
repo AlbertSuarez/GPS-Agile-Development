@@ -1,9 +1,6 @@
 package edu.upc.essi.gps.ecommerce;
 
-import edu.upc.essi.gps.domain.Balance;
-import edu.upc.essi.gps.domain.Product;
-import edu.upc.essi.gps.domain.Refund;
-import edu.upc.essi.gps.domain.Sale;
+import edu.upc.essi.gps.domain.*;
 import edu.upc.essi.gps.domain.flow.MoneyFlow;
 import edu.upc.essi.gps.domain.lines.SaleLine;
 import edu.upc.essi.gps.ecommerce.services.*;
@@ -24,15 +21,18 @@ public class ProductManagerController {
     private final BalancesService balancesService;
     private final MoneyFlowService moneyFlowService;
     private final ProductsService productsService;
+    private final SaleAssistantService saleAssistantService;
     private List<Sale> sales;
+    private List<SaleAssistant> caixers;
 
-    public ProductManagerController(MoneyFlowService moneyFlowService, BalancesService balancesService, TPVService tpvService, SalesService salesService, RefundsService refundsService, ProductsService productsService) {
+    public ProductManagerController(MoneyFlowService moneyFlowService, BalancesService balancesService, TPVService tpvService, SalesService salesService, RefundsService refundsService, ProductsService productsService, SaleAssistantService saleAssistantService) {
         this.balancesService = balancesService;
         this.salesService = salesService;
         this.tpvService = tpvService;
         this.refundsService = refundsService;
         this.moneyFlowService = moneyFlowService;
         this.productsService = productsService;
+        this.saleAssistantService = saleAssistantService;
     }
 
     /**
@@ -123,10 +123,24 @@ public class ProductManagerController {
         return productsService.list();
     }
 
+    public List<SaleAssistant> newSaleAssistant(String name, String pass) {
+        if (saleAssistantService.findByName(name) != null)
+            throw new IllegalStateException("Ja existeix un caixer amb aquest nom");
+        saleAssistantService.newAssistant(name, pass);
+        return saleAssistantService.list();
+    }
+
     public List<Product> getProducts() {
         List<Product> l =  productsService.list();
         if (l.size() == 0)
             throw new IllegalStateException("No hi ha productes donats d'alta al sistema");
+        return l;
+    }
+
+    public List<SaleAssistant> getSaleAssistants() {
+        List<SaleAssistant> l =  saleAssistantService.list();
+        if (l.size() == 0)
+            throw new IllegalStateException("No hi ha caixers donats d'alta al sistema");
         return l;
     }
 

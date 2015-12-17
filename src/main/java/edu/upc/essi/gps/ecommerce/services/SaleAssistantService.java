@@ -54,4 +54,7 @@ public class SaleAssistantService {
 
     }
 
+    public Object findByName(String name) {
+        return saleAssistantRepository.findByName(name);
+    }
 }

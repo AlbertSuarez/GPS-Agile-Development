@@ -14,4 +14,7 @@ public class SaleAssistantRepository extends Repository<SaleAssistant> {
 
     }
 
+    public Object findByName(String name) {
+        return find((c) -> c.getName() == name);
+    }
 }
