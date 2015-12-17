@@ -653,17 +653,20 @@ public class StepDefinitions {
         assertEquals(size, sales.size());
     }
 
-    @I("^la venda (\\d+) conté el producte amb nom \"([^\"]*)\" venut el dia \"([^\"]*)\" amb import total €(\\d+)€$")
-    public void checkSaleDate(int number, String name, String date, double price) throws Throwable {
+    @I("^la venda (\\d+) conté el producte amb nom \"([^\"]*)\" venut el dia \"([^\"]*)\" a les (\\d+) hores (\\d+) minuts i (\\d+) segons amb import total €(\\d+)€$")
+    public void checkSaleDate(int number, String name, String date,int hora,int minuts,int segons, double price) throws Throwable {
         assertEquals(name, sales.get(number-1).getLines().get(0).getName());
         assertEquals(price, sales.get(number-1).getTotal(), DELTA);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date d = dateFormat.parse(date);
         Calendar c = Calendar.getInstance();
         c.setTime(d);
-        assertEquals(c.get(Calendar.DATE), sales.get(number-1).getDay());
+        assertEquals(c.get(Calendar.DATE), sales.get(number - 1).getDay());
         assertEquals(c.get(Calendar.MONTH), sales.get(number-1).getMonth());
         assertEquals(c.get(Calendar.YEAR), sales.get(number-1).getYear());
+        assertEquals(hora, sales.get(number-1).getHour());
+        assertEquals(minuts, sales.get(number-1).getMinutes());
+        assertEquals(segons, sales.get(number-1).getSeconds());
 
     }
 
@@ -695,8 +698,8 @@ public class StepDefinitions {
 
     }
 
-    @I("^la venda (\\d+) esta feta el dia \"([^\"]*)\" amb import total €(\\d+)€$")
-    public void la_venda_esta_feta_el_dia_amb_import_total_€_€(int number, String data, int preu) throws Throwable {
+    @I("^la venda (\\d+) esta feta el dia \"([^\"]*)\" a les (\\d+) hores (\\d+) minuts i (\\d+) segons amb import total €(\\d+)€$")
+    public void la_venda_esta_feta_el_dia_amb_import_total_€_€(int number, String data, int hora, int minuts, int segons, int preu) throws Throwable {
         assertEquals(preu, sales.get(number-1).getTotal(), DELTA);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date d = dateFormat.parse(data);
@@ -704,7 +707,10 @@ public class StepDefinitions {
         c.setTime(d);
         assertEquals(c.get(Calendar.DATE), sales.get(number-1).getDay());
         assertEquals(c.get(Calendar.MONTH), sales.get(number-1).getMonth());
-        assertEquals(c.get(Calendar.YEAR), sales.get(number-1).getYear());
+        assertEquals(c.get(Calendar.YEAR), sales.get(number - 1).getYear());
+        assertEquals(hora, sales.get(number-1).getHour());
+        assertEquals(minuts, sales.get(number-1).getMinutes());
+        assertEquals(segons, sales.get(number-1).getSeconds());
     }
 
     @I("^la venda (\\d+) conté el producte (\\d+) amb nom \"([^\"]*)\"$")

@@ -66,6 +66,24 @@ public class Sale implements Entity {
         return data;
     }
 
+    public int getSeconds(){
+        Calendar c = Calendar.getInstance();
+        c.setTime(data);
+        return c.get(Calendar.SECOND);
+    }
+
+    public int getMinutes(){
+        Calendar c = Calendar.getInstance();
+        c.setTime(data);
+        return c.get(Calendar.MINUTE);
+    }
+
+    public int getHour(){
+        Calendar c = Calendar.getInstance();
+        c.setTime(data);
+        return c.get(Calendar.HOUR_OF_DAY);
+    }
+
     public int getDay(){
         Calendar c = Calendar.getInstance();
         c.setTime(data);
