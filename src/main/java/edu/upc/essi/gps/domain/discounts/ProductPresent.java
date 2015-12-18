@@ -7,7 +7,7 @@ import edu.upc.essi.gps.utils.DiscountHolder;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.atomic.DoubleAccumulator;
+import java.util.stream.Collectors;
 
 /**
  * Classe que representa un descompte del tipus amb el producte A et regalem B.
@@ -63,30 +63,26 @@ public class ProductPresent implements Discount {
         //PRE: per a cada producte de productes que compleix isTriggeredBy(producte.getId()),
         // a productes apareixerà una vegada cada producte de presents.
 
-        DoubleAccumulator desc = new DoubleAccumulator((a, b) -> a+b, 0d);
 
-        final List<Product> utilitzats = new LinkedList<>();
-
-
-        Long amount = productes
+        List<Product> utilitzats = productes
                 .stream()
-                .map(Product::getId)
-                .filter(this::isTriggeredBy)
-                .count();
+                .filter((p) -> isTriggeredBy(p.getId()))
+                .collect(Collectors.toList());
 
 
+        List<Product> regalats = new LinkedList<>();
         presents.stream()
-                .map(Product::getPrice)
-                .forEach(desc::accumulate);
+                .sorted((p1, p2) -> new Double(p1.getPrice()).compareTo(p2.getPrice()))
+                .limit(utilitzats.size())
+                .forEachOrdered(regalats::add);
 
 
-        Double presentsDiscount = desc.doubleValue();
-        Double discount = 0d;
+        double discount = regalats
+                .stream()
+                .mapToDouble(Product::getPrice)
+                .sum();
 
-        for (int i = 0; i < amount; ++i) {
-            discount += presentsDiscount;
-            utilitzats.addAll(presents);
-        }
+        utilitzats.addAll(regalats);
 
         return new DiscountHolder(discount, utilitzats);
     }
