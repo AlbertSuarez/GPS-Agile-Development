@@ -461,7 +461,7 @@ public class StepDefinitions {
 
     @Quan("afegeixo un producte amb nom \"([^\"]*)\", preu €([^\"]*)€, iva %([^\"]*)% i codi de barres (\\d+)$")
     public void addNewProduct(String name, double price, double vatPct, int barCode) throws Throwable {
-        tryCatch(() -> products = productManagerController.addNewProduct(name, price, vatPct, barCode));
+        tryCatch(() -> productManagerController.addNewProduct(name, price, vatPct, barCode));
 
     }
 
@@ -472,7 +472,7 @@ public class StepDefinitions {
 
     @Quan("^afegeixo un caixer amb nom \"([^\"]*)\" i contrasenya \"([^\"]*)\"$")
     public void newAssistant(String name, String pass) throws Throwable {
-        tryCatch(() -> caixers = productManagerController.newSaleAssistant(name, pass));
+        tryCatch(() -> productManagerController.newSaleAssistant(name, pass));
     }
 
     @Quan("^vull llistar les vendes del dia \"([^\"]*)\"$")
@@ -501,12 +501,12 @@ public class StepDefinitions {
 
     @Aleshores("^hi ha (\\d+) productes al sistema")
     public void checkQttProducts(int n) throws Throwable {
-        assertEquals(n, products.size());
+        assertEquals(n, productsService.list().size());
     }
 
     @Aleshores("^el producte número (\\d+) té per nom \"([^\"]*)\", preu €([^\"]*)€, IVA %([^\"]*)% i codi de barres (\\d+)$")
     public void checkProduct(int n, String name, double price, double pct, int barCode) throws Throwable {
-        Product p = products.get(n - 1);
+        Product p = productsService.list().get(n - 1);
         assertEquals(name, p.getName());
         assertEquals(barCode, p.getBarCode());
         assertEquals(pct, p.getVatPct(), DELTA);
@@ -709,12 +709,13 @@ public class StepDefinitions {
 
     @Aleshores("^hi ha (\\d+) caixer al sistema$")
     public void checkCashiersSize(int n) throws Throwable {
-        assertEquals(n, caixers.size());
+        assertEquals(n, saleAssistantService.list().size());
     }
 
     @Aleshores("^el caixer té per nom \"([^\"]*)\" i la seva contrasenya és \"([^\"]*)\"$")
     public void checkCashier(String name, String pass) throws Throwable {
-        SaleAssistant a = caixers.get(caixers.size() - 1);
+        List<SaleAssistant> list = saleAssistantService.list();
+        SaleAssistant a = list.get(list.size() - 1);
         assertEquals(name, a.getName());
         assertEquals(pass, a.getEncryptedPass());
     }
