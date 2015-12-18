@@ -4,6 +4,7 @@ import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
 import cucumber.api.java.ca.Quan;
 import edu.upc.essi.gps.domain.*;
+import edu.upc.essi.gps.domain.flow.MoneyFlow;
 import edu.upc.essi.gps.domain.lines.SaleLine;
 import edu.upc.essi.gps.ecommerce.repositories.*;
 import edu.upc.essi.gps.ecommerce.services.*;
@@ -37,6 +38,7 @@ public class StepDefinitions {
     private List<Product> products;
     private List<Balance> balances;
     private List<Sale> sales;
+    private List<MoneyFlow> moneyFlows;
     private List<Refund> refunds;
     private List<Category> categories;
     private Sale s;
@@ -443,12 +445,12 @@ public class StepDefinitions {
 
     @Quan("^consulto els fluxos de diners entre caixes$")
     public void getMoneyFlow() throws Throwable {
-        tryCatch(productManagerController::listMoneyFlows);
+        tryCatch(() -> moneyFlows = productManagerController.listMoneyFlows());
     }
 
     @Quan("^consulto els fluxos de diners entre caixes del tipus \"([^\"]*)\"$")
     public void getMoneyFlowByKind(String flowKind) throws Throwable {
-        tryCatch(() -> productManagerController.listMoneyFlowsByKind(flowKind));
+        tryCatch(() -> moneyFlows = productManagerController.listMoneyFlowsByKind(flowKind));
     }
 
     @Quan("^consulto els productes del sistema$")
