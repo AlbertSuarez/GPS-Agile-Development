@@ -12,11 +12,11 @@ import edu.upc.essi.gps.domain.TPV;
 public class OutFlow extends MoneyFlow {
 
 
-    private final long originId;
+    private final String originId;
 
     public OutFlow(long id, double amount, TPV origin) {
         super(id, amount);
-        originId = origin.getId();
+        originId = origin.getShop() + " " + origin.getPos();
     }
 
 
@@ -24,4 +24,7 @@ public class OutFlow extends MoneyFlow {
     public String getKind() {
         return "OutFlow";
     }
+
+    @Override
+    public String getOrigin() { return originId; }
 }

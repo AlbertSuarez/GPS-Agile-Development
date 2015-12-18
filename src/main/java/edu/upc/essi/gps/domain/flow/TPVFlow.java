@@ -11,17 +11,23 @@ import edu.upc.essi.gps.domain.TPV;
  */
 public class TPVFlow extends MoneyFlow {
 
-    private final long originId;
-    private final long destinyId;
+    private final String originId;
+    private final String destinyId;
 
     public TPVFlow(long id, double amount, TPV origin, TPV destiny) {
         super(id, amount);
-        originId = origin.getId();
-        destinyId = destiny.getId();
+        originId = origin.getShop() + " " + origin.getPos();
+        destinyId = destiny.getShop() + " " + destiny.getPos();
     }
 
     @Override
     public String getKind() {
         return "TPVFlow";
     }
+
+    @Override
+    public String getOrigin() { return originId; }
+
+    @Override
+    public String getDestiny() { return destinyId; }
 }

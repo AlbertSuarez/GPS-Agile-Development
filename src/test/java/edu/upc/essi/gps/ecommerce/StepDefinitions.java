@@ -659,6 +659,20 @@ public class StepDefinitions {
         assertEquals(cash, total, DELTA);
     }
 
+    @Aleshores("^obtinc (\\d+) fluxes de diners")
+    public void checkNFlux(int n) throws Throwable {
+        assertEquals(n, moneyFlows.size());
+    }
+
+    @Aleshores("^obtinc un flux (\\d+) de tipus \"([^\"]*)\" d'una quantitat de €(\\d+)€ de \"([^\"]*)\" a \"([^\"]*)\"$")
+    public void checkFluxElement(int i, String tipus, int qtt, String origen, String desti) throws Throwable {
+        MoneyFlow f = moneyFlows.get(i-1);
+        assertEquals(tipus, f.getKind());
+        assertEquals(qtt, f.getAmount(), DELTA);
+        assertEquals(origen, f.getOrigin());
+        assertEquals(desti, f.getDestiny());
+    }
+
     @Aleshores("^hi ha (\\d+) caixer al sistema$")
     public void checkCashiersSize(int n) throws Throwable {
         assertEquals(n, caixers.size());

@@ -27,6 +27,14 @@ public abstract class MoneyFlow implements Entity {
 
     public abstract String getKind();
 
+    public String getOrigin() {
+        return "origen";
+    }
+
+    public String getDestiny() {
+        return "desti";
+    }
+
     public double getAmount() {
         return amount;
     }
