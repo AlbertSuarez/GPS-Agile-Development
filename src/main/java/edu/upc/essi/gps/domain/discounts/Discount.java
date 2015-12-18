@@ -3,9 +3,7 @@ package edu.upc.essi.gps.domain.discounts;
 import edu.upc.essi.gps.domain.Entity;
 import edu.upc.essi.gps.domain.HasName;
 import edu.upc.essi.gps.domain.Product;
-import edu.upc.essi.gps.domain.Sale;
-import edu.upc.essi.gps.domain.lines.SaleLine;
-import edu.upc.essi.gps.utils.DiscountCalculator;
+import edu.upc.essi.gps.utils.DiscountHolder;
 
 import java.util.List;
 
@@ -17,7 +15,7 @@ public interface Discount extends Entity, HasName {
     /**
      * Calcula la millor aplicació del descompte al conjunt de productes donat.
      */
-    DiscountCalculator.DiscountHolder calculate(List<Product> productes);
+    DiscountHolder calculate(List<Product> productes);
 
     /**
      * Is product contained?

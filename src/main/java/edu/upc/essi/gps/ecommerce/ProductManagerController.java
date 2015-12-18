@@ -125,18 +125,16 @@ public class ProductManagerController {
         return salesService.listSalesPeriod(d1,d2);
     }
 
-    public List<Product> addNewProduct(String name, double price, double vatPct, int barCode) {
+    public void addNewProduct(String name, double price, double vatPct, int barCode) {
         if (productsService.findByBarCode(barCode) != null)
             throw new IllegalStateException("Ja existeix un producte amb aquest codi de barres");
         productsService.newProduct(name, price, vatPct, barCode);
-        return productsService.list();
     }
 
-    public List<SaleAssistant> newSaleAssistant(String name, String pass) {
+    public void newSaleAssistant(String name, String pass) {
         if (saleAssistantService.findByName(name) != null)
             throw new IllegalStateException("Ja existeix un caixer amb aquest nom");
         saleAssistantService.newAssistant(name, pass);
-        return saleAssistantService.list();
     }
 
     public List<Product> getProducts() {

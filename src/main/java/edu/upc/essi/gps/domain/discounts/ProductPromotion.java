@@ -2,12 +2,13 @@ package edu.upc.essi.gps.domain.discounts;
 
 import edu.upc.essi.gps.domain.Category;
 import edu.upc.essi.gps.domain.Product;
+import edu.upc.essi.gps.utils.DiscountHolder;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.atomic.DoubleAccumulator;
 import java.util.stream.Collectors;
-
-import static edu.upc.essi.gps.utils.DiscountCalculator.*;
 
 /**
  * Classe que representa un descompte del tipus AxB (3x2, 2x1...).

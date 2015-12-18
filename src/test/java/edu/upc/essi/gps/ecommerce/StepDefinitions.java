@@ -2,15 +2,14 @@ package edu.upc.essi.gps.ecommerce;
 
 import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
-import cucumber.api.java.ca.I;
 import cucumber.api.java.ca.Quan;
 import edu.upc.essi.gps.domain.*;
-import edu.upc.essi.gps.domain.flow.MoneyFlow;
 import edu.upc.essi.gps.domain.lines.SaleLine;
 import edu.upc.essi.gps.ecommerce.repositories.*;
 import edu.upc.essi.gps.ecommerce.services.*;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -40,8 +39,6 @@ public class StepDefinitions {
     private List<Sale> sales;
     private List<Refund> refunds;
     private List<Category> categories;
-    private List<MoneyFlow> moneyFlows;
-    private List<SaleAssistant> caixers;
     private Sale s;
 
     public void tryCatch(Runnable r) {
@@ -310,14 +307,62 @@ public class StepDefinitions {
         tryCatch(() -> tpvController.newDiscountPercent(name, codiBarres, percent));
     }
 
+    @Quan("^creo un nou descompte del tipus percentatge anomenat \"([^\"]*)\" del %([^\"]*)% sobre els productes amb codi de barres \"([^\"]*)\"$")
+    public void newPercentatgeCjt(String name, double percent, String products) throws Throwable {
+        String llistaBarcodes[] = products.split(",");
+        List<Product> productList = getProductsFromBarCodes(llistaBarcodes);
+        discountService.newProductPercentDiscount(productList, name, percent);
+    }
+
+    private List<Product> getProductsFromBarCodes(String[] l) {
+        List<Product> productList = new ArrayList<>();
+        for (String s : l) {
+            Product product = productsService.findByBarCode(Integer.valueOf(s));
+            productList.add(product);
+        }
+        return productList;
+    }
+
+    @Quan("^creo un nou descompte del tipus percentatge anomenat \"([^\"]*)\" del %([^\"]*)% sobre els productes de la categoria \"([^\"]*)\"$")
+    public void newPercentatgeCat(String name, double percent, String cat) throws Throwable {
+        Category category = categoriesService.findByName(cat);
+        discountService.newProductPercentDiscount(category, name, percent);
+    }
+
     @Quan("^creo un nou descompte del tipus promoció anomenat \"([^\"]*)\" de (\\d+)x(\\d+) sobre el producte amb codi de barres (\\d+)$")
     public void newPromocio(String name, int A, int B, int codiBarres) throws Throwable {
         tryCatch(() -> tpvController.newDiscountPromotion(name, codiBarres, A, B));
     }
 
+    @Quan("^creo un nou descompte del tipus promoció anomenat \"([^\"]*)\" de (\\d+)x(\\d+) sobre els productes amb codi de barres \"([^\"]*)\"$")
+    public void newPromocioCjt(String name, int A, int B, String codiBarres) throws Throwable {
+        String llistaBarcodes[] = codiBarres.split(",");
+        discountService.newProductPromotionDiscount(getProductsFromBarCodes(llistaBarcodes), name, A, B);
+    }
+
+    @Quan("^creo un nou descompte del tipus promoció anomenat \"([^\"]*)\" de (\\d+)x(\\d+) sobre els productes de la categoria \"([^\"]*)\"$")
+    public void newPromocioCat(String name, int A, int B, String cat) throws Throwable {
+        Category category = categoriesService.findByName(cat);
+        discountService.newProductPromotionDiscount(category, name, A, B);
+    }
+
     @Quan("^creo un nou descompte del tipus regal anomenat \"([^\"]*)\", on amb la compra del producte amb codi de barres (\\d+) es regala una unitat del producte amb codi de barres (\\d+)$")
     public void newRegal(String name, int codiBarresRequerit, int codiBarresRegal) throws Throwable {
         tryCatch(() -> tpvController.newDiscountPresent(name, codiBarresRequerit, codiBarresRegal));
+    }
+
+    @Quan("^creo un nou descompte del tipus regal anomenat \"([^\"]*)\", on amb la compra del producte d'algun dels productes amb codi de barres \"([^\"]*)\" es regala una unitat de cadascun dels poductes amb codi de barres \"([^\"]*)\"$")
+    public void newRegalCjt(String name, String codiBarresRequerits, String codiBarresRegal) throws Throwable {
+        String l[] = codiBarresRequerits.split(",");
+        String l2[] = codiBarresRegal.split(",");
+        discountService.newProductPresentDiscount(getProductsFromBarCodes(l2), name, getProductsFromBarCodes(l));
+    }
+
+    @Quan("^creo un nou descompte del tipus regal anomenat \"([^\"]*)\", on amb la compra del producte d'algun dels productes de la categoria \"([^\"]*)\" es regala una unitat de cadascun dels poductes de la categoria \"([^\"]*)\"$")
+    public void newRegalCat(String name, String catRequerida, String catRegal) throws Throwable {
+        Category requiredCat = categoriesService.findByName(catRequerida);
+        Category regalCat = categoriesService.findByName(catRegal);
+        discountService.newProductPresentDiscount(regalCat, name, requiredCat);
     }
 
     @Quan("^indico que el client ha entregat €([^\"]*)€ per a pagar en metàlic$")
@@ -357,7 +402,7 @@ public class StepDefinitions {
 
     @Quan("^indico que vull cancelar la venta actual$")
     public void cancelCurrentSale() {
-        tryCatch(() -> tpvController.cancelCurrentSale());
+        tryCatch(tpvController::cancelCurrentSale);
     }
 
     @Quan("^afegeixo (\\d+) unitat/s de la línia de venda (\\d+)$")
@@ -398,12 +443,12 @@ public class StepDefinitions {
 
     @Quan("^consulto els fluxos de diners entre caixes$")
     public void getMoneyFlow() throws Throwable {
-        tryCatch(() -> moneyFlows = productManagerController.listMoneyFlows());
+        tryCatch(productManagerController::listMoneyFlows);
     }
 
     @Quan("^consulto els fluxos de diners entre caixes del tipus \"([^\"]*)\"$")
     public void getMoneyFlowByKind(String flowKind) throws Throwable {
-        tryCatch(() -> moneyFlows = productManagerController.listMoneyFlowsByKind(flowKind));
+        tryCatch(() -> productManagerController.listMoneyFlowsByKind(flowKind));
     }
 
     @Quan("^consulto els productes del sistema$")
@@ -413,18 +458,18 @@ public class StepDefinitions {
 
     @Quan("afegeixo un producte amb nom \"([^\"]*)\", preu €([^\"]*)€, iva %([^\"]*)% i codi de barres (\\d+)$")
     public void addNewProduct(String name, double price, double vatPct, int barCode) throws Throwable {
-        tryCatch(() -> products = productManagerController.addNewProduct(name, price, vatPct, barCode));
+        tryCatch(() -> productManagerController.addNewProduct(name, price, vatPct, barCode));
 
     }
 
     @Quan("^consulto els caixers del sistema$")
     public void getSaleAssistants() throws Throwable {
-        tryCatch(() -> caixers = productManagerController.getSaleAssistants());
+        tryCatch(productManagerController::getSaleAssistants);
     }
 
     @Quan("^afegeixo un caixer amb nom \"([^\"]*)\" i contrasenya \"([^\"]*)\"$")
     public void newAssistant(String name, String pass) throws Throwable {
-        tryCatch(() -> caixers = productManagerController.newSaleAssistant(name, pass));
+        tryCatch(() -> productManagerController.newSaleAssistant(name, pass));
     }
 
     @Quan("^vull llistar les vendes del dia \"([^\"]*)\"$")
@@ -453,12 +498,12 @@ public class StepDefinitions {
 
     @Aleshores("^hi ha (\\d+) productes al sistema")
     public void checkQttProducts(int n) throws Throwable {
-        assertEquals(n, products.size());
+        assertEquals(n, productsService.list().size());
     }
 
     @Aleshores("^el producte número (\\d+) té per nom \"([^\"]*)\", preu €([^\"]*)€, IVA %([^\"]*)% i codi de barres (\\d+)$")
     public void checkProduct(int n, String name, double price, double pct, int barCode) throws Throwable {
-        Product p = products.get(n - 1);
+        Product p = productsService.list().get(n - 1);
         assertEquals(name, p.getName());
         assertEquals(barCode, p.getBarCode());
         assertEquals(pct, p.getVatPct(), DELTA);
@@ -675,12 +720,13 @@ public class StepDefinitions {
 
     @Aleshores("^hi ha (\\d+) caixer al sistema$")
     public void checkCashiersSize(int n) throws Throwable {
-        assertEquals(n, caixers.size());
+        assertEquals(n, saleAssistantService.list().size());
     }
 
     @Aleshores("^el caixer té per nom \"([^\"]*)\" i la seva contrasenya és \"([^\"]*)\"$")
     public void checkCashier(String name, String pass) throws Throwable {
-        SaleAssistant a = caixers.get(caixers.size() - 1);
+        List<SaleAssistant> list = saleAssistantService.list();
+        SaleAssistant a = list.get(list.size() - 1);
         assertEquals(name, a.getName());
         assertEquals(pass, a.getEncryptedPass());
     }
