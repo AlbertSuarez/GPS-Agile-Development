@@ -73,3 +73,4 @@ Característica: Consulta flux de diners entre caixes
     I obtinc un flux 2 de tipus "InFlow" d'una quantitat de €25€ de "origen" a "Girona 2"
     I el tpv 1 de la botiga "Girona" té un efectiu total de €30€
     I el tpv 2 de la botiga "Girona" té un efectiu total de €45€
+
