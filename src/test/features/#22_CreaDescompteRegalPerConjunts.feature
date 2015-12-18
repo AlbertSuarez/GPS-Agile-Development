@@ -19,15 +19,15 @@ Característica: Crear nous descomptes del tipus regal per a conjunts
     I afegeixo el producte amb codi de barres 7654321 a la categoria "Consola"
 
   Escenari: aplicar un descompte de regals per a un conjunt d'elements
-    Donat creo un nou descompte del tipus regal anomenat "ConsolaXAltres", on amb la compra del producte d'algun dels productes amb codi de barres "7777777,7654321" es regala una unitat d'algun dels poductes amb codi de barres "1234567,1111111"
+    Donat creo un nou descompte del tipus regal anomenat "ConsolaXAltres", on amb la compra del producte d'algun dels productes amb codi de barres "7777777,7654321" es regala una unitat de cadascun dels poductes amb codi de barres "1234567,1111111"
     Quan afegeixo 1 unitats del producte amb codi de barres 1234567 a la venta
     I afegeixo 1 unitats del producte amb codi de barres 1111111 a la venta
     I afegeixo 1 unitats del producte amb codi de barres 7777777 a la venta
     Aleshores la venta té 3 línies
-    I el total de la venta actual és de €220€
+    I el total de la venta actual és de €240€
     
   Escenari: aplicar un descompte de regals per a una categoria
-    Donat creo un nou descompte del tipus regal anomenat "ConsolaXAltres", on amb la compra del producte d'algun dels productes de la categoria "Consola" es regala una unitat d'algun dels poductes de la categoria "Altres"
+    Donat creo un nou descompte del tipus regal anomenat "ConsolaXAltres", on amb la compra del producte d'algun dels productes de la categoria "Consola" es regala una unitat de cadascun dels poductes de la categoria "Altres"
     Quan afegeixo 1 unitats del producte amb codi de barres 1234567 a la venta
     I afegeixo 1 unitats del producte amb codi de barres 1111111 a la venta
     I afegeixo 1 unitats del producte amb codi de barres 7777777 a la venta

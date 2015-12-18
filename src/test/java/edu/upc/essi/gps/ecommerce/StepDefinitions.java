@@ -4,7 +4,6 @@ import cucumber.api.java.ca.Aleshores;
 import cucumber.api.java.ca.Donat;
 import cucumber.api.java.ca.Quan;
 import edu.upc.essi.gps.domain.*;
-import edu.upc.essi.gps.domain.flow.MoneyFlow;
 import edu.upc.essi.gps.domain.lines.SaleLine;
 import edu.upc.essi.gps.ecommerce.repositories.*;
 import edu.upc.essi.gps.ecommerce.services.*;
@@ -40,8 +39,6 @@ public class StepDefinitions {
     private List<Sale> sales;
     private List<Refund> refunds;
     private List<Category> categories;
-    private List<MoneyFlow> moneyFlows;
-    private List<SaleAssistant> caixers;
     private Sale s;
 
     public void tryCatch(Runnable r) {
@@ -354,14 +351,14 @@ public class StepDefinitions {
         tryCatch(() -> tpvController.newDiscountPresent(name, codiBarresRequerit, codiBarresRegal));
     }
 
-    @Quan("^creo un nou descompte del tipus regal anomenat \"([^\"]*)\", on amb la compra del producte d'algun dels productes amb codi de barres \"([^\"]*)\" es regala una unitat d'algun dels poductes amb codi de barres \"([^\"]*)\"$")
+    @Quan("^creo un nou descompte del tipus regal anomenat \"([^\"]*)\", on amb la compra del producte d'algun dels productes amb codi de barres \"([^\"]*)\" es regala una unitat de cadascun dels poductes amb codi de barres \"([^\"]*)\"$")
     public void newRegalCjt(String name, String codiBarresRequerits, String codiBarresRegal) throws Throwable {
         String l[] = codiBarresRequerits.split(",");
         String l2[] = codiBarresRegal.split(",");
         discountService.newProductPresentDiscount(getProductsFromBarCodes(l2), name, getProductsFromBarCodes(l));
     }
 
-    @Quan("^creo un nou descompte del tipus regal anomenat \"([^\"]*)\", on amb la compra del producte d'algun dels productes de la categoria \"([^\"]*)\" es regala una unitat d'algun dels poductes de la categoria \"([^\"]*)\"$")
+    @Quan("^creo un nou descompte del tipus regal anomenat \"([^\"]*)\", on amb la compra del producte d'algun dels productes de la categoria \"([^\"]*)\" es regala una unitat de cadascun dels poductes de la categoria \"([^\"]*)\"$")
     public void newRegalCat(String name, String catRequerida, String catRegal) throws Throwable {
         Category requiredCat = categoriesService.findByName(catRequerida);
         Category regalCat = categoriesService.findByName(catRegal);
@@ -446,12 +443,12 @@ public class StepDefinitions {
 
     @Quan("^consulto els fluxos de diners entre caixes$")
     public void getMoneyFlow() throws Throwable {
-        tryCatch(() -> moneyFlows = productManagerController.listMoneyFlows());
+        tryCatch(productManagerController::listMoneyFlows);
     }
 
     @Quan("^consulto els fluxos de diners entre caixes del tipus \"([^\"]*)\"$")
     public void getMoneyFlowByKind(String flowKind) throws Throwable {
-        tryCatch(() -> moneyFlows = productManagerController.listMoneyFlowsByKind(flowKind));
+        tryCatch(() -> productManagerController.listMoneyFlowsByKind(flowKind));
     }
 
     @Quan("^consulto els productes del sistema$")
@@ -467,7 +464,7 @@ public class StepDefinitions {
 
     @Quan("^consulto els caixers del sistema$")
     public void getSaleAssistants() throws Throwable {
-        tryCatch(() -> caixers = productManagerController.getSaleAssistants());
+        tryCatch(productManagerController::getSaleAssistants);
     }
 
     @Quan("^afegeixo un caixer amb nom \"([^\"]*)\" i contrasenya \"([^\"]*)\"$")
